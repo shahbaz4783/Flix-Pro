@@ -1,0 +1,25 @@
+header {
+    display: flex;
+    height: 8vh;
+    border-bottom: 2px solid black;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
+
+nav ul {
+    display: flex;
+
+}
+
+nav li {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+nav a {
+    text-decoration: none;
+    margin: 20px;
+}
