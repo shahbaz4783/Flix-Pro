@@ -155,12 +155,8 @@ body{
 
 
 .popular-poster{
-    width: fit-content;
+    width: 60%;
 }
-
-  .popular-box:hover{
-    flex: 4;
-  }
   
  
   .popular-box .flex-info {
@@ -170,11 +166,11 @@ body{
     transform: rotate(-90deg);
     transition: all .5s;
     text-transform: uppercase;
-    color: #222831;
+    color: #ffffff;
     letter-spacing: .1em;
   }
   
-  .popular-box:hover .flex-info {
+  .popular-box:hover{
     transform: rotate(0);
   }
 
@@ -190,3 +186,10 @@ body{
     justify-content: center;
 }
   
+
+
+@media screen and (max-width: 768px) {
+    .backdrop{
+        display: none;
+    }
+}

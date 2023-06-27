@@ -15,6 +15,8 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
+
+// display now playing in theaters
 const displayNowPlayingMovies = async () => {
 	let movieList = [];
 	let movieIndex = 0;
@@ -27,13 +29,6 @@ const displayNowPlayingMovies = async () => {
 
 	const showNextMovie = async () => {
 		const movie = movieList[movieIndex];
-
-		const releaseDate = new Date(movie.release_date);
-		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-			'default',
-			{ month: 'short' }
-		)} ${releaseDate.getFullYear()}`;
-
 		const backdropPath = movie.backdrop_path;
 		const posterPath = movie.poster_path;
 
@@ -64,6 +59,7 @@ const displayNowPlayingMovies = async () => {
 
 	intervalId = setInterval(showNextMovie, 3000);
 };
+
 
 // display top rated movies
 const displayTopRatedMovies = async () => {
@@ -113,7 +109,7 @@ const displayPopularMovies = async () => {
 
            <img class="popular-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
             <div class="flex-info">${movie.title}
-            <p> Released: ${formattedDate}</p>
+            <p>${formattedDate}</p>
             <button class="details">Details</button>
             </div>
 

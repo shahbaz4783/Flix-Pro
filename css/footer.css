@@ -9,17 +9,29 @@
 .links{
     display: flex;
     justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.links div:nth-child(1){
+    width: 50%;
+    text-align: center;
 }
 
 .links div {
-    border: 2px solid rgb(255, 255, 255);
-    width: 30%;
+    width: 10%;
     padding: 20px;
     margin: 20px;
 }
 
+.links div ul li {
+    list-style: none;
+    margin-top: 10px;
+
+}
+
 .socials {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     border-top: 2px solid rgb(255, 255, 255);
@@ -142,4 +154,14 @@
     100% {
       transform: scale(1);
     }
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .socials {
+        justify-content: center;
+        gap: 20px;
+        text-align: center;
+    }
+    
   }
