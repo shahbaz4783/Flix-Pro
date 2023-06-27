@@ -12,12 +12,29 @@ body{
 }
 
 /* Now playing Movies */
-.playing-movie-card{
+.now-playing-list{
     display: flex;
 }
 
+.playing-movie-card{
+    display: flex;
+    margin: auto;
+}
+
+.backdrop{
+    width: 70vw;
+    height: 100%;
+    opacity: 20;
+}
+
+
+
 .playing-poster{
     height: 70vh;
+}
+
+.playing-movie-content{
+    display: flex;
 }
 
 
@@ -97,14 +114,6 @@ body{
   }
 
 
-/* featured */
-.featured{
-    width: 95vw;
-    height: 70vh;
-    margin: auto;
-    background-color: #00ADB5;
-
-}
 
 
 /* top rated */
@@ -130,31 +139,31 @@ body{
 
 .popular-list {
     width: 95vw;
-    height: 50vh;
     border-radius: 4px;
     display: flex;
-    gap: 5px;
+    gap: 15px;
     margin: 20px auto;
-  }
-  
-  .popular-list p {
-    height: 100%;
-    flex: 1;
+}
+
+.popular-box{
+    border: 2px solid white;
+    display: flex;
     overflow: hidden;
     cursor: pointer;
-    border-radius: 2px;
     transition: all .5s;
-    background: #00ADB5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .popular-list p:hover {
+}
+
+
+.popular-poster{
+    width: fit-content;
+}
+
+  .popular-box:hover{
     flex: 4;
   }
   
-  .popular-list p span {
+ 
+  .popular-box .flex-info {
     min-width: 14em;
     padding: .5em;
     text-align: center;
@@ -165,11 +174,9 @@ body{
     letter-spacing: .1em;
   }
   
-  .popular-list p:hover span {
+  .popular-box:hover .flex-info {
     transform: rotate(0);
   }
-
-
 
 
 
@@ -181,5 +188,5 @@ body{
     margin: 20px auto;
     flex-wrap: wrap;
     justify-content: center;
-    }
+}
   
