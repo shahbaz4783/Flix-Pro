@@ -151,6 +151,36 @@ const displayUpcomingMovies = async () => {
 
 
 
+// display top rated Shows
+const displayTopRatedShows = async () => {
+	const { results } = await fetchAPIdata('tv/top_rated');
+	let showCount = 0;
+
+	results.forEach((show) => {
+		if (showCount < 14) {
+			const airDate = new Date(show.first_air_date);
+			const formattedDate = `${airDate.getDate()} ${airDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${airDate.getFullYear()}`;
+
+			const cardContainer = document.createElement('div');
+			cardContainer.classList.add('movie-card');
+			cardContainer.innerHTML = `
+           <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
+            <div class="movie-content">
+            <p>${show.name}</p>
+            <p>${formattedDate}</p>
+            <button class="details">Details</button>
+            </div>
+        `;
+			document.querySelector('.top-rated-shows-list').append(cardContainer);
+			showCount++;
+		}
+	});
+};
+
+
 // display popular Shows
 const displayPopularShows = async () => {
 	const { results } = await fetchAPIdata('tv/popular');
@@ -191,6 +221,7 @@ const init = () => {
 			displayUpcomingMovies();
 			break;
 		case '/shows.html':
+            displayTopRatedShows();
 			displayPopularShows();
 			break;
 		case '/movie-detail.html':
