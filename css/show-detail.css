@@ -5,12 +5,3 @@
     padding: 0;
     font-family: 'Lato', sans-serif;
 }
-
-body {
-    color: white;
-    background-color: black;
-}
-
-.detail-backdrop{
-    width: 100vw;
-}

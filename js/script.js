@@ -81,7 +81,7 @@ const displayTopRatedMovies = async () => {
         <div class="movie-content">
             <span class="movie-title">${movie.title}</span>
             <p class="movie-description">Released: ${formattedDate}</p>
-            <button class="details">Details</button>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
         </div>
         `;
 			document.querySelector('.top-rated-list').append(cardContainer);
@@ -110,7 +110,7 @@ const displayPopularMovies = async () => {
            <img class="popular-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
             <div class="flex-info">${movie.title}
             <p>${formattedDate}</p>
-            <button class="details">Details</button>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
             </div>
 
         `;
@@ -140,7 +140,7 @@ const displayUpcomingMovies = async () => {
         <div class="movie-content">
             <span class="movie-title">${movie.title}</span>
             <p class="movie-description">Released: ${formattedDate}</p>
-            <button class="details">Details</button>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
         </div>
         `;
 			document.querySelector('.upcoming-list').append(cardContainer);
@@ -171,7 +171,8 @@ const displayTopRatedShows = async () => {
             <div class="movie-content">
             <p>${show.name}</p>
             <p>${formattedDate}</p>
-            <button class="details">Details</button>
+            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
+
             </div>
         `;
 			document.querySelector('.top-rated-shows-list').append(cardContainer);
@@ -201,7 +202,7 @@ const displayPopularShows = async () => {
             <div class="movie-content">
             <p>${show.name}</p>
             <p>${formattedDate}</p>
-            <button class="details">Details</button>
+            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
             </div>
         `;
 			document.querySelector('.popular-shows-list').append(cardContainer);
@@ -209,6 +210,66 @@ const displayPopularShows = async () => {
 		}
 	});
 };
+
+
+// Movie Details Page
+const movieDetails = async () => {
+    const movieID = window.location.search.split('=')[1];
+    const movie = await fetchAPIdata(`movie/${movieID}`);
+
+    const releaseDate = new Date(movie.release_date);
+			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${releaseDate.getFullYear()}`;
+            
+            const credits = await fetchAPIdata(`movie/${movieID}/credits`);
+            const cast = credits.cast.slice(0, 5);
+
+            
+
+    const details = document.createElement('div');
+    details.innerHTML = `
+    <div class="images">
+            <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="">
+            <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="">
+        </div>
+        <div class="basic-info">
+            <p class="rating">${(movie.vote_average).toFixed(1)}</p>
+            <p class="release">${formattedDate}</p>
+            <p class="runtime">${movie.runtime} minutes</p>
+            <p class="genre">${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}</p>
+        </div>
+        <div class="story">
+            <h3>${movie.title}</h3>
+            <p class="info">${movie.overview}</p>
+        </div>
+        <div class="crew">
+            <p class="director"> Director:
+            ${credits.crew.find((member) => member.job === 'Director').name}
+            </p>
+            <p class="screenplay"> Screenplay:</p>
+            <p class="production"> Production:
+            ${movie.production_companies.map((company) => `<li>${company.name}</li>`).join('')}
+            </p>
+        </div>
+        <div class="cast">
+      <h3>Cast</h3>
+      <ul>
+        ${cast.map((castMember) => `<li>${castMember.name}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="box-office">
+    <h3>Collections</h3>
+            <p>$${movie.budget}</p>
+            <p class="info">$${movie.revenue}</p>
+    </div>
+    `
+    document.querySelector('.display-details').append(details)
+}
+
+
+
 
 // Init App
 const init = () => {
@@ -225,7 +286,10 @@ const init = () => {
 			displayPopularShows();
 			break;
 		case '/movie-detail.html':
-			console.log('Movie Detail');
+			movieDetails();
+			break;
+		case '/show-detail.html':
+			console.log('show Detail');
 			break;
 		case '/search.html':
 			console.log('Search Result');
