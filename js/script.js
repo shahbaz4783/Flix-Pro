@@ -24,6 +24,7 @@ const displayNowPlayingMovies = async () => {
 	const fetchMovies = async () => {
 		const { results } = await fetchAPIdata('movie/now_playing');
 		movieList = results;
+        
 	};
 
 	const showNextMovie = async () => {
@@ -335,6 +336,23 @@ const showDetails = async () => {
 	document.querySelector('.display-details').append(details);
 };
 
+// Show Hide Loading
+const showLoader = () => {
+    document.querySelector('.loading').style.display = 'block';
+}
+const hideLoader = () => {
+    document.querySelector('.loading').style.display = 'none';
+}
+
+// Show Hide Movie Page
+const showMovie = () => {
+    document.querySelector('main').style.display = 'block';
+}
+const hideMovie = () => {
+    document.querySelector('main').style.display = 'none';
+}
+
+
 
 // Init App
 const init = () => {
@@ -357,7 +375,7 @@ const init = () => {
 			showDetails();
 			break;
 		case '/search.html':
-			console.log('Search Result');
+            search();
 			break;
 		default:
 			break;
