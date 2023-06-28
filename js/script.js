@@ -15,7 +15,6 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
-
 // display now playing in theaters
 const displayNowPlayingMovies = async () => {
 	let movieList = [];
@@ -59,7 +58,6 @@ const displayNowPlayingMovies = async () => {
 
 	intervalId = setInterval(showNextMovie, 3000);
 };
-
 
 // display top rated movies
 const displayTopRatedMovies = async () => {
@@ -149,8 +147,6 @@ const displayUpcomingMovies = async () => {
 	});
 };
 
-
-
 // display top rated Shows
 const displayTopRatedShows = async () => {
 	const { results } = await fetchAPIdata('tv/top_rated');
@@ -181,7 +177,6 @@ const displayTopRatedShows = async () => {
 	});
 };
 
-
 // display popular Shows
 const displayPopularShows = async () => {
 	const { results } = await fetchAPIdata('tv/popular');
@@ -211,36 +206,40 @@ const displayPopularShows = async () => {
 	});
 };
 
-
 // Movie Details Page
 const movieDetails = async () => {
-    const movieID = window.location.search.split('=')[1];
-    const movie = await fetchAPIdata(`movie/${movieID}`);
+	const movieID = window.location.search.split('=')[1];
+	const movie = await fetchAPIdata(`movie/${movieID}`);
 
-    const releaseDate = new Date(movie.release_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${releaseDate.getFullYear()}`;
-            
-            const credits = await fetchAPIdata(`movie/${movieID}/credits`);
-            const cast = credits.cast.slice(0, 5);
+	const releaseDate = new Date(movie.release_date);
+	const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+		'default',
+		{ month: 'short' }
+	)} ${releaseDate.getFullYear()}`;
 
-            
+	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
+	const cast = credits.cast.slice(0, 5);
 
-    const details = document.createElement('div');
-    details.innerHTML = `
+	const details = document.createElement('div');
+	details.innerHTML = `
     <div class="images">
-            <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="">
-            <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="">
+    <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${
+			movie.poster_path
+		}" alt="${movie.title}">
+     <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${
+			movie.backdrop_path
+		}" alt="${movie.title}">
+
         </div>
         <div class="basic-info">
-            <p class="rating">${(movie.vote_average).toFixed(1)}</p>
+            <p class="rating">${movie.vote_average.toFixed(1)}</p>
             <p class="release">${formattedDate}</p>
             <p class="runtime">${movie.runtime} minutes</p>
-            <p class="genre">${movie.genres.map((genre) => `<li>${genre.name}</li>`).join('')}</p>
+            <p class="genre">${movie.genres
+							.map((genre) => `<li>${genre.name}</li>`)
+							.join('')}</p>
         </div>
-        <div class="story">
+        <div class="overview">
             <h3>${movie.title}</h3>
             <p class="info">${movie.overview}</p>
         </div>
@@ -250,7 +249,9 @@ const movieDetails = async () => {
             </p>
             <p class="screenplay"> Screenplay:</p>
             <p class="production"> Production:
-            ${movie.production_companies.map((company) => `<li>${company.name}</li>`).join('')}
+            ${movie.production_companies
+							.map((company) => `<li>${company.name}</li>`)
+							.join('')}
             </p>
         </div>
         <div class="cast">
@@ -259,16 +260,80 @@ const movieDetails = async () => {
         ${cast.map((castMember) => `<li>${castMember.name}</li>`).join('')}
       </ul>
     </div>
-    <div class="box-office">
+    <div class="finance">
     <h3>Collections</h3>
             <p>$${movie.budget}</p>
             <p class="info">$${movie.revenue}</p>
     </div>
-    `
-    document.querySelector('.display-details').append(details)
-}
+    `;
+	document.querySelector('.display-details').append(details);
+};
 
 
+
+
+// Show Details Page
+const showDetails = async () => {
+	const showID = window.location.search.split('=')[1];
+	const show = await fetchAPIdata(`tv/${showID}`);
+
+	const releaseDate = new Date(show.first_air_date);
+	const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+		'default',
+		{ month: 'short' }
+	)} ${releaseDate.getFullYear()}`;
+
+	const credits = await fetchAPIdata(`tv/${showID}/credits`);
+	const cast = credits.cast.slice(0, 5);
+
+	const details = document.createElement('div');
+	details.innerHTML = `
+    <div class="images">
+    <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${
+			show.poster_path
+		}" alt="${show.title}">
+     <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${
+			show.backdrop_path
+		}" alt="${show.title}">
+
+        </div>
+        <div class="basic-info">
+            <p class="rating">${show.vote_average.toFixed(1)}</p>
+            <p class="release">${formattedDate}</p>
+            <p class="genre">${show.genres
+							.map((genre) => `<li>${genre.name}</li>`)
+							.join('')}</p>
+        </div>
+        <div class="overview">
+            <h3>${show.name}</h3>
+            <p class="info">${show.overview}</p>
+        </div>
+        <div class="finance">
+        <h3>Episodes</h3>
+                <p>Last Episode: ${(show.last_episode_to_air).name}</p>
+                <p class="info">Total Seasons: ${show.number_of_seasons}</p>
+                <p class="info">Total Episodes: ${show.number_of_episodes}</p>
+        </div>
+
+
+        <div class="cast">
+      <h3>Cast</h3>
+      <ul>
+        ${cast.map((castMember) => `<li>${castMember.name}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="crew">
+
+    <p class="production"> Production:
+    ${show.production_companies
+                    .map((company) => `<li>${company.name}</li>`)
+                    .join('')}
+    </p>
+</div>
+    `;
+	document.querySelector('.display-details').append(details);
+};
 
 
 // Init App
@@ -282,14 +347,14 @@ const init = () => {
 			displayUpcomingMovies();
 			break;
 		case '/shows.html':
-            displayTopRatedShows();
+			displayTopRatedShows();
 			displayPopularShows();
 			break;
 		case '/movie-detail.html':
 			movieDetails();
 			break;
 		case '/show-detail.html':
-			console.log('show Detail');
+			showDetails();
 			break;
 		case '/search.html':
 			console.log('Search Result');

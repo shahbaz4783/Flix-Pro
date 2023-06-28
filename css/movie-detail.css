@@ -12,5 +12,44 @@ body {
 }
 
 .detail-backdrop{
-    width: 100vw;
+    width: 50%;
+    opacity: 0.3;
+}
+
+.detail-poster{
+    width: 20%;
+
+}
+
+.images{
+    width: 90vw;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.basic-info{
+    border: 2px solid green;
+    margin: 10px;
+}
+
+.overview{
+    border: 2px solid green;
+    margin: 10px;
+}
+
+.crew{
+    border: 2px solid green;
+    margin: 10px;
+}
+
+.cast{
+    border: 2px solid green;
+    margin: 10px;
+}
+
+.finance{
+    border: 2px solid green;
+    margin: 10px;
 }

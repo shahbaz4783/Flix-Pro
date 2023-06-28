@@ -24,7 +24,7 @@ body{
 .backdrop{
     width: 70vw;
     height: 100%;
-    opacity: 20;
+    opacity: 0.5;
 }
 
 
