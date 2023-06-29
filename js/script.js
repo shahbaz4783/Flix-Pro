@@ -233,12 +233,16 @@ const movieDetails = async () => {
 
         </div>
         <div class="basic-info">
-            <p class="rating">${movie.vote_average.toFixed(1)}</p>
+        <div>
+            <p class="rating">Rating: ${movie.vote_average.toFixed(1)}</p>
             <p class="release">${formattedDate}</p>
             <p class="runtime">${movie.runtime} minutes</p>
+        </div>
+            <div>
             <p class="genre">${movie.genres
 							.map((genre) => `<li>${genre.name}</li>`)
 							.join('')}</p>
+                            </div>
         </div>
         <div class="overview">
             <h3>${movie.title}</h3>
@@ -248,12 +252,13 @@ const movieDetails = async () => {
             <p class="director"> Director:
             ${credits.crew.find((member) => member.job === 'Director').name}
             </p>
-            <p class="screenplay"> Screenplay:</p>
-            <p class="production"> Production:
+            <div class="production-list">
+            <p class="production"> Production
             ${movie.production_companies
 							.map((company) => `<li>${company.name}</li>`)
 							.join('')}
             </p>
+            </div>
         </div>
         <div class="cast">
       <h3>Cast</h3>
@@ -262,9 +267,8 @@ const movieDetails = async () => {
       </ul>
     </div>
     <div class="finance">
-    <h3>Collections</h3>
-            <p>$${movie.budget}</p>
-            <p class="info">$${movie.revenue}</p>
+            <p>Budget: ${movie.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
+            <p class="info">Collection: ${movie.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
     </div>
     `;
 	document.querySelector('.display-details').append(details);

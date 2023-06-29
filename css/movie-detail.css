@@ -29,27 +29,117 @@ body {
     margin: auto;
 }
 
+.basic-info div:first-child{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: gray;
+    opacity: 0.8;
+}
+
 .basic-info{
-    border: 2px solid green;
-    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 10px auto;
+    list-style: none;
+    width: 50vw;
+    font-size: 1.5rem;
 }
 
 .overview{
-    border: 2px solid green;
-    margin: 10px;
+    margin: 40px auto;
+    width: 70vw;
+}
+
+.overview h3 {
+    font-size: 3.5rem;
+    color: aquamarine;
+}
+
+.overview p {
+    font-size: 1.5rem;
 }
 
 .crew{
-    border: 2px solid green;
     margin: 10px;
+    width: 70vw;
+    margin: auto;
+}
+
+.crew p:nth-child(1){
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.crew p:nth-child(2){
+    font-size: 2rem;
+    list-style: none;
+    margin-top: 20px;
+}
+
+.production-list{
+    list-style: none;
+    font-size: 1.3rem;
+    border: 2px solid white;
+    padding: 10px;
+    width: fit-content;
+    border-radius: 20px;
+    margin-top: 10px;
+    background-color: gray;
+}
+
+.production-list li {
+    color: rgb(172, 236, 134);
+}
+
+
+.crew p li {
+    list-style: none;
 }
 
 .cast{
-    border: 2px solid green;
+    margin: 10px auto;
+    width: 70vw;
+    font-size: 1.5rem;
+    text-align: center;
+    border-radius: 20px;
+    padding: 10px;
+
+}
+
+.cast ul {
+    list-style: none;
+    display: flex;
+    color: black;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.cast ul li{
+    border: 2px solid white;
     margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: gray;
 }
 
 .finance{
-    border: 2px solid green;
-    margin: 10px;
+    margin: 10px auto;
+    width: 70vw;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.finance p{
+    border: 2px solid white;
+    background-color: gray;
+    color: black;
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: 10px;
+    border-radius: 10px;
 }
