@@ -11,6 +11,16 @@ body{
     color: #EEEEEE;
 }
 
+/* Sections */
+section h1 {
+    font-size: 2rem;
+    width: 90vw;
+    margin: auto;
+    padding-top: 10px;
+}
+
+
+
 /* Now playing Movies */
 .now-playing-list{
     display: flex;
@@ -26,7 +36,6 @@ body{
     height: 100%;
     opacity: 0.5;
 }
-
 
 
 .playing-poster{
@@ -116,13 +125,15 @@ body{
 
 
 
-/* top rated */
+/* Each Sections */
 
-.top-rated{
-    margin-top: 20px;
+.top-rated, .popular, .upcoming{
+    padding: 10px;
+    border-bottom: 2px solid white;
+    margin: 20px auto;
 }
 
-.top-rated-list{
+.top-rated-list, .popular-list, .upcoming-list{
     display: flex;
     gap: 30px;
     width: 95vw;
@@ -131,61 +142,7 @@ body{
     justify-content: center;
   }
 
-  
 
-
-
-/* Popular */
-
-.popular-list {
-    width: 95vw;
-    border-radius: 4px;
-    display: flex;
-    gap: 15px;
-    margin: 20px auto;
-}
-
-.popular-box{
-    border: 2px solid white;
-    display: flex;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all .5s;
-}
-
-
-.popular-poster{
-    width: 60%;
-}
-  
- 
-  .popular-box .flex-info {
-    min-width: 14em;
-    padding: .5em;
-    text-align: center;
-    transform: rotate(-90deg);
-    transition: all .5s;
-    text-transform: uppercase;
-    color: #ffffff;
-    letter-spacing: .1em;
-  }
-  
-  .popular-box:hover{
-    transform: rotate(0);
-  }
-
-
-
-/* upcoming */
-.upcoming-list{
-    display: flex;
-    gap: 10px;
-    width: 95vw;
-    margin: 20px auto;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-  
 
 
 @media screen and (max-width: 768px) {

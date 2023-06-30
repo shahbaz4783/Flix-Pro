@@ -60,6 +60,40 @@ const displayNowPlayingMovies = async () => {
 	intervalId = setInterval(showNextMovie, 3000);
 };
 
+
+// display popular movies
+const displayPopularMovies = async () => {
+	const { results } = await fetchAPIdata('movie/popular');
+	let movieCount = 0;
+
+	results.forEach((movie) => {
+		if (movieCount < 14) {
+			const releaseDate = new Date(movie.release_date);
+			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${releaseDate.getFullYear()}`;
+
+			const cardContainer = document.createElement('div');
+			cardContainer.classList.add('movie-card');
+			cardContainer.innerHTML = `
+
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+            <div class="movie-content">
+            <span class="movie-title">${movie.title}</span>
+            <p class="movie-description">Released: ${formattedDate}</p>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+        </div>
+
+        `;
+			document.querySelector('.popular-list').append(cardContainer);
+			movieCount++;
+		}
+	});
+};
+
+
+
 // display top rated movies
 const displayTopRatedMovies = async () => {
 	const { results } = await fetchAPIdata('movie/top_rated');
@@ -89,35 +123,6 @@ const displayTopRatedMovies = async () => {
 	});
 };
 
-// display popular movies
-const displayPopularMovies = async () => {
-	const { results } = await fetchAPIdata('movie/popular');
-	let movieCount = 0;
-
-	results.forEach((movie) => {
-		if (movieCount < 5) {
-			const releaseDate = new Date(movie.release_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${releaseDate.getFullYear()}`;
-
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('popular-box');
-			cardContainer.innerHTML = `
-
-           <img class="popular-poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-            <div class="flex-info">${movie.title}
-            <p>${formattedDate}</p>
-            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
-            </div>
-
-        `;
-			document.querySelector('.popular-list').append(cardContainer);
-			movieCount++;
-		}
-	});
-};
 
 // display upcoming movies
 const displayUpcomingMovies = async () => {
@@ -125,7 +130,7 @@ const displayUpcomingMovies = async () => {
 	let movieCount = 0;
 
 	results.forEach((movie) => {
-		if (movieCount < 7) {
+		if (movieCount < 14) {
 			const releaseDate = new Date(movie.release_date);
 			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
 				'default',
@@ -147,6 +152,37 @@ const displayUpcomingMovies = async () => {
 		}
 	});
 };
+
+
+// display popular Shows
+const displayPopularShows = async () => {
+	const { results } = await fetchAPIdata('tv/popular');
+	let showCount = 0;
+
+	results.forEach((show) => {
+		if (showCount < 14) {
+			const airDate = new Date(show.first_air_date);
+			const formattedDate = `${airDate.getDate()} ${airDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${airDate.getFullYear()}`;
+
+			const cardContainer = document.createElement('div');
+			cardContainer.classList.add('movie-card');
+			cardContainer.innerHTML = `
+           <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
+            <div class="movie-content">
+            <p>${show.name}</p>
+            <p>${formattedDate}</p>
+            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
+            </div>
+        `;
+			document.querySelector('.popular-shows-list').append(cardContainer);
+			showCount++;
+		}
+	});
+};
+
 
 // display top rated Shows
 const displayTopRatedShows = async () => {
@@ -173,35 +209,6 @@ const displayTopRatedShows = async () => {
             </div>
         `;
 			document.querySelector('.top-rated-shows-list').append(cardContainer);
-			showCount++;
-		}
-	});
-};
-
-// display popular Shows
-const displayPopularShows = async () => {
-	const { results } = await fetchAPIdata('tv/popular');
-	let showCount = 0;
-
-	results.forEach((show) => {
-		if (showCount < 14) {
-			const airDate = new Date(show.first_air_date);
-			const formattedDate = `${airDate.getDate()} ${airDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${airDate.getFullYear()}`;
-
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('movie-card');
-			cardContainer.innerHTML = `
-           <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
-            <div class="movie-content">
-            <p>${show.name}</p>
-            <p>${formattedDate}</p>
-            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
-            </div>
-        `;
-			document.querySelector('.popular-shows-list').append(cardContainer);
 			showCount++;
 		}
 	});
@@ -270,6 +277,7 @@ const movieDetails = async () => {
             <p>Budget: ${movie.budget.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
             <p class="info">Collection: ${movie.revenue.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</p>
     </div>
+    
     `;
 	document.querySelector('.display-details').append(details);
 };
@@ -303,19 +311,21 @@ const showDetails = async () => {
 
         </div>
         <div class="basic-info">
-            <p class="rating">${show.vote_average.toFixed(1)}</p>
+        <div>
+            <p class="rating">Rating: ${show.vote_average.toFixed(1)}</p>
             <p class="release">${formattedDate}</p>
+        </div>
+            <div>
             <p class="genre">${show.genres
 							.map((genre) => `<li>${genre.name}</li>`)
 							.join('')}</p>
+            </div>
         </div>
         <div class="overview">
             <h3>${show.name}</h3>
             <p class="info">${show.overview}</p>
         </div>
         <div class="finance">
-        <h3>Episodes</h3>
-                <p>Last Episode: ${(show.last_episode_to_air).name}</p>
                 <p class="info">Total Seasons: ${show.number_of_seasons}</p>
                 <p class="info">Total Episodes: ${show.number_of_episodes}</p>
         </div>
@@ -330,7 +340,7 @@ const showDetails = async () => {
 
     <div class="crew">
 
-    <p class="production"> Production:
+    <p class="production"> Production
     ${show.production_companies
                     .map((company) => `<li>${company.name}</li>`)
                     .join('')}
