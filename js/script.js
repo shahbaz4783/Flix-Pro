@@ -26,6 +26,7 @@ const fetchAPIdata = async (endpoint) => {
 // Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
     const { results } = await fetchAPIdata('movie/now_playing');
+
     results.forEach((movie) => {
         const cardContainer = document.createElement('div');
 			cardContainer.classList.add('swiper-slide');
@@ -34,7 +35,7 @@ const displayNowPlayingMovies = async () => {
             <div class="movie-overview">
             <h3>${movie.title}</h3>
             <p>Rating: ${movie.vote_average.toFixed(1)}</p>
-            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+            <a class="feature-details" href="movie-detail.html?id=${movie.id}">Details</a>
             </div>
             `;
         document.querySelector('.swiper-wrapper').append(cardContainer);
@@ -44,7 +45,7 @@ const displayNowPlayingMovies = async () => {
 
 
 const initSwiper = () => {
-    const swiper = new Swiper(".swiper", {
+    new Swiper(".swiper", {
       slidesPerView: 1,
       spaceBetween: 30,
       autoplay: {
