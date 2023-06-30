@@ -2,6 +2,7 @@ const global = {
 	currentPage: window.location.pathname,
 };
 
+
 // Fetch Data From TMBD API
 const fetchAPIdata = async (endpoint) => {
 	const API_KEY = '47152db3059591a245fa638f38ce9f76';
@@ -20,50 +21,38 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
-// display now playing in theaters
+
+
+// Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
-	let movieList = [];
-	let movieIndex = 0;
-	let intervalId;
+    const { results } = await fetchAPIdata('movie/now_playing');
+    results.forEach((movie) => {
+        const cardContainer = document.createElement('div');
+			cardContainer.classList.add('swiper-slide');
+			cardContainer.innerHTML = `
+            <img class="backdrop" src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="${movie.title}">
+            <div class="movie-overview">
+            <h3>${movie.title}</h3>
+            <p>Rating: ${movie.vote_average.toFixed(1)}</p>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+            </div>
+            `;
+        document.querySelector('.swiper-wrapper').append(cardContainer);
+        initSwiper();
+    })
+}
 
-	const fetchMovies = async () => {
-		const { results } = await fetchAPIdata('movie/now_playing');
-		movieList = results;
-        
-	};
 
-	const showNextMovie = async () => {
-		const movie = movieList[movieIndex];
-		const backdropPath = movie.backdrop_path;
-		const posterPath = movie.poster_path;
-
-		const backdropUrl = `https://image.tmdb.org/t/p/original${backdropPath}`;
-		const posterUrl = `https://image.tmdb.org/t/p/w500${posterPath}`;
-
-		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('playing-movie-card');
-		cardContainer.innerHTML = `
-        <div class="playing-movie-content">
-            <img class="playing-poster" src="${posterUrl}" alt="${movie.title}">
-            <img class="backdrop" src="${backdropUrl}">
-        </div>
-    `;
-
-		const nowPlayingList = document.querySelector('.now-playing-list');
-		nowPlayingList.innerHTML = '';
-		nowPlayingList.append(cardContainer);
-
-		movieIndex = (movieIndex + 1) % movieList.length;
-
-		clearInterval(intervalId);
-		intervalId = setInterval(showNextMovie, 3000);
-	};
-
-	await fetchMovies();
-	showNextMovie();
-
-	intervalId = setInterval(showNextMovie, 3000);
-};
+const initSwiper = () => {
+    const swiper = new Swiper(".swiper", {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+    });
+  }
 
 
 // display popular movies
@@ -373,7 +362,6 @@ const hideContent = () => {
 }
 
 
-
 // Init App
 const init = () => {
 	switch (global.currentPage) {
@@ -397,9 +385,12 @@ const init = () => {
 		case '/search.html':
             search();
 			break;
+		case '/views/nav.html':
+            search();
+			break;
 		default:
 			break;
 	}
 };
 
-init();
+document.addEventListener('DOMContentLoaded', init);

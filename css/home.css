@@ -23,19 +23,19 @@ section h1 {
 
 /* Now playing Movies */
 .now-playing-list{
-    display: flex;
-}
-
-.playing-movie-card{
-    display: flex;
+    width: 100vw;
+    /* height: 70vh; */
     margin: auto;
 }
 
 .backdrop{
-    width: 70vw;
-    height: 100%;
+    width: 95%;
     opacity: 0.5;
+    object-fit: cover;
+    display: block;
+    margin: auto;
 }
+
 
 
 .playing-poster{
@@ -46,6 +46,21 @@ section h1 {
     display: flex;
 }
 
+.movie-overview{
+    width: 40%;
+    height: auto;
+    position: absolute;
+    bottom: 10rem;
+    left: 10rem;
+}
+
+.movie-overview h3 {
+    font-size: 4rem;
+}
+
+.movie-overview p{
+    margin: 20px 0;
+}
 
 
 
@@ -123,6 +138,14 @@ section h1 {
   }
 
 
+.movie-details {
+    text-decoration: none;
+    color: black;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: rgb(171, 228, 122);
+}
+
 
 
 /* Each Sections */
@@ -141,15 +164,6 @@ section h1 {
     flex-wrap: wrap;
     justify-content: center;
   }
-
-
-
-
-@media screen and (max-width: 768px) {
-    .backdrop{
-        display: none;
-    }
-}
 
 
 /*  Laoding */
@@ -202,4 +216,21 @@ section h1 {
     100% {
       height: 4px;
     }
+  }
+
+
+
+  @media screen and (max-width: 768px) {
+    
+.movie-overview{
+    width: auto;
+    position: absolute;
+    bottom: 2rem;
+    left: 3rem;
+    border: 2px solid white;
+}
+
+.movie-overview h3{
+    font-size: 2.5rem;
+}
   }

@@ -5,6 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Flix Pro</title>
 		<link rel="stylesheet" href="/css/home.css" />
+        <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+      />
 	</head>
 	<body>
 		<header id="navigation"></header>
@@ -18,8 +22,12 @@
 		<main>
             <section class="featured">
                 <article class="now-playing-list">
+                    <div class="swiper">
+                        <div class="swiper-wrapper"></div>
+                    </div>
                 </article>
             </section>
+
             
             <section class="popular">
                 <h1>Popular This Week</h1>
@@ -43,6 +51,7 @@
 		<footer id="footer"></footer>
 
 		<!-- JS Links -->
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 		<script src="/js/script.js"></script>
 		<script src="/js/template.js"></script>
 	</body>
