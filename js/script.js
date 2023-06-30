@@ -7,11 +7,16 @@ const fetchAPIdata = async (endpoint) => {
 	const API_KEY = '47152db3059591a245fa638f38ce9f76';
 	const API_URL = 'https://api.themoviedb.org/3/';
 
+    showLoader();
+    hideContent();
+
 	const resonse = await fetch(
 		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-IND`
 	);
 	const data = await resonse.json();
 
+    hideLoader();
+    showContent();
 	return data;
 };
 
@@ -228,6 +233,7 @@ const movieDetails = async () => {
 	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
 	const cast = credits.cast.slice(0, 5);
 
+
 	const details = document.createElement('div');
 	details.innerHTML = `
     <div class="images">
@@ -359,10 +365,10 @@ const hideLoader = () => {
 }
 
 // Show Hide Movie Page
-const showMovie = () => {
+const showContent = () => {
     document.querySelector('main').style.display = 'block';
 }
-const hideMovie = () => {
+const hideContent = () => {
     document.querySelector('main').style.display = 'none';
 }
 

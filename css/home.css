@@ -153,6 +153,15 @@ section h1 {
 
 
 /*  Laoding */
+
+.loading div{
+    height: 95vh;
+    display: flex;
+    align-items: center;
+  }
+
+
+
 .loader {
     width: 8px;
     height: 40px;
@@ -164,6 +173,7 @@ section h1 {
     color: #f2f2f2;
     animation: animloader 0.3s 0.3s linear infinite alternate;
   }
+
   
   .loader::after,
   .loader::before {
