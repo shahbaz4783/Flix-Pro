@@ -5,9 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flix Pro</title>
     <link rel="stylesheet" href="/css/movie-detail.css">
+    <link rel="stylesheet" href="/css/nav.css">
 </head>
 <body>
-    <header id="navigation"></header>
+
+    <header id="navigation">
+        <div id="logo">
+            <p>FlixPro</p>
+        </div>
+
+        <form action="/search.html" id="search-form">
+            <input type="search" id="search-input" class="input" placeholder="Search movies or TV shows">
+            <button type="submit" class="searchBtn">Search</button>
+        </form>       
+
+        <nav>
+            <ul>
+                <li><a href="/">Movies</a></li>
+                <li><a href="/shows.html">Shows</a></li>
+            </ul>
+        </nav>
+    </header>
+   
 
 <h1>Result</h1>
 

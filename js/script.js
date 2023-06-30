@@ -39,13 +39,13 @@ const displayNowPlayingMovies = async () => {
             </div>
             `;
         document.querySelector('.swiper-wrapper').append(cardContainer);
-        initSwiper();
+        initFeatureSwiper();
     })
 }
 
 
-const initSwiper = () => {
-    new Swiper(".swiper", {
+const initFeatureSwiper = () => {
+    new Swiper(".auto-swiper", {
       slidesPerView: 1,
       spaceBetween: 30,
       autoplay: {
@@ -57,12 +57,13 @@ const initSwiper = () => {
 
 
 // display popular movies
+
 const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
 	let movieCount = 0;
 
 	results.forEach((movie) => {
-		if (movieCount < 14) {
+		if (movieCount < 20) {
 			const releaseDate = new Date(movie.release_date);
 			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
 				'default',
@@ -70,7 +71,7 @@ const displayPopularMovies = async () => {
 			)} ${releaseDate.getFullYear()}`;
 
 			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('movie-card');
+			cardContainer.classList.add('swiper-slide');
 			cardContainer.innerHTML = `
 
             <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
@@ -79,13 +80,38 @@ const displayPopularMovies = async () => {
             <p class="movie-description">Released: ${formattedDate}</p>
             <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
         </div>
+        
 
         `;
-			document.querySelector('.popular-list').append(cardContainer);
+			document.querySelector('.popular-list .swiper-wrapper').append(cardContainer);
 			movieCount++;
 		}
+        initPopularSwiper();
 	});
 };
+
+const initPopularSwiper = () => {
+    new Swiper(".popular-list .swiper", {
+      slidesPerView: 6,
+      loop: true,
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+      breakpoints:{
+        300: {
+            slidesPerView: 3,
+        },
+        768: {
+            slidesPerView: 4,
+        },
+
+        1000: {
+            slidesPerView: 5,
+        }
+      }
+    });
+  }
 
 
 

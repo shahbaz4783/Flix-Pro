@@ -5,33 +5,56 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Flix Pro</title>
 		<link rel="stylesheet" href="/css/home.css" />
+        <link rel="stylesheet" href="/css/nav.css">
+
         <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
       />
 	</head>
 	<body>
-		<header id="navigation"></header>
-
+        <header id="navigation">
+            <div id="logo">
+                <p>FlixPro</p>
+            </div>
+    
+            <form action="/search.html" id="search-form">
+                <input type="search" id="search-input" class="input" placeholder="Search movies or TV shows">
+                <button type="submit" class="searchBtn">Search</button>
+            </form>       
+    
+            <nav>
+                <ul>
+                    <li><a href="/">Movies</a></li>
+                    <li><a href="/shows.html">Shows</a></li>
+                </ul>
+            </nav>
+        </header>
+        
         <section class="loading" style="display: none;">
             <div>
                 <div class="loader"></div>
             </div>
         </section>
-
+        
 		<main>
             <section class="featured">
                 <article class="now-playing-list">
-                    <div class="swiper">
+                    <div class="auto-swiper">
                         <div class="swiper-wrapper"></div>
                     </div>
                 </article>
             </section>
 
-            
+
             <section class="popular">
                 <h1>Popular This Week</h1>
                 <article class="popular-list">
+                    <div class="swiper">
+                        <div class="swiper-wrapper"></div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
                 </article>
             </section>
 
