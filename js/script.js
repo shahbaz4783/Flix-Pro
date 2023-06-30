@@ -45,7 +45,7 @@ const displayNowPlayingMovies = async () => {
 
 
 const initFeatureSwiper = () => {
-    new Swiper(".auto-swiper", {
+    new Swiper(".now-playing-list .swiper", {
       slidesPerView: 1,
       spaceBetween: 30,
       autoplay: {
@@ -389,6 +389,7 @@ const hideContent = () => {
 }
 
 
+
 // Init App
 const init = () => {
 	switch (global.currentPage) {
@@ -421,3 +422,18 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', init);
+
+
+// header Background Color Change
+const header = document.querySelector('header');
+const swipeThreshold = window.innerHeight * 0.2;
+
+const changeBg = () => {
+    if (window.scrollY > swipeThreshold) {
+      header.classList.add('background')
+    } else {
+      header.classList.remove('background');
+    }
+  }
+window.addEventListener('scroll', changeBg);
+

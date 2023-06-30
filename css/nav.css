@@ -1,10 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 header {
     display: flex;
     height: 8vh;
     align-items: center;
     justify-content: space-evenly;
     gap: 20px;
+    position: fixed;
+    z-index: 10;
+    width: 100vw;
+    transition: background-color 0.3s ease;
+  background-color: transparent;
 }
+
+    .background {
+    background-color: #5ca2e9;
+  }
 
 
 nav ul {
