@@ -130,7 +130,6 @@ const initPopularSwiper = () => {
     new Swiper(".popular-list .swiper", {
       slidesPerView: 6,
       spaceBetween: 20,
-      loop: true,
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
@@ -138,22 +137,28 @@ const initPopularSwiper = () => {
       breakpoints:{
         0: {
             slidesPerView: 1,
+            spaceBetween: 0,
         },
         200: {
             slidesPerView: 2,
+            spaceBetween: 5,
         },
         300: {
             slidesPerView: 3,
+            spaceBetween: 8,
         },
         600: {
             slidesPerView: 4,
+            spaceBetween: 10,
         },
         768: {
             slidesPerView: 5,
+            spaceBetween: 15,
         },
 
         1000: {
             slidesPerView: 6,
+            spaceBetween: 20,
         }
       }
     });
@@ -199,32 +204,37 @@ const initActionSwiper = () => {
     new Swiper(".action-list .swiper", {
         slidesPerView: 6,
         spaceBetween: 20,
-        loop: true,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         },
         breakpoints:{
-          0: {
-              slidesPerView: 1,
-          },
-          200: {
-              slidesPerView: 2,
-          },
-          300: {
-              slidesPerView: 3,
-          },
-          600: {
-              slidesPerView: 4,
-          },
-          768: {
-              slidesPerView: 5,
-          },
-  
-          1000: {
-              slidesPerView: 6,
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            200: {
+                slidesPerView: 2,
+                spaceBetween: 5,
+            },
+            300: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+            },
+            600: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+            768: {
+                slidesPerView: 5,
+                spaceBetween: 15,
+            },
+    
+            1000: {
+                slidesPerView: 6,
+                spaceBetween: 20,
+            }
           }
-        }
     });
   }
 
@@ -264,32 +274,37 @@ const initTopRatedSwiper = () => {
     new Swiper(".top-rated-list .swiper", {
         slidesPerView: 6,
         spaceBetween: 20,
-        loop: true,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         },
         breakpoints:{
-          0: {
-              slidesPerView: 1,
-          },
-          200: {
-              slidesPerView: 2,
-          },
-          300: {
-              slidesPerView: 3,
-          },
-          600: {
-              slidesPerView: 4,
-          },
-          768: {
-              slidesPerView: 5,
-          },
-  
-          1000: {
-              slidesPerView: 6,
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            200: {
+                slidesPerView: 2,
+                spaceBetween: 5,
+            },
+            300: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+            },
+            600: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+            768: {
+                slidesPerView: 5,
+                spaceBetween: 15,
+            },
+    
+            1000: {
+                slidesPerView: 6,
+                spaceBetween: 20,
+            }
           }
-        }
     });
   }
 
@@ -328,32 +343,37 @@ const initUpcomingSwiper = () => {
     new Swiper(".upcoming-list .swiper", {
         slidesPerView: 6,
         spaceBetween: 20,
-        loop: true,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
         },
         breakpoints:{
-          0: {
-              slidesPerView: 1,
-          },
-          200: {
-              slidesPerView: 2,
-          },
-          300: {
-              slidesPerView: 3,
-          },
-          600: {
-              slidesPerView: 4,
-          },
-          768: {
-              slidesPerView: 5,
-          },
-  
-          1000: {
-              slidesPerView: 6,
+            0: {
+                slidesPerView: 1,
+                spaceBetween: 0,
+            },
+            200: {
+                slidesPerView: 2,
+                spaceBetween: 5,
+            },
+            300: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+            },
+            600: {
+                slidesPerView: 4,
+                spaceBetween: 10,
+            },
+            768: {
+                slidesPerView: 5,
+                spaceBetween: 15,
+            },
+    
+            1000: {
+                slidesPerView: 6,
+                spaceBetween: 20,
+            }
           }
-        }
     });
   }
 
