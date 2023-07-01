@@ -747,21 +747,23 @@ const search = async () => {
 
 const displaySearchResult = (results) => {
 	results.forEach((result) => {
-		const releaseDate = new Date(result.release_date);
-		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-			'default',
-			{ month: 'short' }
-		)} ${releaseDate.getFullYear()}`;
+
+        const posterPath = result.poster_path ? `https://image.tmdb.org/t/p/w500${result.poster_path}` : `<img
+        src="../assets/no-image.jpg" alt="${movie.title}"/>`;
+
+        
+
 
 		const cardContainer = document.createElement('div');
 		cardContainer.classList.add('result-container');
 		cardContainer.innerHTML = `
 
-            <img class="poster" src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${result.title}">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${posterPath}" alt="poster">
             <div class="movie-content">
-            <span class="movie-title">${result.title}</span>
-            <p class="movie-description">Released: ${formattedDate}</p>
-            <a class="movie-details" href="movie-detail.html?id=${result.id}">Details</a>
+            <span class="title">${result.media_type === 'movie' ? `${result.title}` : `${result.name}`}</span>
+            <p class="year">${result.release_date ? new Date(result.release_date).getFullYear() : `${new Date(result.first_air_date).getFullYear()}`}</p>
+            <a class="details" href="${result.media_type === 'movie' ? 'movie-detail.html' : 'show-detail.html'}?id=${result.id}">Details</a>
+
         </div>
 
         `;

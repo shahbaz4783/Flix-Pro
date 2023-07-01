@@ -59,7 +59,7 @@ nav a {
     align-items: center;
    }
    
-   #search-input {
+   #search-term {
     width: 100%;
     height: 40px;
     line-height: 28px;
@@ -82,8 +82,9 @@ nav a {
     box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
    }
 
-   .searchBtn{
+   .btn{
     width: 40%;
     height: 40px;
     cursor: pointer;
+    color: black;
    }
