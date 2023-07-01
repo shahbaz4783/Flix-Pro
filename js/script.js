@@ -382,51 +382,48 @@ const initUpcomingSwiper = () => {
 
 // Trending Shows
 const displayTrendingShows = async () => {
-	const timeWindow = 'week';
-	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
-	const genreResponse = await fetchAPIdata('genre/tv/list');
-	const genres = genreResponse.genres;
-
-	results.forEach((show) => {
-		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('swiper-slide');
-		const genreNames = show.genre_ids
-			.map((genreId) => {
-				const genre = genres.find((genre) => genre.id === genreId);
-				return genre ? genre.name : '';
-			})
-			.slice(0, 3);
-		cardContainer.innerHTML = `
+    const timeWindow = 'week';
+    const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
+    const genreResponse = await fetchAPIdata('genre/tv/list');
+    const genres = genreResponse.genres;
+  
+    results.forEach((show) => {
+      const cardContainer = document.createElement('div');
+      cardContainer.classList.add('swiper-slide');
+      const genreNames = show.genre_ids
+        .map((genreId) => {
+          const genre = genres.find((genre) => genre.id === genreId);
+          return genre ? genre.name : '';
+        })
+        .slice(0, 3);
+      cardContainer.innerHTML = `
         <img class="backdrop" src="https://image.tmdb.org/t/p/original${
-					show.backdrop_path
-				}" alt="${show.name}">
+          show.backdrop_path
+        }" alt="${show.name}">
         <div class="movie-overview">
           <h3>${show.name}</h3>
           <p>Rating: ${show.vote_average.toFixed(1)}</p>
           <p>${genreNames.join(', ')}</p>
-          <a class="feature-details" href="movie-detail.html?id=${
-						show.id
-					}">Details</a>
+          <a class="feature-details" href="show-detail.html?id=${show.id}">Details</a>
+            </div>
         </div>
       `;
-		document
-			.querySelector('.now-playing-show-list .swiper-wrapper')
-			.append(cardContainer);
-		initTrendindShowSwiper();
-	});
-};
-
-const initTrendindShowSwiper = () => {
-	new Swiper('.now-playing-show-list .swiper', {
-		slidesPerView: 1,
-		spaceBetween: 30,
-        loop: true,
-		autoplay: {
-			delay: 3000,
-			disableOnInteraction: false,
-		},
-	});
-};
+      document.querySelector('.featured .swiper-wrapper').append(cardContainer);
+      initTrendingShowSwiper();
+    });
+  };
+  
+  const initTrendingShowSwiper = () => {
+    new Swiper('.now-playing-show-list .swiper', {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+    });
+  };
+  
 
 // display popular Shows
 const displayPopularShows = async () => {
@@ -456,7 +453,7 @@ const displayPopularShows = async () => {
 				.append(cardContainer);
 			showCount++;
 		}
-		initPopularShowSwiper();
+        initPopularShowSwiper();
 	});
 };
 
@@ -497,6 +494,7 @@ const initPopularShowSwiper = () => {
 		},
 	});
 };
+
 
 // display top rated Shows
 const displayTopRatedShows = async () => {
