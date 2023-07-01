@@ -17,11 +17,11 @@ const hideContent = () => {
 // Global Pages
 const global = {
 	currentPage: window.location.pathname,
-    search: {
-        term: '',
-        page: 1,
-        totalPage: 1
-    }
+	search: {
+		term: '',
+		page: 1,
+		totalPage: 1,
+	},
 };
 
 // Fetch Data From TMBD API
@@ -29,19 +29,18 @@ const fetchAPIdata = async (endpoint) => {
 	const API_KEY = '47152db3059591a245fa638f38ce9f76';
 	const API_URL = 'https://api.themoviedb.org/3/';
 
-	showLoader();
-	hideContent();
+	// showLoader();
+	// hideContent();
 
 	const resonse = await fetch(
 		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
 	);
 	const data = await resonse.json();
 
-	hideLoader();
-	showContent();
+	// hideLoader();
+	// showContent();
 	return data;
 };
-
 
 // Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
@@ -381,48 +380,49 @@ const initUpcomingSwiper = () => {
 
 // Trending Shows
 const displayTrendingShows = async () => {
-    const timeWindow = 'week';
-    const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
-    const genreResponse = await fetchAPIdata('genre/tv/list');
-    const genres = genreResponse.genres;
-  
-    results.forEach((show) => {
-      const cardContainer = document.createElement('div');
-      cardContainer.classList.add('swiper-slide');
-      const genreNames = show.genre_ids
-        .map((genreId) => {
-          const genre = genres.find((genre) => genre.id === genreId);
-          return genre ? genre.name : '';
-        })
-        .slice(0, 3);
-      cardContainer.innerHTML = `
+	const timeWindow = 'week';
+	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
+	const genreResponse = await fetchAPIdata('genre/tv/list');
+	const genres = genreResponse.genres;
+
+	results.forEach((show) => {
+		const cardContainer = document.createElement('div');
+		cardContainer.classList.add('swiper-slide');
+		const genreNames = show.genre_ids
+			.map((genreId) => {
+				const genre = genres.find((genre) => genre.id === genreId);
+				return genre ? genre.name : '';
+			})
+			.slice(0, 3);
+		cardContainer.innerHTML = `
         <img class="backdrop" src="https://image.tmdb.org/t/p/original${
-          show.backdrop_path
-        }" alt="${show.name}">
+					show.backdrop_path
+				}" alt="${show.name}">
         <div class="movie-overview">
           <h3>${show.name}</h3>
           <p>Rating: ${show.vote_average.toFixed(1)}</p>
           <p>${genreNames.join(', ')}</p>
-          <a class="feature-details" href="show-detail.html?id=${show.id}">Details</a>
+          <a class="feature-details" href="show-detail.html?id=${
+						show.id
+					}">Details</a>
             </div>
         </div>
       `;
-      document.querySelector('.featured .swiper-wrapper').append(cardContainer);
-      initTrendingShowSwiper();
-    });
-  };
-  
-  const initTrendingShowSwiper = () => {
-    new Swiper('.now-playing-show-list .swiper', {
-      slidesPerView: 1,
-      spaceBetween: 30,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-    });
-  };
-  
+		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
+		initTrendingShowSwiper();
+	});
+};
+
+const initTrendingShowSwiper = () => {
+	new Swiper('.now-playing-show-list .swiper', {
+		slidesPerView: 1,
+		spaceBetween: 30,
+		autoplay: {
+			delay: 3000,
+			disableOnInteraction: false,
+		},
+	});
+};
 
 // display popular Shows
 const displayPopularShows = async () => {
@@ -452,7 +452,7 @@ const displayPopularShows = async () => {
 				.append(cardContainer);
 			showCount++;
 		}
-        initPopularShowSwiper();
+		initPopularShowSwiper();
 	});
 };
 
@@ -493,7 +493,6 @@ const initPopularShowSwiper = () => {
 		},
 	});
 };
-
 
 // display top rated Shows
 const displayTopRatedShows = async () => {
@@ -705,7 +704,6 @@ const showDetails = async () => {
 	document.querySelector('.display-details').append(details);
 };
 
-
 // Search Movie and Shows Function
 
 const searchAPIdata = async () => {
@@ -726,22 +724,50 @@ const searchAPIdata = async () => {
 	return data;
 };
 
-
 const search = async () => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
 
-     global.search.term = urlParams.get('search-term');
+	global.search.term = urlParams.get('search-term');
 
-     if (global.search.term !== '' && global.search.term !== null){
-        const result = await searchAPIdata();
-        console.log(result); 
-     } else {
-        alert('Please Write Something in Box')
-     }
-}
+	if (global.search.term !== '' && global.search.term !== null) {
+		const { results } = await searchAPIdata();
 
+		if (results.length === 0) {
+			alert('No Result Found');
+		}
 
+		document.querySelector('#search-term').value = '';
+
+		displaySearchResult(results);
+	} else {
+		alert('Please Write Something in Box');
+	}
+};
+
+const displaySearchResult = (results) => {
+	results.forEach((result) => {
+		const releaseDate = new Date(result.release_date);
+		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+			'default',
+			{ month: 'short' }
+		)} ${releaseDate.getFullYear()}`;
+
+		const cardContainer = document.createElement('div');
+		cardContainer.classList.add('result-container');
+		cardContainer.innerHTML = `
+
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${result.poster_path}" alt="${result.title}">
+            <div class="movie-content">
+            <span class="movie-title">${result.title}</span>
+            <p class="movie-description">Released: ${formattedDate}</p>
+            <a class="movie-details" href="movie-detail.html?id=${result.id}">Details</a>
+        </div>
+
+        `;
+		document.querySelector('.search-list').append(cardContainer);
+	});
+};
 
 // Init App
 const init = () => {
