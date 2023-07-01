@@ -1,3 +1,21 @@
+// Show Hide Loading
+const showLoader = () => {
+    document.querySelector('.loading').style.display = 'block';
+}
+const hideLoader = () => {
+    document.querySelector('.loading').style.display = 'none';
+}
+
+// Show Hide Movie Page
+const showContent = () => {
+    document.querySelector('main').style.display = 'block';
+}
+const hideContent = () => {
+    document.querySelector('main').style.display = 'none';
+}
+
+
+// Global Pages
 const global = {
 	currentPage: window.location.pathname,
 };
@@ -21,27 +39,45 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
+const fetchGenres = async () => {
+    const { genres } = await fetchAPIdata('genre/movie/list');
+    console.log(genres);
+  };
+  
+  fetchGenres();
+
 
 
 // Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
     const { results } = await fetchAPIdata('movie/now_playing');
-
+    const genreResponse = await fetchAPIdata('genre/movie/list');
+    const genres = genreResponse.genres;
+  
     results.forEach((movie) => {
-        const cardContainer = document.createElement('div');
-			cardContainer.classList.add('swiper-slide');
-			cardContainer.innerHTML = `
-            <img class="backdrop" src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="${movie.title}">
-            <div class="movie-overview">
-            <h3>${movie.title}</h3>
-            <p>Rating: ${movie.vote_average.toFixed(1)}</p>
-            <a class="feature-details" href="movie-detail.html?id=${movie.id}">Details</a>
-            </div>
-            `;
-        document.querySelector('.swiper-wrapper').append(cardContainer);
-        initFeatureSwiper();
-    })
-}
+      const cardContainer = document.createElement('div');
+      cardContainer.classList.add('swiper-slide');
+      const genreNames = movie.genre_ids
+        .map((genreId) => {
+          const genre = genres.find((genre) => genre.id === genreId);
+          return genre ? genre.name : '';
+        })
+        .slice(0, 3); // Limit the genres to a maximum of three
+      cardContainer.innerHTML = `
+        <img class="backdrop" src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" alt="${movie.title}">
+        <div class="movie-overview">
+          <h3>${movie.title}</h3>
+          <p>Rating: ${movie.vote_average.toFixed(1)}</p>
+          <p>${genreNames.join(', ')}</p>
+          <a class="feature-details" href="movie-detail.html?id=${movie.id}">Details</a>
+        </div>
+      `;
+      document.querySelector('.swiper-wrapper').append(cardContainer);
+      initFeatureSwiper();
+    });
+  };
+  
+  
 
 
 const initFeatureSwiper = () => {
@@ -93,23 +129,102 @@ const displayPopularMovies = async () => {
 const initPopularSwiper = () => {
     new Swiper(".popular-list .swiper", {
       slidesPerView: 6,
+      spaceBetween: 20,
       loop: true,
       navigation: {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
       },
       breakpoints:{
+        0: {
+            slidesPerView: 1,
+        },
+        200: {
+            slidesPerView: 2,
+        },
         300: {
             slidesPerView: 3,
         },
-        768: {
+        600: {
             slidesPerView: 4,
+        },
+        768: {
+            slidesPerView: 5,
         },
 
         1000: {
-            slidesPerView: 5,
+            slidesPerView: 6,
         }
       }
+    });
+  }
+
+// display Action movies
+const displayActionMovies = async () => {
+    const { genres } = await fetchAPIdata('genre/movie/list');
+    const actionGenre = genres.find((genre) => genre.name === 'Action');
+  
+    if (actionGenre) {
+      const { results } = await fetchAPIdata('discover/movie', {
+        // with_genres: actionGenre.id,
+      });
+  
+      const actionMovies = results.slice(0, 20);
+  
+      actionMovies.forEach((movie) => {
+        const releaseDate = new Date(movie.release_date);
+        const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString('default', {
+          month: 'short',
+        })} ${releaseDate.getFullYear()}`;
+  
+        const cardContainer = document.createElement('div');
+        cardContainer.classList.add('swiper-slide');
+        cardContainer.innerHTML = `
+          <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+          <div class="movie-content">
+            <span class="movie-title">${movie.title}</span>
+            <p class="movie-description">Released: ${formattedDate}</p>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+          </div>
+        `;
+        document.querySelector('.action-list .swiper-wrapper').append(cardContainer);
+      });
+  
+      initActionSwiper();
+    }
+  };
+  
+      
+const initActionSwiper = () => {
+    new Swiper(".action-list .swiper", {
+        slidesPerView: 6,
+        spaceBetween: 20,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints:{
+          0: {
+              slidesPerView: 1,
+          },
+          200: {
+              slidesPerView: 2,
+          },
+          300: {
+              slidesPerView: 3,
+          },
+          600: {
+              slidesPerView: 4,
+          },
+          768: {
+              slidesPerView: 5,
+          },
+  
+          1000: {
+              slidesPerView: 6,
+          }
+        }
     });
   }
 
@@ -129,7 +244,7 @@ const displayTopRatedMovies = async () => {
 			)} ${releaseDate.getFullYear()}`;
 
 			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('movie-card');
+			cardContainer.classList.add('swiper-slide');
 			cardContainer.innerHTML = `
         <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
         <div class="movie-content">
@@ -138,11 +253,45 @@ const displayTopRatedMovies = async () => {
             <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
         </div>
         `;
-			document.querySelector('.top-rated-list').append(cardContainer);
+			document.querySelector('.top-rated-list .swiper-wrapper').append(cardContainer);
 			movieCount++;
 		}
+        initTopRatedSwiper();
 	});
 };
+
+const initTopRatedSwiper = () => {
+    new Swiper(".top-rated-list .swiper", {
+        slidesPerView: 6,
+        spaceBetween: 20,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints:{
+          0: {
+              slidesPerView: 1,
+          },
+          200: {
+              slidesPerView: 2,
+          },
+          300: {
+              slidesPerView: 3,
+          },
+          600: {
+              slidesPerView: 4,
+          },
+          768: {
+              slidesPerView: 5,
+          },
+  
+          1000: {
+              slidesPerView: 6,
+          }
+        }
+    });
+  }
 
 
 // display upcoming movies
@@ -159,7 +308,7 @@ const displayUpcomingMovies = async () => {
 			)} ${releaseDate.getFullYear()}`;
 
 			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('movie-card');
+			cardContainer.classList.add('swiper-slide');
 			cardContainer.innerHTML = `
         <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
         <div class="movie-content">
@@ -168,11 +317,46 @@ const displayUpcomingMovies = async () => {
             <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
         </div>
         `;
-			document.querySelector('.upcoming-list').append(cardContainer);
+			document.querySelector('.upcoming-list .swiper-wrapper').append(cardContainer);
 			movieCount++;
 		}
+        initUpcomingSwiper()
 	});
 };
+
+const initUpcomingSwiper = () => {
+    new Swiper(".upcoming-list .swiper", {
+        slidesPerView: 6,
+        spaceBetween: 20,
+        loop: true,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints:{
+          0: {
+              slidesPerView: 1,
+          },
+          200: {
+              slidesPerView: 2,
+          },
+          300: {
+              slidesPerView: 3,
+          },
+          600: {
+              slidesPerView: 4,
+          },
+          768: {
+              slidesPerView: 5,
+          },
+  
+          1000: {
+              slidesPerView: 6,
+          }
+        }
+    });
+  }
+
 
 
 // display popular Shows
@@ -372,21 +556,6 @@ const showDetails = async () => {
 	document.querySelector('.display-details').append(details);
 };
 
-// Show Hide Loading
-const showLoader = () => {
-    document.querySelector('.loading').style.display = 'block';
-}
-const hideLoader = () => {
-    document.querySelector('.loading').style.display = 'none';
-}
-
-// Show Hide Movie Page
-const showContent = () => {
-    document.querySelector('main').style.display = 'block';
-}
-const hideContent = () => {
-    document.querySelector('main').style.display = 'none';
-}
 
 
 
@@ -396,6 +565,7 @@ const init = () => {
 		case '/':
 		case '/index.html':
 			displayNowPlayingMovies();
+            displayActionMovies();
 			displayTopRatedMovies();
 			displayPopularMovies();
 			displayUpcomingMovies();

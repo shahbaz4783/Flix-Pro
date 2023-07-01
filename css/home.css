@@ -73,15 +73,20 @@ section h1 {
 
 
 /* Movie Box */
-.movie-card, .swiper-slide {
+.swiper-slide {
     position: relative;
-    height: 250px;
+    /* height: 250px; */
     overflow: hidden;
     /* border-radius: 20px; */
     display: flex;
     justify-content: center;
     /* border: 2px solid #fafafa; */
+    /* margin: 20px; */
+    /* height: 50%; */
   }
+
+
+
   
   .movie-title {
     font-weight: bold;
@@ -128,14 +133,6 @@ section h1 {
     color: gray;
   }
   
-  .movie-card:hover .movie-content {
-    transform: translateY(0);
-  }
-  
-  .movie-card:hover .movie-description {
-    opacity: 1;
-    transition-delay: .25s;
-  }
 
   .swiper-slide:hover .movie-content {
     transform: translateY(0);
@@ -166,20 +163,11 @@ section h1 {
 }
 
 
-/* Popular List */
-
-.popular-list .swiper-slide{
-    margin: 20px;
-    
-}
-
-
 
 /* Each Sections */
 
 .top-rated, .popular, .upcoming{
-    padding: 10px;
-    border-bottom: 2px solid white;
+    /* padding: 10px; */
     margin: 20px auto;
 }
 
