@@ -17,6 +17,11 @@ const hideContent = () => {
 // Global Pages
 const global = {
 	currentPage: window.location.pathname,
+    search: {
+        term: '',
+        page: 1,
+        totalPage: 1
+    }
 };
 
 // Fetch Data From TMBD API
@@ -28,7 +33,7 @@ const fetchAPIdata = async (endpoint) => {
 	hideContent();
 
 	const resonse = await fetch(
-		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-IND`
+		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
 	);
 	const data = await resonse.json();
 
@@ -37,12 +42,6 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
-const fetchGenres = async () => {
-	const { genres } = await fetchAPIdata('genre/movie/list');
-	console.log(genres);
-};
-
-fetchGenres();
 
 // Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
@@ -706,6 +705,44 @@ const showDetails = async () => {
 	document.querySelector('.display-details').append(details);
 };
 
+
+// Search Movie and Shows Function
+
+const searchAPIdata = async () => {
+	const API_KEY = '47152db3059591a245fa638f38ce9f76';
+	const API_URL = 'https://api.themoviedb.org/3/';
+
+	// showLoader();
+	// hideContent();
+
+	const resonse = await fetch(
+		`${API_URL}search/multi?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+	);
+
+	const data = await resonse.json();
+
+	// hideLoader();
+	// showContent();
+	return data;
+};
+
+
+const search = async () => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+
+     global.search.term = urlParams.get('search-term');
+
+     if (global.search.term !== '' && global.search.term !== null){
+        const result = await searchAPIdata();
+        console.log(result); 
+     } else {
+        alert('Please Write Something in Box')
+     }
+}
+
+
+
 // Init App
 const init = () => {
 	switch (global.currentPage) {
@@ -729,9 +766,6 @@ const init = () => {
 			showDetails();
 			break;
 		case '/search.html':
-			search();
-			break;
-		case '/views/nav.html':
 			search();
 			break;
 		default:
