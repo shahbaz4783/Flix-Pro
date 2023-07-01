@@ -8,17 +8,29 @@ header {
     display: flex;
     height: 8vh;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-between;
     gap: 20px;
     position: fixed;
     z-index: 10;
     width: 100vw;
-    transition: background-color 0.3s ease;
-  background-color: transparent;
+    transition: background-color 0.4s ease;
+    background-color: transparent;
+    margin-right: 20px;
 }
 
     .background {
     background-color: #181e27;
+  }
+
+  #logo p{
+    color: red;
+    font-size: 2rem;
+    margin-left: 2rem;
+    font-weight: bolder;
+  }
+
+  header div:last-child {
+    display: flex;
   }
 
 

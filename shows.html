@@ -10,23 +10,28 @@
 
 </head>
 <body>
-    <!-- <header id="navigation"></header> -->
     <header id="navigation">
         <div id="logo">
             <p>FlixPro</p>
         </div>
+        <div>
+            <form action="/search.html" id="search-form">
+                <input
+                    type="search"
+                    id="search-input"
+                    class="input"
+                    placeholder="Search movies or TV shows"
+                />
+                <button type="submit" class="searchBtn">Search</button>
+            </form>
 
-        <form action="/search.html" id="search-form">
-            <input type="search" id="search-input" class="input" placeholder="Search movies or TV shows">
-            <button type="submit" class="searchBtn">Search</button>
-        </form>       
-
-        <nav>
-            <ul>
-                <li><a href="/">Movies</a></li>
-                <li><a href="/shows.html">Shows</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <ul>
+                    <li><a href="/">Movies</a></li>
+                    <li><a href="/shows.html">Shows</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <section class="loading" style="display: none;">
@@ -36,15 +41,34 @@
     </section>
 
     <main>
+        <section class="featured">
+            <article class="now-playing-show-list">
+                <div class="swiper">
+                    <div class="swiper-wrapper"></div>
+                </div>
+            </article>
+        </section>
+
         <section class="popular-shows">
             <h1>Popular Shows</h1>
             <article class="popular-shows-list">
+                <div class="swiper">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
             </article>
         </section>
+
     
     <section class="top-rated-shows">
         <h1>Top Rated Shows</h1>
         <article class="top-rated-shows-list">
+            <div class="swiper">
+                <div class="swiper-wrapper"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
         </article>
     </section>
     

@@ -15,18 +15,24 @@
         <div id="logo">
             <p>FlixPro</p>
         </div>
+        <div>
+            <form action="/search.html" id="search-form">
+                <input
+                    type="search"
+                    id="search-input"
+                    class="input"
+                    placeholder="Search movies or TV shows"
+                />
+                <button type="submit" class="searchBtn">Search</button>
+            </form>
 
-        <form action="/search.html" id="search-form">
-            <input type="search" id="search-input" class="input" placeholder="Search movies or TV shows">
-            <button type="submit" class="searchBtn">Search</button>
-        </form>       
-
-        <nav>
-            <ul>
-                <li><a href="/">Movies</a></li>
-                <li><a href="/shows.html">Shows</a></li>
-            </ul>
-        </nav>
+            <nav>
+                <ul>
+                    <li><a href="/">Movies</a></li>
+                    <li><a href="/shows.html">Shows</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <section class="loading" style="display: none;">
