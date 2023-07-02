@@ -689,7 +689,7 @@ const movieDetails = async () => {
         </div>
         <div class="crew">
 		<div class="director"> <h3>Director</h3>
-		<img src="${credits.crew.find((member) => member.job === 'Director').profile_path ? `https://image.tmdb.org/t/p/w200${credits.crew.find((member) => member.job === 'Director').profile_path}` : 'path_to_default_director_image.jpg'}" alt="Director Image">		
+		<img src="${credits.crew.find((member) => member.job === 'Director').profile_path ? `https://image.tmdb.org/t/p/w200${credits.crew.find((member) => member.job === 'Director').profile_path}` : '../assets/no-people'}" alt="Director Image">		
 		<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
          <div>   
 		 
@@ -699,7 +699,7 @@ const movieDetails = async () => {
 			 ${movie.production_companies
 				 .map((company) => `
 					 <li class="lists">
-					 <img class="production-img" src="${company.logo_path ? `https://image.tmdb.org/t/p/w200${company.logo_path}` : '../assets/no-production-img.png'}" >
+					 <img class="production-img" src="${company.logo_path ? `https://image.tmdb.org/t/p/w200${company.logo_path}` : '../assets/no-production.png'}" >
 					<p> ${company.name} </p>
 					 </li>
 				 `)
@@ -712,8 +712,8 @@ const movieDetails = async () => {
       <h3>Actors</h3>
       <ul>
         ${cast.map((castMember) => `
-		<div>
-		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : 'path_to_default_image.jpg'}" alt="${castMember.name}">
+		<div class="cast-img">
+		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : '../assets/no-people'}" alt="${castMember.name}">
 		<li>${castMember.name}</li>
 		</div>
 		`).join('')}
