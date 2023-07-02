@@ -42,6 +42,53 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
+// Display Trending Movies
+
+const displayTrendingMovies = async () => {
+	const timeWindow = 'day';
+	const { results } = await fetchAPIdata(`trending/movie/${timeWindow}`);
+	const genreResponse = await fetchAPIdata('genre/movie/list');
+	const genres = genreResponse.genres;
+
+	results.forEach((show) => {
+		const cardContainer = document.createElement('div');
+		cardContainer.classList.add('swiper-slide');
+		const genreNames = show.genre_ids
+			.map((genreId) => {
+				const genre = genres.find((genre) => genre.id === genreId);
+				return genre ? genre.name : '';
+			})
+			.slice(0, 3);
+		cardContainer.innerHTML = `
+        <img class="backdrop" src="https://image.tmdb.org/t/p/original${
+					show.backdrop_path
+				}" alt="${show.name}">
+        <div class="movie-overview">
+          <h3>${show.title}</h3>
+          <p>Rating: ${show.vote_average.toFixed(1)}</p>
+          <p>${genreNames.join(', ')}</p>
+          <a class="feature-details" href="movie-detail.html?id=${
+						show.id
+					}">Details</a>
+            </div>
+        </div>
+      `;
+		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
+		initTrendingMovieSwiper();
+	});
+};
+
+const initTrendingMovieSwiper = () => {
+	new Swiper('.trending-list .swiper', {
+		slidesPerView: 1,
+		spaceBetween: 30,
+		autoplay: {
+			delay: 3000,
+			disableOnInteraction: false,
+		},
+	});
+};
+
 // Now Playing in Theaters
 const displayNowPlayingMovies = async () => {
 	const { results } = await fetchAPIdata('movie/now_playing');
@@ -56,13 +103,13 @@ const displayNowPlayingMovies = async () => {
 				const genre = genres.find((genre) => genre.id === genreId);
 				return genre ? genre.name : '';
 			})
-			.slice(0, 3); // Limit the genres to a maximum of three
+			.slice(0, 3);
 		cardContainer.innerHTML = `
-        <img class="backdrop" src="https://image.tmdb.org/t/p/original${
-					movie.backdrop_path
+        <img class="poster" src="https://image.tmdb.org/t/p/original${
+					movie.poster_path
 				}" alt="${movie.title}">
-        <div class="movie-overview">
-          <h3>${movie.title}</h3>
+        <div class="movie-content">
+          <h3 class="movie-title">${movie.title}</h3>
           <p>Rating: ${movie.vote_average.toFixed(1)}</p>
           <p>${genreNames.join(', ')}</p>
           <a class="feature-details" href="movie-detail.html?id=${
@@ -70,18 +117,47 @@ const displayNowPlayingMovies = async () => {
 					}">Details</a>
         </div>
       `;
-		document.querySelector('.swiper-wrapper').append(cardContainer);
+		document
+			.querySelector('.now-playing-list .swiper-wrapper')
+			.append(cardContainer);
 		initFeatureSwiper();
 	});
 };
 
 const initFeatureSwiper = () => {
 	new Swiper('.now-playing-list .swiper', {
-		slidesPerView: 1,
-		spaceBetween: 30,
-		autoplay: {
-			delay: 3000,
-			disableOnInteraction: false,
+		slidesPerView: 6,
+		spaceBetween: 20,
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+		breakpoints: {
+			0: {
+				slidesPerView: 1,
+				spaceBetween: 0,
+			},
+			200: {
+				slidesPerView: 2,
+				spaceBetween: 5,
+			},
+			300: {
+				slidesPerView: 3,
+				spaceBetween: 8,
+			},
+			600: {
+				slidesPerView: 4,
+				spaceBetween: 10,
+			},
+			768: {
+				slidesPerView: 5,
+				spaceBetween: 15,
+			},
+
+			1000: {
+				slidesPerView: 6,
+				spaceBetween: 20,
+			},
 		},
 	});
 };
@@ -378,9 +454,9 @@ const initUpcomingSwiper = () => {
 	});
 };
 
-// Trending Shows
+// Display Trending Shows
 const displayTrendingShows = async () => {
-	const timeWindow = 'week';
+	const timeWindow = 'day';
 	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
 	const genreResponse = await fetchAPIdata('genre/tv/list');
 	const genres = genreResponse.genres;
@@ -747,12 +823,10 @@ const search = async () => {
 
 const displaySearchResult = (results) => {
 	results.forEach((result) => {
-
-        const posterPath = result.poster_path ? `https://image.tmdb.org/t/p/w500${result.poster_path}` : `<img
+		const posterPath = result.poster_path
+			? `https://image.tmdb.org/t/p/w500${result.poster_path}`
+			: `<img
         src="../assets/no-image.jpg" alt="${movie.title}"/>`;
-
-        
-
 
 		const cardContainer = document.createElement('div');
 		cardContainer.classList.add('result-container');
@@ -760,9 +834,21 @@ const displaySearchResult = (results) => {
 
             <img class="poster" src="https://image.tmdb.org/t/p/w500${posterPath}" alt="poster">
             <div class="movie-content">
-            <span class="title">${result.media_type === 'movie' ? `${result.title}` : `${result.name}`}</span>
-            <p class="year">${result.release_date ? new Date(result.release_date).getFullYear() : `${new Date(result.first_air_date).getFullYear()}`}</p>
-            <a class="details" href="${result.media_type === 'movie' ? 'movie-detail.html' : 'show-detail.html'}?id=${result.id}">Details</a>
+            <span class="title">${
+							result.media_type === 'movie'
+								? `${result.title}`
+								: `${result.name}`
+						}</span>
+            <p class="year">${
+							result.release_date
+								? new Date(result.release_date).getFullYear()
+								: `${new Date(result.first_air_date).getFullYear()}`
+						}</p>
+            <a class="details" href="${
+							result.media_type === 'movie'
+								? 'movie-detail.html'
+								: 'show-detail.html'
+						}?id=${result.id}">Details</a>
 
         </div>
 
@@ -776,6 +862,7 @@ const init = () => {
 	switch (global.currentPage) {
 		case '/':
 		case '/index.html':
+			displayTrendingMovies();
 			displayNowPlayingMovies();
 			displayActionMovies();
 			displayTopRatedMovies();

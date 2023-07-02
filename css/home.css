@@ -19,7 +19,7 @@ section h1 {
 	padding-top: 10px;
 }
 
-/* Now playing Movies */
+/* Trending Movies */
 
 .backdrop {
 	width: 100%;
@@ -155,12 +155,14 @@ section h1 {
 
 /* Sections */
 
+.new-movies,
 .top-rated,
 .popular,
 .upcoming {
 	margin: 20px auto;
 }
 
+.now-playing-list,
 .top-rated-list,
 .popular-list,
 .upcoming-list {
@@ -171,6 +173,7 @@ section h1 {
 	flex-wrap: wrap;
 	justify-content: center;
 }
+
 
 /*  Laoding */
 
