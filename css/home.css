@@ -156,6 +156,7 @@ section h1 {
 /* Sections */
 
 .new-movies,
+.action,
 .top-rated,
 .popular,
 .upcoming {
@@ -163,6 +164,7 @@ section h1 {
 }
 
 .now-playing-list,
+.action-list,
 .top-rated-list,
 .popular-list,
 .upcoming-list {

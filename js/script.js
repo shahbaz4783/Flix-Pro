@@ -236,45 +236,49 @@ const initPopularSwiper = () => {
 	});
 };
 
+
 // display Action movies
 const displayActionMovies = async () => {
 	const { genres } = await fetchAPIdata('genre/movie/list');
 	const actionGenre = genres.find((genre) => genre.name === 'Action');
-
+  
 	if (actionGenre) {
-		const { results } = await fetchAPIdata('discover/movie', {
-			// with_genres: actionGenre.id,
-		});
-
-		const actionMovies = results.slice(0, 20);
-
-		actionMovies.forEach((movie) => {
-			const releaseDate = new Date(movie.release_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{
-					month: 'short',
-				}
-			)} ${releaseDate.getFullYear()}`;
-
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('swiper-slide');
-			cardContainer.innerHTML = `
-          <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-          <div class="movie-content">
-            <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">Released: ${formattedDate}</p>
-            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
-          </div>
-        `;
-			document
-				.querySelector('.action-list .swiper-wrapper')
-				.append(cardContainer);
-		});
-
-		initActionSwiper();
+	  const { results } = await fetchAPIdata('discover/movie', {
+		with_genres: actionGenre.id,
+		sort_by: 'popularity.desc',
+	  });
+  
+	  const actionMovies = results.slice(0, 20);
+  
+	  actionMovies.forEach((movie) => {
+		const releaseDate = new Date(movie.release_date);
+		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+		  'default',
+		  {
+			month: 'short',
+		  }
+		)} ${releaseDate.getFullYear()}`;
+  
+		const cardContainer = document.createElement('div');
+		cardContainer.classList.add('swiper-slide');
+		cardContainer.innerHTML = `
+		  <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+		  <div class="movie-content">
+			<span class="movie-title">${movie.title}</span>
+			<p class="movie-description">Released: ${formattedDate}</p>
+			<a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+		  </div>
+		`;
+		document
+		  .querySelector('.action-list .swiper-wrapper')
+		  .append(cardContainer);
+	  });
+  
+	  initActionSwiper();
 	}
-};
+  };
+  
+  
 
 const initActionSwiper = () => {
 	new Swiper('.action-list .swiper', {
@@ -655,6 +659,7 @@ const movieDetails = async () => {
 	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
 	const cast = credits.cast.slice(0, 5);
 
+
 	const details = document.createElement('div');
 	details.innerHTML = `
     <div class="images">
@@ -683,23 +688,38 @@ const movieDetails = async () => {
             <p class="info">${movie.overview}</p>
         </div>
         <div class="crew">
-            <p class="director"> Director:
-            ${credits.crew.find((member) => member.job === 'Director').name}
-            </p>
-            <div class="production-list">
-            <p class="production"> Production
-            ${movie.production_companies
-							.map((company) => `<li>${company.name}</li>`)
-							.join('')}
-            </p>
-            </div>
+		<div class="director"> <h3>Director</h3>
+		<img src="${credits.crew.find((member) => member.job === 'Director').profile_path ? `https://image.tmdb.org/t/p/w200${credits.crew.find((member) => member.job === 'Director').profile_path}` : 'path_to_default_director_image.jpg'}" alt="Director Image">		
+		<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
+         <div>   
+		 
+		 <div class="production-list">
+		 <p class="production">Production</p>
+		 <ul>
+			 ${movie.production_companies
+				 .map((company) => `
+					 <li class="lists">
+					 <img class="production-img" src="${company.logo_path ? `https://image.tmdb.org/t/p/w200${company.logo_path}` : '../assets/no-production-img.png'}" >
+					<p> ${company.name} </p>
+					 </li>
+				 `)
+				 .join('')}
+		 </ul>
+	 </div>
+	 
         </div>
         <div class="cast">
-      <h3>Cast</h3>
+      <h3>Actors</h3>
       <ul>
-        ${cast.map((castMember) => `<li>${castMember.name}</li>`).join('')}
+        ${cast.map((castMember) => `
+		<div>
+		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : 'path_to_default_image.jpg'}" alt="${castMember.name}">
+		<li>${castMember.name}</li>
+		</div>
+		`).join('')}
       </ul>
     </div>
+	
     <div class="finance">
             <p>Budget: ${movie.budget.toLocaleString('en-US', {
 							style: 'currency',
@@ -709,6 +729,7 @@ const movieDetails = async () => {
 							'en-US',
 							{ style: 'currency', currency: 'USD' }
 						)}</p>
+
     `;
 	document.querySelector('.display-details').append(details);
 

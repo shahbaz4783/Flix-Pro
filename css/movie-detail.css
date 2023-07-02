@@ -89,11 +89,16 @@ body {
     width: fit-content;
     border-radius: 20px;
     margin-top: 10px;
-    background-color: gray;
+    background-color: rgb(116, 152, 185);
 }
 
 .production-list li {
-    color: rgb(172, 236, 134);
+    color: rgb(233, 233, 233);
+    list-style: none;
+}
+
+.production-img{
+    width: 10%;
 }
 
 
