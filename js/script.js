@@ -709,11 +709,41 @@ const movieDetails = async () => {
 							'en-US',
 							{ style: 'currency', currency: 'USD' }
 						)}</p>
-    </div>
-    
     `;
 	document.querySelector('.display-details').append(details);
+
+
+// Diaplay Similar Movies
+    const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
+	let movieCount = 0;
+
+	results.forEach((movie) => {
+		if (movieCount < 12) {
+			const releaseDate = new Date(movie.release_date);
+			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${releaseDate.getFullYear()}`;
+
+			const similarMovies = document.createElement('div');
+			similarMovies.classList.add('similar-movie-box');
+			similarMovies.innerHTML = `
+
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+            <div class="similar-movie-content">
+            <span class="movie-title">${movie.title}</span>
+            <p class="movie-description">Released: ${formattedDate}</p>
+            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+           </div>
+        
+        `;
+        document.querySelector('.simiar-movies').append(similarMovies);
+
+			movieCount++;
+		}
+	});
 };
+
 
 // Show Details Page
 const showDetails = async () => {
@@ -778,7 +808,41 @@ const showDetails = async () => {
 </div>
     `;
 	document.querySelector('.display-details').append(details);
+
+
+
+// Diaplay Similar Shows
+const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+let showCount = 0;
+
+results.forEach((show) => {
+    if (showCount < 12) {
+        const releaseDate = new Date(show.first_air_date);
+        const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+            'default',
+            { month: 'short' }
+        )} ${releaseDate.getFullYear()}`;
+
+        const similarShows = document.createElement('div');
+        similarShows.classList.add('similar-show-box');
+        similarShows.innerHTML = `
+
+        <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
+        <div class="similar-show-content">
+        <span class="movie-title">${show.name}</span>
+        <p class="movie-description">Released: ${formattedDate}</p>
+        <a class="movie-details" href="show-detail.html?id=${show.id}">Details</a>
+       </div>
+    
+    `;
+    document.querySelector('.simiar-shows').append(similarShows);
+
+        showCount++;
+    }
+});
+
 };
+
 
 // Search Movie and Shows Function
 

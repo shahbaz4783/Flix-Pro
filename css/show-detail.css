@@ -17,3 +17,22 @@
     padding: 20px;
     margin-bottom: 20px;
 }
+
+
+
+.simiar-shows{
+    display: flex;
+    flex-wrap: wrap;
+    width: 90vw;
+    margin: auto;
+    justify-content: center;
+}
+
+
+.similar-show-box{
+    width: 20%;
+    margin: 10px;
+}
+.similar-show-content{
+    background-color: aliceblue;
+}

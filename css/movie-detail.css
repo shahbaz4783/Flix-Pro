@@ -143,3 +143,20 @@ body {
     padding: 10px;
     border-radius: 10px;
 }
+
+.simiar-movies{
+    display: flex;
+    flex-wrap: wrap;
+    width: 90vw;
+    margin: auto;
+    justify-content: center;
+}
+
+
+.similar-movie-box{
+    width: 20%;
+    margin: 10px;
+}
+.similar-movie-content{
+    background-color: aliceblue;
+}
