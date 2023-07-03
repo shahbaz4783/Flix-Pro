@@ -708,17 +708,8 @@ const movieDetails = async () => {
 	 </div>
 	 
         </div>
-        <div class="cast">
-      <h3>Actors</h3>
-      <ul>
-        ${cast.map((castMember) => `
-		<div class="cast-img">
-		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : '../assets/no-people'}" alt="${castMember.name}">
-		<li>${castMember.name}</li>
-		</div>
-		`).join('')}
-      </ul>
-    </div>
+
+        
 	
     <div class="finance">
             <p>Budget: ${movie.budget.toLocaleString('en-US', {
@@ -734,34 +725,90 @@ const movieDetails = async () => {
 	document.querySelector('.display-details').append(details);
 
 
+
+	// Actors Slider
+const casts = document.createElement('div');
+casts.classList.add('swiper-slide');
+
+casts.innerHTML = `
+<div class="cast">
+      <h3>Actors</h3>
+      <ul>
+        ${cast.map((castMember) => `
+		<div class="cast-img">
+		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : '../assets/no-people'}" alt="${castMember.name}">
+		<li>${castMember.name}</li>
+		<li>${castMember.character}</li>
+		</div>
+		`).join('')}
+      </ul>
+    </div>
+`
+	document.querySelector('.cast-list .swiper-wrapper').append(casts);
+
+
+
 // Diaplay Similar Movies
     const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
-	let movieCount = 0;
 
 	results.forEach((movie) => {
-		if (movieCount < 12) {
-			const releaseDate = new Date(movie.release_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${releaseDate.getFullYear()}`;
+
+			const releaseDate = new Date(movie.release_date).getFullYear();
 
 			const similarMovies = document.createElement('div');
-			similarMovies.classList.add('similar-movie-box');
+			similarMovies.classList.add('swiper-slide');
 			similarMovies.innerHTML = `
 
             <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
             <div class="similar-movie-content">
             <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">Released: ${formattedDate}</p>
+            <p class="movie-description">${movie.release_date ? releaseDate : ''}</p>
             <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
            </div>
         
         `;
-        document.querySelector('.simiar-movies').append(similarMovies);
+        document.querySelector('.simiar-movies-list .swiper-wrapper').append(similarMovies);
 
-			movieCount++;
-		}
+		initSimilarMovieSwiper();
+	});
+};
+
+
+const initSimilarMovieSwiper = () => {
+	new Swiper('.simiar-movies-list .swiper', {
+		slidesPerView: 6,
+		spaceBetween: 20,
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+		breakpoints: {
+			0: {
+				slidesPerView: 1,
+				spaceBetween: 0,
+			},
+			200: {
+				slidesPerView: 2,
+				spaceBetween: 5,
+			},
+			300: {
+				slidesPerView: 3,
+				spaceBetween: 8,
+			},
+			600: {
+				slidesPerView: 4,
+				spaceBetween: 10,
+			},
+			768: {
+				slidesPerView: 5,
+				spaceBetween: 15,
+			},
+
+			1000: {
+				slidesPerView: 6,
+				spaceBetween: 20,
+			},
+		},
 	});
 };
 
