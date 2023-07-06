@@ -1,4 +1,4 @@
-// Show Hide Loading
+// Show-Hide Loading
 const showLoader = () => {
 	document.querySelector('.loading').style.display = 'block';
 };
@@ -6,7 +6,7 @@ const hideLoader = () => {
 	document.querySelector('.loading').style.display = 'none';
 };
 
-// Show Hide Movie Page
+// Show-Hide Movie Page
 const showContent = () => {
 	document.querySelector('main').style.display = 'block';
 };
@@ -236,32 +236,31 @@ const initPopularSwiper = () => {
 	});
 };
 
-
 // display Action movies
 const displayActionMovies = async () => {
 	const { genres } = await fetchAPIdata('genre/movie/list');
 	const actionGenre = genres.find((genre) => genre.name === 'Action');
-  
+
 	if (actionGenre) {
-	  const { results } = await fetchAPIdata('discover/movie', {
-		with_genres: actionGenre.id,
-		sort_by: 'popularity.desc',
-	  });
-  
-	  const actionMovies = results.slice(0, 20);
-  
-	  actionMovies.forEach((movie) => {
-		const releaseDate = new Date(movie.release_date);
-		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-		  'default',
-		  {
-			month: 'short',
-		  }
-		)} ${releaseDate.getFullYear()}`;
-  
-		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('swiper-slide');
-		cardContainer.innerHTML = `
+		const { results } = await fetchAPIdata('discover/movie', {
+			with_genres: actionGenre.id,
+			sort_by: 'popularity.desc',
+		});
+
+		const actionMovies = results.slice(0, 20);
+
+		actionMovies.forEach((movie) => {
+			const releaseDate = new Date(movie.release_date);
+			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+				'default',
+				{
+					month: 'short',
+				}
+			)} ${releaseDate.getFullYear()}`;
+
+			const cardContainer = document.createElement('div');
+			cardContainer.classList.add('swiper-slide');
+			cardContainer.innerHTML = `
 		  <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
 		  <div class="movie-content">
 			<span class="movie-title">${movie.title}</span>
@@ -269,16 +268,14 @@ const displayActionMovies = async () => {
 			<a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
 		  </div>
 		`;
-		document
-		  .querySelector('.action-list .swiper-wrapper')
-		  .append(cardContainer);
-	  });
-  
-	  initActionSwiper();
+			document
+				.querySelector('.action-list .swiper-wrapper')
+				.append(cardContainer);
+		});
+
+		initActionSwiper();
 	}
-  };
-  
-  
+};
 
 const initActionSwiper = () => {
 	new Swiper('.action-list .swiper', {
@@ -659,37 +656,45 @@ const movieDetails = async () => {
 	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
 	const cast = credits.cast.slice(0, 5);
 
-
 	const details = document.createElement('div');
 	details.innerHTML = `
-    <div class="images">
-    <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${
+	<div>
+    <div class="backdrop-img" style="background-image: url('https://image.tmdb.org/t/p/original${
+			movie.backdrop_path
+		}')"></div>
+	
+	<div class="overview">
+    <img class="poster-img" src="https://image.tmdb.org/t/p/w500${
 			movie.poster_path
-		}" alt="${movie.title}">
-     <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${
-				movie.backdrop_path
-			}" alt="${movie.title}">
-
-        </div>
-        <div class="basic-info">
-        <div>
-            <p class="rating">Rating: ${movie.vote_average.toFixed(1)}</p>
+		}">
+		<div class="info">
+            <h3>${movie.title}</h3>
+			<div>
+			<p class="rating">${movie.vote_average.toFixed(1)}</p>
+			<p class="runtime">${movie.runtime} minutes</p>
             <p class="release">${formattedDate}</p>
-            <p class="runtime">${movie.runtime} minutes</p>
-        </div>
-            <div>
-            <p class="genre">${movie.genres
+			</div>
+			<div class="genre">
+            <p>${movie.genres
 							.map((genre) => `<li>${genre.name}</li>`)
 							.join('')}</p>
-                            </div>
+			</div>
+            <div><p>${movie.overview}</p></div>
+		</div>
         </div>
-        <div class="overview">
-            <h3>${movie.title}</h3>
-            <p class="info">${movie.overview}</p>
-        </div>
+
+       
+        
         <div class="crew">
 		<div class="director"> <h3>Director</h3>
-		<img src="${credits.crew.find((member) => member.job === 'Director').profile_path ? `https://image.tmdb.org/t/p/w200${credits.crew.find((member) => member.job === 'Director').profile_path}` : '../assets/no-people'}" alt="Director Image">		
+		<img src="${
+			credits.crew.find((member) => member.job === 'Director').profile_path
+				? `https://image.tmdb.org/t/p/w200${
+						credits.crew.find((member) => member.job === 'Director')
+							.profile_path
+				  }`
+				: '../assets/no-people'
+		}" alt="Director Image">		
 		<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
          <div>   
 		 
@@ -697,13 +702,19 @@ const movieDetails = async () => {
 		 <p class="production">Production</p>
 		 <ul>
 			 ${movie.production_companies
-				 .map((company) => `
+					.map(
+						(company) => `
 					 <li class="lists">
-					 <img class="production-img" src="${company.logo_path ? `https://image.tmdb.org/t/p/w200${company.logo_path}` : '../assets/no-production.png'}" >
+					 <img class="production-img" src="${
+							company.logo_path
+								? `https://image.tmdb.org/t/p/w200${company.logo_path}`
+								: '../assets/no-production.png'
+						}" >
 					<p> ${company.name} </p>
 					 </li>
-				 `)
-				 .join('')}
+				 `
+					)
+					.join('')}
 		 </ul>
 	 </div>
 	 
@@ -724,55 +735,65 @@ const movieDetails = async () => {
     `;
 	document.querySelector('.display-details').append(details);
 
-
-
 	// Actors Slider
-const casts = document.createElement('div');
-casts.classList.add('swiper-slide');
+	const casts = document.createElement('div');
+	casts.classList.add('swiper-slide');
 
-casts.innerHTML = `
+	casts.innerHTML = `
 <div class="cast">
       <h3>Actors</h3>
       <ul>
-        ${cast.map((castMember) => `
+        ${cast
+					.map(
+						(castMember) => `
 		<div class="cast-img">
-		<img src="${castMember.profile_path ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}` : '../assets/no-people'}" alt="${castMember.name}">
+		<img src="${
+			castMember.profile_path
+				? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+				: '../assets/no-people'
+		}" alt="${castMember.name}">
 		<li>${castMember.name}</li>
 		<li>${castMember.character}</li>
 		</div>
-		`).join('')}
+		`
+					)
+					.join('')}
       </ul>
     </div>
-`
+`;
 	document.querySelector('.cast-list .swiper-wrapper').append(casts);
 
-
-
-// Diaplay Similar Movies
-    const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
+	// Diaplay Similar Movies
+	const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
 
 	results.forEach((movie) => {
+		const releaseDate = new Date(movie.release_date).getFullYear();
 
-			const releaseDate = new Date(movie.release_date).getFullYear();
+		const similarMovies = document.createElement('div');
+		similarMovies.classList.add('swiper-slide');
+		similarMovies.innerHTML = `
 
-			const similarMovies = document.createElement('div');
-			similarMovies.classList.add('swiper-slide');
-			similarMovies.innerHTML = `
-
-            <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${
+							movie.poster_path
+						}" alt="${movie.title}">
             <div class="similar-movie-content">
             <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">${movie.release_date ? releaseDate : ''}</p>
-            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
+            <p class="movie-description">${
+							movie.release_date ? releaseDate : ''
+						}</p>
+            <a class="movie-details" href="movie-detail.html?id=${
+							movie.id
+						}">Details</a>
            </div>
         
         `;
-        document.querySelector('.simiar-movies-list .swiper-wrapper').append(similarMovies);
+		document
+			.querySelector('.simiar-movies-list .swiper-wrapper')
+			.append(similarMovies);
 
 		initSimilarMovieSwiper();
 	});
 };
-
 
 const initSimilarMovieSwiper = () => {
 	new Swiper('.simiar-movies-list .swiper', {
@@ -811,7 +832,6 @@ const initSimilarMovieSwiper = () => {
 		},
 	});
 };
-
 
 // Show Details Page
 const showDetails = async () => {
@@ -877,23 +897,21 @@ const showDetails = async () => {
     `;
 	document.querySelector('.display-details').append(details);
 
+	// Diaplay Similar Shows
+	const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+	let showCount = 0;
 
+	results.forEach((show) => {
+		if (showCount < 12) {
+			const releaseDate = new Date(show.first_air_date);
+			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+				'default',
+				{ month: 'short' }
+			)} ${releaseDate.getFullYear()}`;
 
-// Diaplay Similar Shows
-const { results } = await fetchAPIdata(`tv/${showID}/similar`);
-let showCount = 0;
-
-results.forEach((show) => {
-    if (showCount < 12) {
-        const releaseDate = new Date(show.first_air_date);
-        const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-            'default',
-            { month: 'short' }
-        )} ${releaseDate.getFullYear()}`;
-
-        const similarShows = document.createElement('div');
-        similarShows.classList.add('similar-show-box');
-        similarShows.innerHTML = `
+			const similarShows = document.createElement('div');
+			similarShows.classList.add('similar-show-box');
+			similarShows.innerHTML = `
 
         <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
         <div class="similar-show-content">
@@ -903,14 +921,12 @@ results.forEach((show) => {
        </div>
     
     `;
-    document.querySelector('.simiar-shows').append(similarShows);
+			document.querySelector('.simiar-shows').append(similarShows);
 
-        showCount++;
-    }
-});
-
+			showCount++;
+		}
+	});
 };
-
 
 // Search Movie and Shows Function
 
