@@ -11,6 +11,7 @@ body {
     background-color: black;
 }
 
+/* Basic Info And Posters */
 
 .poster-img{
     width: 30%;
@@ -101,22 +102,8 @@ body {
 
 
 
-.crew{
-    margin: 10px;
-    width: 70vw;
-    margin: auto;
-}
 
-.crew p:nth-child(1){
-    font-size: 2rem;
-    margin-bottom: 20px;
-}
-
-.crew p:nth-child(2){
-    font-size: 2rem;
-    list-style: none;
-    margin-top: 20px;
-}
+/* Production */
 
 .production-list{
     color: whitesmoke;
@@ -147,10 +134,27 @@ body {
     margin: 10px;
     padding: 10px;
     border-radius: 20px;
-
-
 }
 
+
+/* Crew and cast */
+
+.crew{
+    margin: 10px;
+    width: 70vw;
+    margin: auto;
+}
+
+.crew p:nth-child(1){
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.crew p:nth-child(2){
+    font-size: 2rem;
+    list-style: none;
+    margin-top: 20px;
+}
 
 .crew p li {
     list-style: none;
@@ -163,7 +167,6 @@ body {
     text-align: center;
     border-radius: 20px;
     padding: 10px;
-
 }
 
 .cast ul {
@@ -175,13 +178,14 @@ body {
 }
 
 .cast ul li{
-    border: 2px solid white;
-    margin: 10px;
-    padding: 10px;
-    border-radius: 20px;
-    background-color: gray;
+    color: white;
 }
 
+.cast ul li:last-child{
+    color: gray;
+}
+
+/* Finance */
 .finance{
     display: flex;
     flex-direction: column;
@@ -193,6 +197,8 @@ body {
     font-weight: bold;
     font-size: 1.5rem;
 }
+
+/* Similar Movies */
 
 .simiar-movies{
     display: flex;
@@ -211,6 +217,7 @@ body {
     background-color: aliceblue;
 }
 
+/* Media Queries */
 
 @media screen and (max-width: 768px) {
     .overview {
