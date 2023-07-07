@@ -119,23 +119,36 @@ body {
 }
 
 .production-list{
+    color: whitesmoke;
+    text-align: center;
     list-style: none;
     font-size: 1.3rem;
-    border: 2px solid white;
     padding: 10px;
     width: fit-content;
     border-radius: 20px;
     margin-top: 10px;
-    background-color: rgb(116, 152, 185);
+    margin: auto;
+}
+.production-list ul {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .production-list li {
     color: rgb(233, 233, 233);
     list-style: none;
-}
+    display: flex;
+    justify-content: center;
+    background-color: aliceblue;
+    align-items: center;
+    color: black;
+    width: fit-content;
+    border: 2px solid black;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
 
-.production-img{
-    width: 10%;
+
 }
 
 
@@ -170,20 +183,15 @@ body {
 }
 
 .finance{
-    margin: 10px auto;
-    width: 70vw;
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
 }
 
 .finance p{
-    border: 2px solid white;
-    background-color: gray;
-    color: black;
+    color: aliceblue;
     font-weight: bold;
     font-size: 1.5rem;
-    padding: 10px;
-    border-radius: 10px;
 }
 
 .simiar-movies{

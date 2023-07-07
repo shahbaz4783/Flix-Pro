@@ -684,58 +684,13 @@ const movieDetails = async () => {
         </div>
 
        
-        
-        <div class="crew">
-		<div class="director"> <h3>Director</h3>
-		<img src="${
-			credits.crew.find((member) => member.job === 'Director').profile_path
-				? `https://image.tmdb.org/t/p/w200${
-						credits.crew.find((member) => member.job === 'Director')
-							.profile_path
-				  }`
-				: '../assets/no-people'
-		}" alt="Director Image">		
-		<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
-         <div>   
-		 
-		 <div class="production-list">
-		 <p class="production">Production</p>
-		 <ul>
-			 ${movie.production_companies
-					.map(
-						(company) => `
-					 <li class="lists">
-					 <img class="production-img" src="${
-							company.logo_path
-								? `https://image.tmdb.org/t/p/w200${company.logo_path}`
-								: '../assets/no-production.png'
-						}" >
-					<p> ${company.name} </p>
-					 </li>
-				 `
-					)
-					.join('')}
-		 </ul>
-	 </div>
-	 
-        </div>
-
-        
-	
-    <div class="finance">
-            <p>Budget: ${movie.budget.toLocaleString('en-US', {
-							style: 'currency',
-							currency: 'USD',
-						})}</p>
-            <p class="info">Collection: ${movie.revenue.toLocaleString(
-							'en-US',
-							{ style: 'currency', currency: 'USD' }
-						)}</p>
-
     `;
+
 	document.querySelector('.display-details').append(details);
 
-	// Actors Slider
+
+
+	// Crew Slider
 	const casts = document.createElement('div');
 	casts.classList.add('swiper-slide');
 
@@ -760,8 +715,58 @@ const movieDetails = async () => {
 					.join('')}
       </ul>
     </div>
+        
+	<div class="crew">
+	<div class="director"> <h3>Director</h3>
+	<img src="${
+		credits.crew.find((member) => member.job === 'Director').profile_path
+			? `https://image.tmdb.org/t/p/w200${
+					credits.crew.find((member) => member.job === 'Director')
+						.profile_path
+			  }`
+			: '../assets/no-people'
+	}" alt="Director Image">		
+	<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
+	 
+	<div>   
+		
+	 <div class="production-list">
+	 <p class="production">Production</p>
+	 <ul>
+		 ${movie.production_companies
+			 .map(
+				 (company) => `
+				 <li class="lists">
+					 <img class="production-img" src="${
+						 company.logo_path
+							 ? `https://image.tmdb.org/t/p/w200${company.logo_path}`
+							 : ''
+					 }">
+					 ${company.logo_path ? '' : `<p>${company.name}</p>`}
+				 </li>`
+			 )
+			 .join('')}
+	 </ul>
+ </div>
+ 
+	</div>
+
+	
+
+<div class="finance">
+		<p>Budget: ${movie.budget.toLocaleString('en-US', {
+						style: 'currency',
+						currency: 'USD',
+					})}</p>
+		<p class="info">Collection: ${movie.revenue.toLocaleString(
+						'en-US',
+						{ style: 'currency', currency: 'USD' }
+					)}</p>
+
+
 `;
 	document.querySelector('.cast-list .swiper-wrapper').append(casts);
+
 
 	// Diaplay Similar Movies
 	const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
