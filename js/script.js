@@ -407,7 +407,6 @@ const movieDetails = async () => {
 	)} ${releaseDate.getFullYear()}`;
 
 	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
-	const cast = credits.cast.slice(0, 5);
 
 	const details = document.createElement('div');
 	details.innerHTML = `
@@ -442,32 +441,29 @@ const movieDetails = async () => {
 	document.querySelector('.display-details').append(details);
 
 	// Cast Slider
-	const casts = document.createElement('div');
-	casts.classList.add('swiper-slide');
+// 	const casts = document.createElement('div');
+// 	casts.classList.add('swiper-slide');
 
-	casts.innerHTML = `
-<div class="cast">
-      <h3>Cast</h3>
-      <ul>
-        ${cast
-					.map(
-						(castMember) => `
-		<div class="cast-img">
-		<img src="${
-			castMember.profile_path
-				? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-				: '../assets/no-people'
-		}" alt="${castMember.name}">
-		<li>${castMember.name}</li>
-		<li>${castMember.character}</li>
-		</div>
-		`
-					)
-					.join('')}
-      </ul>
-    </div>
-`;
-	document.querySelector('.cast-list .swiper-wrapper').append(casts);
+// 	casts.innerHTML = `
+// <div class="cast">
+//       <h3>Cast</h3>
+//       <ul>
+//         ${cast
+// 					.map(
+// 						(castMember) => `
+// 		<div class="cast-img">
+// 		<img src="${
+// 			castMember.profile_path
+// 				? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+// 				: '../assets/no-people'}">
+// 		<li>${castMember.name}</li>
+// 		<li>${castMember.character}</li>
+// 		</div>
+// 		`).join('')}
+//       </ul>
+//     </div>
+// `;
+// 	document.querySelector('.cast-list .swiper-wrapper').append(casts);
 
 	// Crew
 	const crew = document.createElement('div');
@@ -560,6 +556,36 @@ const movieDetails = async () => {
 
 		contentSwiper();
 	});
+
+
+// Display Actors
+
+const cast = credits.cast;
+
+cast.forEach((castMember) => {
+    const casts = document.createElement('div');
+    casts.classList.add('swiper-slide');
+
+    casts.innerHTML = `
+    <div class="cast">
+        <ul>
+            <div class="cast-info">
+                <img src="${
+                    castMember.profile_path
+                        ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+                        : '../assets/no-people.png'
+                }">
+                <li>${castMember.name}</li>
+                <li>${castMember.character}</li>
+            </div>
+        </ul>
+    </div>
+    `;
+    document.querySelector('.cast-list .swiper-wrapper').append(casts);
+    contentSwiper();
+});
+
+
 };
 
 // Show Details Page
