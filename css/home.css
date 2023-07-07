@@ -163,11 +163,7 @@ section h1 {
 	margin: 20px auto;
 }
 
-.now-playing-list,
-.action-list,
-.top-rated-list,
-.popular-list,
-.upcoming-list {
+.content {
 	display: flex;
 	gap: 30px;
 	width: 95vw;

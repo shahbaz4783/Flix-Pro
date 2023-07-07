@@ -35,8 +35,6 @@ const fetchAPIdata = async (endpoint) => {
 	return data;
 };
 
-
-
 // Sliders
 const carouselSwiper = () => {
 	new Swiper('.carousel .swiper', {
@@ -86,7 +84,6 @@ const contentSwiper = () => {
 		},
 	});
 };
-
 
 // Display Trending Movies
 const displayTrendingMovies = async () => {
@@ -158,7 +155,6 @@ const displayNowPlayingMovies = async () => {
 	});
 };
 
-
 // display popular movies
 const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
@@ -193,7 +189,6 @@ const displayPopularMovies = async () => {
 		contentSwiper();
 	});
 };
-
 
 // display Action movies
 const displayActionMovies = async () => {
@@ -236,7 +231,6 @@ const displayActionMovies = async () => {
 	}
 };
 
-
 // display top rated movies
 const displayTopRatedMovies = async () => {
 	const { results } = await fetchAPIdata('movie/top_rated');
@@ -268,7 +262,6 @@ const displayTopRatedMovies = async () => {
 		contentSwiper();
 	});
 };
-
 
 // display upcoming movies
 const displayUpcomingMovies = async () => {
@@ -475,7 +468,7 @@ const movieDetails = async () => {
     </div>
 `;
 	document.querySelector('.cast-list .swiper-wrapper').append(casts);
-	
+
 	// Crew
 	const crew = document.createElement('div');
 	crew.classList.add('swiper-slide');
@@ -494,12 +487,9 @@ const movieDetails = async () => {
 `;
 
 	document.querySelector('.crew-list .swiper-wrapper').append(crew);
-	
 
 	// Production and Finance
 	const production = document.createElement('div');
-	crew.classList.add('swiper-slide');
-
 	production.innerHTML = `
 	<div>   
 	 <div class="production-list">
@@ -524,18 +514,21 @@ const movieDetails = async () => {
 
 
 <div class="finance">
-		<p>Budget: ${movie.budget.toLocaleString('en-US', {
+		<p>Budget: <span>${movie.budget.toLocaleString('en-US', {
 			style: 'currency',
 			currency: 'USD',
-		})}</p>
-		<p class="info">Collection: ${movie.revenue.toLocaleString('en-US', {
+			maximumFractionDigits: 0,
+			maximumFractionDigits: 0,
+		})}</span></p>
+		<p>Collection: <span>${movie.revenue.toLocaleString('en-US', {
 			style: 'currency',
 			currency: 'USD',
-		})}</p>
+			maximumFractionDigits: 0,
+			maximumFractionDigits: 0,
+		})}</span></p>
 	`;
 
-	document.querySelector('.companies-list .swiper-wrapper').append(production);
-
+	document.querySelector('.companies-list').append(production);
 
 	// Display Similar Movies
 	const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
@@ -549,7 +542,7 @@ const movieDetails = async () => {
 
             <img class="poster" src="https://image.tmdb.org/t/p/w500${
 							movie.poster_path
-						}" alt="${movie.title}">
+						}">
             <div class="similar-movie-content">
             <span class="movie-title">${movie.title}</span>
             <p class="movie-description">${
@@ -565,45 +558,7 @@ const movieDetails = async () => {
 			.querySelector('.simiar-movies-list .swiper-wrapper')
 			.append(similarMovies);
 
-		initSimilarMovieSwiper();
-	});
-};
-
-const initSimilarMovieSwiper = () => {
-	new Swiper('.simiar-movies-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
+		contentSwiper();
 	});
 };
 
@@ -673,19 +628,17 @@ const showDetails = async () => {
 
 	// Diaplay Similar Shows
 	const { results } = await fetchAPIdata(`tv/${showID}/similar`);
-	let showCount = 0;
 
 	results.forEach((show) => {
-		if (showCount < 12) {
-			const releaseDate = new Date(show.first_air_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${releaseDate.getFullYear()}`;
+		const releaseDate = new Date(show.first_air_date);
+		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+			'default',
+			{ month: 'short' }
+		)} ${releaseDate.getFullYear()}`;
 
-			const similarShows = document.createElement('div');
-			similarShows.classList.add('similar-show-box');
-			similarShows.innerHTML = `
+		const similarShows = document.createElement('div');
+		similarShows.classList.add('swiper-slide');
+		similarShows.innerHTML = `
 
         <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
         <div class="similar-show-content">
@@ -695,10 +648,10 @@ const showDetails = async () => {
        </div>
     
     `;
-			document.querySelector('.simiar-shows').append(similarShows);
-
-			showCount++;
-		}
+		document
+			.querySelector('.simiar-shows .swiper-wrapper')
+			.append(similarShows);
+		contentSwiper();
 	});
 };
 
@@ -747,8 +700,7 @@ const displaySearchResult = (results) => {
 	results.forEach((result) => {
 		const posterPath = result.poster_path
 			? `https://image.tmdb.org/t/p/w500${result.poster_path}`
-			: `<img
-        src="../assets/no-image.jpg" alt="${movie.title}"/>`;
+			: `<img src="../assets/no-image.jpg" alt="${movie.title}"/>`;
 
 		const cardContainer = document.createElement('div');
 		cardContainer.classList.add('result-container');
