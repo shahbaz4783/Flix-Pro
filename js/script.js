@@ -440,30 +440,34 @@ const movieDetails = async () => {
 
 	document.querySelector('.display-details').append(details);
 
-	// Cast Slider
-// 	const casts = document.createElement('div');
-// 	casts.classList.add('swiper-slide');
 
-// 	casts.innerHTML = `
-// <div class="cast">
-//       <h3>Cast</h3>
-//       <ul>
-//         ${cast
-// 					.map(
-// 						(castMember) => `
-// 		<div class="cast-img">
-// 		<img src="${
-// 			castMember.profile_path
-// 				? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-// 				: '../assets/no-people'}">
-// 		<li>${castMember.name}</li>
-// 		<li>${castMember.character}</li>
-// 		</div>
-// 		`).join('')}
-//       </ul>
-//     </div>
-// `;
-// 	document.querySelector('.cast-list .swiper-wrapper').append(casts);
+// Display Actors
+const cast = credits.cast;
+cast.forEach((castMember) => {
+    const casts = document.createElement('div');
+    casts.classList.add('swiper-slide');
+
+    casts.innerHTML = `
+    <div class="cast">
+        <ul>
+            <div class="cast-info">
+                <img src="${
+                    castMember.profile_path
+                        ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+                        : '../assets/no-people.png'
+                }">
+                <li>${castMember.name}</li>
+                <li>${castMember.character}</li>
+            </div>
+        </ul>
+    </div>
+    `;
+    document.querySelector('.cast-list .swiper-wrapper').append(casts);
+    contentSwiper();
+});
+
+
+
 
 	// Crew
 	const crew = document.createElement('div');
@@ -471,18 +475,18 @@ const movieDetails = async () => {
 
 	crew.innerHTML = `
 	<div class="crew">
-	<div class="director"> <h3>Director</h3>
 	<img src="${
 		credits.crew.find((member) => member.job === 'Director').profile_path
 			? `https://image.tmdb.org/t/p/w200${
 					credits.crew.find((member) => member.job === 'Director').profile_path
 			  }`
-			: '../assets/no-people'
-	}" alt="Director Image">		
+			: '../assets/no-people.png'}">		
 	<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
+	</div>
 `;
+document.querySelector('.crew-list .swiper-wrapper').append(crew);
 
-	document.querySelector('.crew-list .swiper-wrapper').append(crew);
+
 
 	// Production and Finance
 	const production = document.createElement('div');
@@ -556,36 +560,6 @@ const movieDetails = async () => {
 
 		contentSwiper();
 	});
-
-
-// Display Actors
-
-const cast = credits.cast;
-
-cast.forEach((castMember) => {
-    const casts = document.createElement('div');
-    casts.classList.add('swiper-slide');
-
-    casts.innerHTML = `
-    <div class="cast">
-        <ul>
-            <div class="cast-info">
-                <img src="${
-                    castMember.profile_path
-                        ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-                        : '../assets/no-people.png'
-                }">
-                <li>${castMember.name}</li>
-                <li>${castMember.character}</li>
-            </div>
-        </ul>
-    </div>
-    `;
-    document.querySelector('.cast-list .swiper-wrapper').append(casts);
-    contentSwiper();
-});
-
-
 };
 
 // Show Details Page
