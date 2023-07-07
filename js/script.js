@@ -1,12 +1,10 @@
-// Show-Hide Loading
+// Show-Hide Content
 const showLoader = () => {
 	document.querySelector('.loading').style.display = 'block';
 };
 const hideLoader = () => {
 	document.querySelector('.loading').style.display = 'none';
 };
-
-// Show-Hide Movie Page
 const showContent = () => {
 	document.querySelector('main').style.display = 'block';
 };
@@ -14,7 +12,7 @@ const hideContent = () => {
 	document.querySelector('main').style.display = 'none';
 };
 
-// Global Pages
+// Global Variables
 const global = {
 	currentPage: window.location.pathname,
 	search: {
@@ -29,21 +27,68 @@ const fetchAPIdata = async (endpoint) => {
 	const API_KEY = '47152db3059591a245fa638f38ce9f76';
 	const API_URL = 'https://api.themoviedb.org/3/';
 
-	// showLoader();
-	// hideContent();
-
 	const resonse = await fetch(
 		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
 	);
-	const data = await resonse.json();
 
-	// hideLoader();
-	// showContent();
+	const data = await resonse.json();
 	return data;
 };
 
-// Display Trending Movies
 
+
+// Sliders
+const carouselSwiper = () => {
+	new Swiper('.carousel .swiper', {
+		slidesPerView: 1,
+		spaceBetween: 30,
+		autoplay: {
+			delay: 3000,
+			disableOnInteraction: false,
+		},
+	});
+};
+
+const contentSwiper = () => {
+	new Swiper('.content .swiper', {
+		slidesPerView: 6,
+		spaceBetween: 20,
+		navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		},
+		breakpoints: {
+			0: {
+				slidesPerView: 1,
+				spaceBetween: 0,
+			},
+			200: {
+				slidesPerView: 2,
+				spaceBetween: 5,
+			},
+			300: {
+				slidesPerView: 3,
+				spaceBetween: 8,
+			},
+			600: {
+				slidesPerView: 4,
+				spaceBetween: 10,
+			},
+			768: {
+				slidesPerView: 5,
+				spaceBetween: 15,
+			},
+
+			1000: {
+				slidesPerView: 6,
+				spaceBetween: 20,
+			},
+		},
+	});
+};
+
+
+// Display Trending Movies
 const displayTrendingMovies = async () => {
 	const timeWindow = 'day';
 	const { results } = await fetchAPIdata(`trending/movie/${timeWindow}`);
@@ -74,18 +119,7 @@ const displayTrendingMovies = async () => {
         </div>
       `;
 		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
-		initTrendingMovieSwiper();
-	});
-};
-
-const initTrendingMovieSwiper = () => {
-	new Swiper('.trending-list .swiper', {
-		slidesPerView: 1,
-		spaceBetween: 30,
-		autoplay: {
-			delay: 3000,
-			disableOnInteraction: false,
-		},
+		carouselSwiper();
 	});
 };
 
@@ -120,50 +154,12 @@ const displayNowPlayingMovies = async () => {
 		document
 			.querySelector('.now-playing-list .swiper-wrapper')
 			.append(cardContainer);
-		initFeatureSwiper();
+		contentSwiper();
 	});
 };
 
-const initFeatureSwiper = () => {
-	new Swiper('.now-playing-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
-	});
-};
 
 // display popular movies
-
 const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
 	let movieCount = 0;
@@ -194,47 +190,10 @@ const displayPopularMovies = async () => {
 				.append(cardContainer);
 			movieCount++;
 		}
-		initPopularSwiper();
+		contentSwiper();
 	});
 };
 
-const initPopularSwiper = () => {
-	new Swiper('.popular-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
-	});
-};
 
 // display Action movies
 const displayActionMovies = async () => {
@@ -273,47 +232,10 @@ const displayActionMovies = async () => {
 				.append(cardContainer);
 		});
 
-		initActionSwiper();
+		contentSwiper();
 	}
 };
 
-const initActionSwiper = () => {
-	new Swiper('.action-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
-	});
-};
 
 // display top rated movies
 const displayTopRatedMovies = async () => {
@@ -343,47 +265,10 @@ const displayTopRatedMovies = async () => {
 				.append(cardContainer);
 			movieCount++;
 		}
-		initTopRatedSwiper();
+		contentSwiper();
 	});
 };
 
-const initTopRatedSwiper = () => {
-	new Swiper('.top-rated-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
-	});
-};
 
 // display upcoming movies
 const displayUpcomingMovies = async () => {
@@ -413,45 +298,7 @@ const displayUpcomingMovies = async () => {
 				.append(cardContainer);
 			movieCount++;
 		}
-		initUpcomingSwiper();
-	});
-};
-
-const initUpcomingSwiper = () => {
-	new Swiper('.upcoming-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
+		contentSwiper();
 	});
 };
 
@@ -486,18 +333,7 @@ const displayTrendingShows = async () => {
         </div>
       `;
 		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
-		initTrendingShowSwiper();
-	});
-};
-
-const initTrendingShowSwiper = () => {
-	new Swiper('.now-playing-show-list .swiper', {
-		slidesPerView: 1,
-		spaceBetween: 30,
-		autoplay: {
-			delay: 3000,
-			disableOnInteraction: false,
-		},
+		carouselSwiper();
 	});
 };
 
@@ -529,45 +365,7 @@ const displayPopularShows = async () => {
 				.append(cardContainer);
 			showCount++;
 		}
-		initPopularShowSwiper();
-	});
-};
-
-const initPopularShowSwiper = () => {
-	new Swiper('.popular-shows-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
+		contentSwiper();
 	});
 };
 
@@ -600,45 +398,7 @@ const displayTopRatedShows = async () => {
 				.append(cardContainer);
 			showCount++;
 		}
-		initTopRatedShowSwiper();
-	});
-};
-
-const initTopRatedShowSwiper = () => {
-	new Swiper('.top-rated-shows-list .swiper', {
-		slidesPerView: 6,
-		spaceBetween: 20,
-		navigation: {
-			nextEl: '.swiper-button-next',
-			prevEl: '.swiper-button-prev',
-		},
-		breakpoints: {
-			0: {
-				slidesPerView: 1,
-				spaceBetween: 0,
-			},
-			200: {
-				slidesPerView: 2,
-				spaceBetween: 5,
-			},
-			300: {
-				slidesPerView: 3,
-				spaceBetween: 8,
-			},
-			600: {
-				slidesPerView: 4,
-				spaceBetween: 10,
-			},
-			768: {
-				slidesPerView: 5,
-				spaceBetween: 15,
-			},
-
-			1000: {
-				slidesPerView: 6,
-				spaceBetween: 20,
-			},
-		},
+		contentSwiper();
 	});
 };
 
