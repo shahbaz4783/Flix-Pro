@@ -605,9 +605,9 @@ const showDetails = async () => {
 							.join('')}</p>
 			</div>
             <div><p>${movie.overview}</p></div>
-			<div class="finance">
-	   		 <p class="info">Seasons: ${movie.number_of_seasons}</p>
-	    	<p class="info">Episodes: ${movie.number_of_episodes}</p>
+			<div class="seasons">
+	   		 <p>Seasons:<span> ${(movie.number_of_seasons)}</span></p>
+	    	<p>Episodes:<span> ${movie.number_of_episodes}</span></p>
 		</div>
 		</div>
 		
@@ -705,30 +705,31 @@ if (crew.length > 0) {
 	document.querySelector('.companies-list').append(production);
 
 	// Display Similar Shows
-	const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+	results.forEach((movie) => {
+		const releaseDate = new Date(movie.release_date).getFullYear();
 
-	results.forEach((show) => {
-		const releaseDate = new Date(show.first_air_date);
-		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-			'default',
-			{ month: 'short' }
-		)} ${releaseDate.getFullYear()}`;
+		const similarMovies = document.createElement('div');
+		similarMovies.classList.add('swiper-slide');
+		similarMovies.innerHTML = `
 
-		const similarShows = document.createElement('div');
-		similarShows.classList.add('swiper-slide');
-		similarShows.innerHTML = `
-
-        <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
-        <div class="similar-show-content">
-        <span class="movie-title">${show.name}</span>
-        <p class="movie-description">Released: ${formattedDate}</p>
-        <a class="movie-details" href="show-detail.html?id=${show.id}">Details</a>
-       </div>
-    
-    `;
+            <img class="poster" src="https://image.tmdb.org/t/p/w500${
+							movie.poster_path
+						}">
+            <div class="similar-movie-content">
+            <span class="movie-title">${movie.title}</span>
+            <p class="movie-description">${
+							movie.release_date ? releaseDate : ''
+						}</p>
+            <a class="movie-details" href="movie-detail.html?id=${
+							movie.id
+						}">Details</a>
+           </div>
+        
+        `;
 		document
-			.querySelector('.simiar-shows .swiper-wrapper')
-			.append(similarShows);
+			.querySelector('.simiar-shows-list .swiper-wrapper')
+			.append(similarMovies);
+
 		contentSwiper();
 	});
 };

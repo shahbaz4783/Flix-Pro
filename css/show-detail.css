@@ -17,6 +17,19 @@
     margin-bottom: 20px;
 }
 
+.seasons{
+    margin: 0 20px;
+}
+
+.seasons p{
+    color: gray;
+}
+
+.seasons span{
+    color: aliceblue;
+    font-size: 1.3rem;
+}
+
 
 
 .simiar-shows{
