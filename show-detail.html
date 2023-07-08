@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="/css/movie-detail.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/nav.css">
+    <link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+		/>
 
 </head>
 <body>
@@ -43,19 +47,55 @@
 
 <main>
     <section>
-        <article class="display-details"></article>
-    </section>
-
-    <section>
-        <article class="simiar-shows content">
+        <article class="display-details">
         </article>
     </section>
+
+    <section class="casting">
+        <h1>Cast</h1>
+        <article class="cast-list content">
+            <div class="swiper">
+                <div class="swiper-wrapper"></div>
+            </div>
+        </article>
+    </section>
+
+    <section class="crew">
+        <article class="crew-list content">
+            <h1>Crew</h1>
+            <div class="swiper">
+                <div class="swiper-wrapper"></div>
+            </div>
+        </article>
+    </section>
+
+    <section class="production">
+        <article class="companies-list">
+            <div class="swiper">
+                <div class="swiper-wrapper"></div>
+            </div>
+        </article>
+    </section>
+    
+
+    <section class="similar-shows">
+        <h1>Similar Shows</h1>
+        <article class="simiar-movies-list content">
+            <div class="swiper">
+                <div class="swiper-wrapper"></div>
+                <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+            </div>
+        </article>
+    </section>
+
     
     <footer id="footer"></footer>
 </main>
 
 
     <!-- JS Links -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="/js/script.js"></script>
     <script src="/js/template.js"></script>
 </body>

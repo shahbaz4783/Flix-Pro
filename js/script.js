@@ -466,25 +466,31 @@ cast.forEach((castMember) => {
     contentSwiper();
 });
 
+const crew = credits.crew;
 
+crew.forEach((crewMember) => {
+	
+    const crew = document.createElement('div');
+    crew.classList.add('swiper-slide');
 
-
-	// Crew
-	const crew = document.createElement('div');
-	crew.classList.add('swiper-slide');
-
-	crew.innerHTML = `
-	<div class="crew">
-	<img src="${
-		credits.crew.find((member) => member.job === 'Director').profile_path
-			? `https://image.tmdb.org/t/p/w200${
-					credits.crew.find((member) => member.job === 'Director').profile_path
-			  }`
-			: '../assets/no-people.png'}">		
-	<p>${credits.crew.find((member) => member.job === 'Director').name}</p>
-	</div>
-`;
-document.querySelector('.crew-list .swiper-wrapper').append(crew);
+    crew.innerHTML = `
+    <div class="cast">
+        <ul>
+            <div class="cast-info">
+                <img src="${
+                    crewMember.profile_path
+                        ? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
+                        : '../assets/no-people.png'
+                }">
+                <li>${crewMember.name}</li>
+                <li>${crewMember.job}</li>
+            </div>
+        </ul>
+    </div>
+    `;
+    document.querySelector('.crew-list .swiper-wrapper').append(crew);
+    contentSwiper();
+});
 
 
 
@@ -520,7 +526,7 @@ document.querySelector('.crew-list .swiper-wrapper').append(crew);
 			maximumFractionDigits: 0,
 			maximumFractionDigits: 0,
 		})}</span></p>
-		<p>Collection: <span>${movie.revenue.toLocaleString('en-US', {
+		<p>Revenue: <span>${movie.revenue.toLocaleString('en-US', {
 			style: 'currency',
 			currency: 'USD',
 			maximumFractionDigits: 0,
@@ -562,71 +568,143 @@ document.querySelector('.crew-list .swiper-wrapper').append(crew);
 	});
 };
 
-// Show Details Page
+
+// Show details
 const showDetails = async () => {
 	const showID = window.location.search.split('=')[1];
-	const show = await fetchAPIdata(`tv/${showID}`);
+	const movie = await fetchAPIdata(`tv/${showID}`);
 
-	const releaseDate = new Date(show.first_air_date);
+	const releaseDate = new Date(movie.first_air_date);
 	const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
 		'default',
 		{ month: 'short' }
 	)} ${releaseDate.getFullYear()}`;
 
 	const credits = await fetchAPIdata(`tv/${showID}/credits`);
-	const cast = credits.cast.slice(0, 5);
-
 	const details = document.createElement('div');
 	details.innerHTML = `
-    <div class="images">
-    <img class="detail-poster" src="https://image.tmdb.org/t/p/w500${
-			show.poster_path
-		}" alt="${show.title}">
-     <img class="detail-backdrop" src="https://image.tmdb.org/t/p/original${
-				show.backdrop_path
-			}" alt="${show.title}">
+	<div>
+    <div class="backdrop-img" style="background-image: url('https://image.tmdb.org/t/p/original${
+			movie.backdrop_path
+		}')"></div>
+	
+	<div class="overview">
+    <img class="poster-img" src="https://image.tmdb.org/t/p/w500${
+			movie.poster_path
+		}">
+		<div class="info">
+            <h3>${movie.name}</h3>
+			<div>
+			<p class="rating">${movie.vote_average.toFixed(1)}</p>
 
-        </div>
-        <div class="basic-info">
-        <div>
-            <p class="rating">Rating: ${show.vote_average.toFixed(1)}</p>
             <p class="release">${formattedDate}</p>
-        </div>
-            <div>
-            <p class="genre">${show.genres
+			</div>
+			<div class="genre">
+            <p>${movie.genres
 							.map((genre) => `<li>${genre.name}</li>`)
 							.join('')}</p>
-            </div>
+			</div>
+            <div><p>${movie.overview}</p></div>
+			<div class="finance">
+	   		 <p class="info">Seasons: ${movie.number_of_seasons}</p>
+	    	<p class="info">Episodes: ${movie.number_of_episodes}</p>
+		</div>
+		</div>
+		
         </div>
-        <div class="overview">
-            <h3>${show.name}</h3>
-            <p class="info">${show.overview}</p>
-        </div>
-        <div class="finance">
-                <p class="info">Total Seasons: ${show.number_of_seasons}</p>
-                <p class="info">Total Episodes: ${show.number_of_episodes}</p>
-        </div>
-
-
-        <div class="cast">
-      <h3>Cast</h3>
-      <ul>
-        ${cast.map((castMember) => `<li>${castMember.name}</li>`).join('')}
-      </ul>
-    </div>
-
-    <div class="crew">
-
-    <p class="production"> Production
-    ${show.production_companies
-			.map((company) => `<li>${company.name}</li>`)
-			.join('')}
-    </p>
-</div>
     `;
+
 	document.querySelector('.display-details').append(details);
 
-	// Diaplay Similar Shows
+
+// Display Actors
+const cast = credits.cast;
+if (cast.length > 0) {
+  cast.forEach((castMember) => {
+    const casts = document.createElement('div');
+    casts.classList.add('swiper-slide');
+
+    casts.innerHTML = `
+    <div class="cast">
+        <ul>
+            <div class="cast-info">
+                <img src="${
+                  castMember.profile_path
+                    ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+                    : '../assets/no-people.png'
+                }">
+                <li>${castMember.name}</li>
+                <li>${castMember.character}</li>
+            </div>
+        </ul>
+    </div>
+    `;
+    document.querySelector('.cast-list .swiper-wrapper').append(casts);
+    contentSwiper();
+  });
+} else {
+  document.querySelector('.casting').style.display = 'none';
+}
+
+const crew = credits.crew;
+if (crew.length > 0) {
+  crew.forEach((crewMember) => {
+    const crew = document.createElement('div');
+    crew.classList.add('swiper-slide');
+
+    crew.innerHTML = `
+    <div class="cast">
+        <ul>
+            <div class="cast-info">
+                <img src="${
+                  crewMember.profile_path
+                    ? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
+                    : '../assets/no-people.png'
+                }">
+                <li>${crewMember.name}</li>
+                <li>${crewMember.job}</li>
+            </div>
+        </ul>
+    </div>
+    `;
+    document.querySelector('.crew-list .swiper-wrapper').append(crew);
+    contentSwiper();
+  });
+} else {
+  document.querySelector('.crew').style.display = 'none';
+}
+
+
+
+
+	// Production and Finance
+	const production = document.createElement('div');
+	production.innerHTML = `
+	<div>   
+	 <div class="production-list">
+	 <p class="production">Production</p>
+	 <ul>
+		 ${movie.production_companies
+				.map(
+					(company) => `
+				 <li class="lists">
+					 <img class="production-img" src="${
+							company.logo_path
+								? `https://image.tmdb.org/t/p/w200${company.logo_path}`
+								: ''
+						}">
+					 ${company.logo_path ? '' : `<p>${company.name}</p>`}
+				 </li>`
+				)
+				.join('')}
+	 </ul>
+ </div>
+	</div>
+	`;
+
+	document.querySelector('.companies-list').append(production);
+
+	// Display Similar Shows
 	const { results } = await fetchAPIdata(`tv/${showID}/similar`);
 
 	results.forEach((show) => {
@@ -654,6 +732,7 @@ const showDetails = async () => {
 		contentSwiper();
 	});
 };
+
 
 // Search Movie and Shows Function
 
