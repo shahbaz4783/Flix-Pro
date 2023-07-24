@@ -1,0 +1,123 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+header {
+	display: flex;
+	height: 8vh;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	position: fixed;
+	z-index: 10;
+	width: 100vw;
+	transition: background-color 0.4s ease;
+	background-color: transparent;
+	margin-right: 20px;
+}
+
+.background {
+	background-color: #181e27;
+}
+
+#logo p {
+	color: red;
+	font-size: 2rem;
+	margin-left: 2rem;
+	font-weight: bolder;
+}
+
+header div:last-child {
+	display: flex;
+}
+
+nav ul {
+	display: flex;
+}
+
+nav li {
+	list-style: none;
+	display: flex;
+	justify-content: space-evenly;
+}
+
+nav a {
+	text-decoration: none;
+	margin: 20px;
+	color: white;
+}
+
+/* search */
+
+::placeholder {
+	color: #7300c0;
+	font-size: 0.8rem;
+}
+
+#search-input:focus,
+#search-input:hover {
+	outline: none;
+	border-color: rgba(234, 76, 137, 0.4);
+	background-color: #fff;
+	box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+}
+
+.container {
+	position: relative;
+	--size-button: 40px;
+	display: flex;
+	align-items: center;
+}
+
+.search-form {
+	display: flex;
+	align-items: center;
+}
+
+.input {
+	padding-left: var(--size-button);
+	height: var(--size-button);
+	font-size: 15px;
+	border: none;
+	color: #7300c0;
+	outline: none;
+	width: var(--size-button);
+	transition: all ease 0.3s;
+	background-color: #30a9c6;
+	box-shadow: 1.5px 1.5px 3px #0e0e0e, -1.5px -1.5px 3px rgb(95 94 94 / 25%),
+		inset 0px 0px 0px #0e0e0e, inset 0px -0px 0px #5f5e5e;
+	border-radius: 50px;
+	cursor: pointer;
+}
+
+.input:focus,
+.input:not(:invalid) {
+	width: 200px;
+	cursor: text;
+	box-shadow: 0px 0px 0px #0e0e0e, 0px 0px 0px rgb(95 94 94 / 25%),
+		inset 1.5px 1.5px 3px #0e0e0e, inset -1.5px -1.5px 3px #5f5e5e;
+}
+
+.input:focus + .icon,
+.input:not(:invalid) + .icon {
+	pointer-events: all;
+	cursor: pointer;
+}
+
+.container .icon {
+	position: absolute;
+	width: var(--size-button);
+	height: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	display: flex;
+	align-items: center;
+}
+
+.container .icon img {
+	display: block;
+	margin: auto;
+}

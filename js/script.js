@@ -749,7 +749,6 @@ const searchAPIdata = async () => {
 	);
 
 	const data = await resonse.json();
-
 	// hideLoader();
 	// showContent();
 	return data;
