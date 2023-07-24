@@ -1,9 +1,9 @@
 // Show-Hide Content
 const showLoader = () => {
-	document.querySelector('.loading').style.display = 'block';
+	document.querySelector('.loading-section').style.display = 'flex';
 };
 const hideLoader = () => {
-	document.querySelector('.loading').style.display = 'none';
+	document.querySelector('.loading-section').style.display = 'none';
 };
 const showContent = () => {
 	document.querySelector('main').style.display = 'block';
@@ -24,16 +24,28 @@ const global = {
 
 // Fetch Data From TMBD API
 const fetchAPIdata = async (endpoint) => {
-	const API_KEY = '47152db3059591a245fa638f38ce9f76';
-	const API_URL = 'https://api.themoviedb.org/3/';
+	try {
+		hideContent()
+		showLoader();
 
-	const resonse = await fetch(
-		`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
-	);
+		const API_KEY = '47152db3059591a245fa638f38ce9f76';
+		const API_URL = 'https://api.themoviedb.org/3/';
 
-	const data = await resonse.json();
-	return data;
+		const response = await fetch(
+			`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`
+		);
+
+		const data = await response.json();
+		
+		hideLoader();
+		showContent();
+
+		return data;
+	} catch (error) {
+		console.error('Error fetching data:', error);
+	}
 };
+
 
 // Sliders
 const carouselSwiper = () => {
@@ -738,21 +750,27 @@ if (crew.length > 0) {
 // Search Movie and Shows Function
 
 const searchAPIdata = async () => {
-	const API_KEY = '47152db3059591a245fa638f38ce9f76';
-	const API_URL = 'https://api.themoviedb.org/3/';
+	try {
+		showLoader();
+		hideContent();
+		const API_KEY = '47152db3059591a245fa638f38ce9f76';
+		const API_URL = 'https://api.themoviedb.org/3/';
 
-	// showLoader();
-	// hideContent();
+		const response = await fetch(
+			`${API_URL}search/multi?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+		);
 
-	const resonse = await fetch(
-		`${API_URL}search/multi?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
-	);
+		const data = await response.json();
+		
+		// hideLoader();
+		showContent();
 
-	const data = await resonse.json();
-	// hideLoader();
-	// showContent();
-	return data;
+		return data;
+	} catch (error) {
+		console.error('Error fetching data:', error);
+	}
 };
+
 
 const search = async () => {
 	const queryString = window.location.search;
@@ -779,7 +797,7 @@ const displaySearchResult = (results) => {
 	results.forEach((result) => {
 		const posterPath = result.poster_path
 			? `https://image.tmdb.org/t/p/w500${result.poster_path}`
-			: `<img src="../assets/no-image.jpg" alt="${movie.title}"/>`;
+			: `<img src="../assets/no-image.jpg" alt="${result.title}"/>`;
 
 		const cardContainer = document.createElement('div');
 		cardContainer.classList.add('result-container');

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flix Pro</title>
-    <link rel="stylesheet" href="/css/movie-detail.css">
+    <link rel="stylesheet" href="/css/movie-details.css">
     <link rel="stylesheet" href="/css/nav.css">
     <link rel="stylesheet" href="/css/search.css">
 </head>
@@ -31,16 +31,22 @@
         </div>
     </header>
 
-    <section class="search-result">
-
-        <article class="search-list">
-            <div class="swiper">
-                <div class="swiper-wrapper"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
-            </div>
-        </article>
+	<section class="loading-section">
+        <div class="loader"></div>
     </section>
+
+    <main>
+
+        <section class="search-result">
+            <article class="search-list">
+                <div class="swiper">
+                    <div class="swiper-wrapper"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </article>
+        </section>
+    </main>
 
 
 <footer id="footer"></footer>
