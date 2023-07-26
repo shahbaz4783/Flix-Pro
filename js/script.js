@@ -25,7 +25,7 @@ const global = {
 // Fetch Data From TMBD API
 const fetchAPIdata = async (endpoint) => {
 	try {
-		hideContent()
+		hideContent();
 		showLoader();
 
 		const API_KEY = '47152db3059591a245fa638f38ce9f76';
@@ -36,7 +36,7 @@ const fetchAPIdata = async (endpoint) => {
 		);
 
 		const data = await response.json();
-		
+
 		hideLoader();
 		showContent();
 
@@ -45,7 +45,6 @@ const fetchAPIdata = async (endpoint) => {
 		console.error('Error fetching data:', error);
 	}
 };
-
 
 // Sliders
 const carouselSwiper = () => {
@@ -170,34 +169,57 @@ const displayNowPlayingMovies = async () => {
 // display popular movies
 const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
-	let movieCount = 0;
+	const genreResponse = await fetchAPIdata('genre/movie/list');
+	const genres = genreResponse.genres;
 
 	results.forEach((movie) => {
-		if (movieCount < 20) {
-			const releaseDate = new Date(movie.release_date);
-			const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${releaseDate.getFullYear()}`;
+		const releaseDate = new Date(movie.release_date).getFullYear();
 
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('swiper-slide');
-			cardContainer.innerHTML = `
+		const genreNames = movie.genre_ids
+			.map((genreId) => {
+				const genre = genres.find((genre) => genre.id === genreId);
+				return genre ? genre.name : '';
+			})
+			.slice(0, 2);
 
-            <img class="poster" src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
-            <div class="movie-content">
-            <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">Released: ${formattedDate}</p>
-            <a class="movie-details" href="movie-detail.html?id=${movie.id}">Details</a>
-        </div>
-        
+		const cardContainer = document.createElement('div');
+		cardContainer.classList.add('swiper-slide');
 
-        `;
-			document
-				.querySelector('.popular-list .swiper-wrapper')
-				.append(cardContainer);
-			movieCount++;
-		}
+		const posterIMG = document.createElement('img');
+		posterIMG.classList.add('poster');
+		posterIMG.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+
+		const content = document.createElement('div');
+		content.classList.add('movie-content');
+
+		const title = document.createElement('span');
+		title.classList.add('movie-title');
+		title.textContent = `${movie.title}`;
+
+		const genre = document.createElement('p');
+		genre.classList.add('movie-description');
+		genre.textContent = `${genreNames.join(' ')}`;
+		title.textContent = `${movie.title}`;
+
+		const rating = document.createElement('p');
+		rating.classList.add('movie-description');
+		rating.textContent = `${movie.vote_average.toFixed(1)}`;
+
+		const year = document.createElement('p');
+		year.classList.add('movie-description');
+		year.textContent = `${releaseDate}`;
+
+		const details = document.createElement('a');
+		details.classList.add('movie-details');
+		details.href = `movie-detail.html?id=${movie.id}`;
+		details.textContent = `Details`;
+
+		content.append(title, rating, genre, year, details);
+		cardContainer.append(posterIMG, content);
+		document
+			.querySelector('.popular-list .swiper-wrapper')
+			.append(cardContainer);
+
 		contentSwiper();
 	});
 };
@@ -452,59 +474,55 @@ const movieDetails = async () => {
 
 	document.querySelector('.display-details').append(details);
 
+	// Display Actors
+	const cast = credits.cast;
+	cast.forEach((castMember) => {
+		const casts = document.createElement('div');
+		casts.classList.add('swiper-slide');
 
-// Display Actors
-const cast = credits.cast;
-cast.forEach((castMember) => {
-    const casts = document.createElement('div');
-    casts.classList.add('swiper-slide');
-
-    casts.innerHTML = `
+		casts.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
                 <img src="${
-                    castMember.profile_path
-                        ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-                        : '../assets/no-people.png'
-                }">
+									castMember.profile_path
+										? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+										: '../assets/no-people.png'
+								}">
                 <li>${castMember.name}</li>
                 <li>${castMember.character}</li>
             </div>
         </ul>
     </div>
     `;
-    document.querySelector('.cast-list .swiper-wrapper').append(casts);
-    contentSwiper();
-});
+		document.querySelector('.cast-list .swiper-wrapper').append(casts);
+		contentSwiper();
+	});
 
-const crew = credits.crew;
+	const crew = credits.crew;
 
-crew.forEach((crewMember) => {
-	
-    const crew = document.createElement('div');
-    crew.classList.add('swiper-slide');
+	crew.forEach((crewMember) => {
+		const crew = document.createElement('div');
+		crew.classList.add('swiper-slide');
 
-    crew.innerHTML = `
+		crew.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
                 <img src="${
-                    crewMember.profile_path
-                        ? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
-                        : '../assets/no-people.png'
-                }">
+									crewMember.profile_path
+										? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
+										: '../assets/no-people.png'
+								}">
                 <li>${crewMember.name}</li>
                 <li>${crewMember.job}</li>
             </div>
         </ul>
     </div>
     `;
-    document.querySelector('.crew-list .swiper-wrapper').append(crew);
-    contentSwiper();
-});
-
-
+		document.querySelector('.crew-list .swiper-wrapper').append(crew);
+		contentSwiper();
+	});
 
 	// Production and Finance
 	const production = document.createElement('div');
@@ -580,7 +598,6 @@ crew.forEach((crewMember) => {
 	});
 };
 
-
 // Show details
 const showDetails = async () => {
 	const showID = window.location.search.split('=')[1];
@@ -618,7 +635,7 @@ const showDetails = async () => {
 			</div>
             <div><p>${movie.overview}</p></div>
 			<div class="seasons">
-	   		 <p>Seasons:<span> ${(movie.number_of_seasons)}</span></p>
+	   		 <p>Seasons:<span> ${movie.number_of_seasons}</span></p>
 	    	<p>Episodes:<span> ${movie.number_of_episodes}</span></p>
 		</div>
 		</div>
@@ -628,66 +645,62 @@ const showDetails = async () => {
 
 	document.querySelector('.display-details').append(details);
 
+	// Display Actors
+	const cast = credits.cast;
+	if (cast.length > 0) {
+		cast.forEach((castMember) => {
+			const casts = document.createElement('div');
+			casts.classList.add('swiper-slide');
 
-// Display Actors
-const cast = credits.cast;
-if (cast.length > 0) {
-  cast.forEach((castMember) => {
-    const casts = document.createElement('div');
-    casts.classList.add('swiper-slide');
-
-    casts.innerHTML = `
+			casts.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
                 <img src="${
-                  castMember.profile_path
-                    ? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-                    : '../assets/no-people.png'
-                }">
+									castMember.profile_path
+										? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+										: '../assets/no-people.png'
+								}">
                 <li>${castMember.name}</li>
                 <li>${castMember.character}</li>
             </div>
         </ul>
     </div>
     `;
-    document.querySelector('.cast-list .swiper-wrapper').append(casts);
-    contentSwiper();
-  });
-} else {
-  document.querySelector('.casting').style.display = 'none';
-}
+			document.querySelector('.cast-list .swiper-wrapper').append(casts);
+			contentSwiper();
+		});
+	} else {
+		document.querySelector('.casting').style.display = 'none';
+	}
 
-const crew = credits.crew;
-if (crew.length > 0) {
-  crew.forEach((crewMember) => {
-    const crew = document.createElement('div');
-    crew.classList.add('swiper-slide');
+	const crew = credits.crew;
+	if (crew.length > 0) {
+		crew.forEach((crewMember) => {
+			const crew = document.createElement('div');
+			crew.classList.add('swiper-slide');
 
-    crew.innerHTML = `
+			crew.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
                 <img src="${
-                  crewMember.profile_path
-                    ? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
-                    : '../assets/no-people.png'
-                }">
+									crewMember.profile_path
+										? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
+										: '../assets/no-people.png'
+								}">
                 <li>${crewMember.name}</li>
                 <li>${crewMember.job}</li>
             </div>
         </ul>
     </div>
     `;
-    document.querySelector('.crew-list .swiper-wrapper').append(crew);
-    contentSwiper();
-  });
-} else {
-  document.querySelector('.crew').style.display = 'none';
-}
-
-
-
+			document.querySelector('.crew-list .swiper-wrapper').append(crew);
+			contentSwiper();
+		});
+	} else {
+		document.querySelector('.crew').style.display = 'none';
+	}
 
 	// Production and Finance
 	const production = document.createElement('div');
@@ -746,7 +759,6 @@ if (crew.length > 0) {
 	});
 };
 
-
 // Search Movie and Shows Function
 
 const searchAPIdata = async () => {
@@ -761,7 +773,7 @@ const searchAPIdata = async () => {
 		);
 
 		const data = await response.json();
-		
+
 		// hideLoader();
 		showContent();
 
@@ -770,7 +782,6 @@ const searchAPIdata = async () => {
 		console.error('Error fetching data:', error);
 	}
 };
-
 
 const search = async () => {
 	const queryString = window.location.search;
