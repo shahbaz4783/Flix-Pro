@@ -1,0 +1,60 @@
+.backdrop {
+    width: 100%;
+    height: 75vh;
+    opacity: 0.5;
+    object-fit: cover;
+    display: block;
+    margin: auto;
+  }
+  
+  .feature-details {
+    text-decoration: none;
+    color: black;
+    border-radius: 4px;
+    background-color: rgb(171, 228, 122);
+    padding: 0 10px;
+  }
+  
+  .playing-poster {
+    height: 70vh;
+  }
+  
+  .playing-movie-content {
+    display: flex;
+  }
+  
+  .movie-overview {
+    width: 40%;
+    height: auto;
+    position: absolute;
+    bottom: 3rem;
+    left: 5rem;
+  
+    h3 {
+      font-size: 4rem;
+    }
+  }
+  
+  /* Media Queries */
+  @media screen and (max-width: 768px) {
+    .movie-overview {
+      width: auto;
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+  
+      h3 {
+        font-size: 1.3rem;
+        width: 70%;
+      }
+    }
+  
+    .backdrop {
+      height: 90vw;
+    }
+  
+    .swiper .swiper-button-next,
+    .swiper .swiper-button-prev {
+      display: none;
+    }
+  }  

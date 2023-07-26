@@ -1,0 +1,116 @@
+.swiper-slide {
+    position: relative;
+    overflow: hidden;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+  
+    .swiper {
+      &-button-next,
+      &-button-prev {
+        border: 2px solid rgb(52, 127, 207);
+        border-radius: 50%;
+        padding: 30px;
+        background-color: #131313;
+        display: flex;
+  
+        &:hover {
+          background-color: aquamarine;
+          transition: all 0.3s ease;
+        }
+      }
+    }
+  
+    .movie-title {
+      font-weight: bold;
+    }
+  
+    .content-div {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background: red;
+      border-top-left-radius: 20px;
+      transform: translateY(150px);
+      transition: transform 0.25s;
+  
+      &::before {
+        content: '';
+        position: absolute;
+        top: -47px;
+        right: -45px;
+        width: 100px;
+        height: 100px;
+        transform: rotate(-175deg);
+        border-radius: 50%;
+        box-shadow: inset 48px 48px #f2f2f2;
+      }
+    }
+  
+    .movie-title {
+      color: #131313;
+      line-height: 15px;
+    }
+  
+    .movie-subtitle {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+  
+    .movie-description {
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.5s;
+      color: gray;
+    }
+  
+    &:hover {
+      .content-div {
+        transform: translateY(0);
+      }
+  
+      .movie-description {
+        opacity: 1;
+      }
+    }
+  
+    .details {
+      padding: 5px;
+      margin: 10px auto;
+      cursor: pointer;
+    }
+  
+    .movie-details {
+      text-decoration: none;
+      color: black;
+      border-radius: 10px;
+      padding: 0 10px;
+      background-color: rgb(171, 228, 122);
+    }
+  
+    .poster {
+      width: 100%;
+    }
+  }
+  
+  /* Sections */
+  
+  .new-movies,
+  .action,
+  .top-rated,
+  .popular,
+  .upcoming {
+    margin: 20px auto;
+  }
+  
+  .content {
+    display: flex;
+    gap: 30px;
+    width: 95vw;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  

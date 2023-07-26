@@ -138,30 +138,55 @@ const displayNowPlayingMovies = async () => {
 	const genres = genreResponse.genres;
 
 	results.forEach((movie) => {
-		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('swiper-slide');
+		const releaseDate = new Date(movie.release_date).getFullYear();
+
 		const genreNames = movie.genre_ids
 			.map((genreId) => {
 				const genre = genres.find((genre) => genre.id === genreId);
 				return genre ? genre.name : '';
 			})
-			.slice(0, 3);
-		cardContainer.innerHTML = `
-        <img class="poster" src="https://image.tmdb.org/t/p/original${
-					movie.poster_path
-				}" alt="${movie.title}">
-        <div class="movie-content">
-          <h3 class="movie-title">${movie.title}</h3>
-          <p>Rating: ${movie.vote_average.toFixed(1)}</p>
-          <p>${genreNames.join(', ')}</p>
-          <a class="feature-details" href="movie-detail.html?id=${
-						movie.id
-					}">Details</a>
-        </div>
-      `;
+			.slice(0, 2);
+
+		// creating elements
+		const cardContainer = document.createElement('div');
+		const posterIMG = document.createElement('img');
+		const content = document.createElement('div');
+		const title = document.createElement('span');
+		const genre = document.createElement('p');
+		const rating = document.createElement('p');
+		const year = document.createElement('p');
+		const details = document.createElement('a');
+
+		// adding class
+		cardContainer.classList.add('swiper-slide');
+		content.classList.add('content-div');
+		title.classList.add('movie-title');
+		posterIMG.classList.add('poster');
+		genre.classList.add('movie-description');
+		rating.classList.add('movie-description');
+		year.classList.add('movie-description');
+		details.classList.add('movie-details');
+
+		// adding attributes
+		posterIMG.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+		details.href = `movie-detail.html?id=${movie.id}`;
+
+		// adding text content
+		title.textContent = `${movie.title}`;
+		genre.textContent = `${genreNames.join(' ')}`;
+		title.textContent = `${movie.title}`;
+		rating.textContent = `${movie.vote_average.toFixed(1)}`;
+		year.textContent = `${releaseDate}`;
+		details.textContent = 'Details';
+
+		// append elements
+		content.append(title, rating, genre, year, details);
+		cardContainer.append(posterIMG, content);
+
 		document
 			.querySelector('.now-playing-list .swiper-wrapper')
 			.append(cardContainer);
+
 		contentSwiper();
 	});
 };
@@ -182,38 +207,39 @@ const displayPopularMovies = async () => {
 			})
 			.slice(0, 2);
 
+		// creating elements
 		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('swiper-slide');
-
 		const posterIMG = document.createElement('img');
-		posterIMG.classList.add('poster');
-		posterIMG.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-
 		const content = document.createElement('div');
-		content.classList.add('movie-content');
-
 		const title = document.createElement('span');
-		title.classList.add('movie-title');
-		title.textContent = `${movie.title}`;
-
 		const genre = document.createElement('p');
+		const rating = document.createElement('p');
+		const year = document.createElement('p');
+		const details = document.createElement('a');
+
+		// adding class
+		cardContainer.classList.add('swiper-slide');
+		content.classList.add('content-div');
+		title.classList.add('movie-title');
+		posterIMG.classList.add('poster');
 		genre.classList.add('movie-description');
+		rating.classList.add('movie-description');
+		year.classList.add('movie-description');
+		details.classList.add('movie-details');
+
+		// adding attributes
+		posterIMG.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+		details.href = `movie-detail.html?id=${movie.id}`;
+
+		// adding text content
+		title.textContent = `${movie.title}`;
 		genre.textContent = `${genreNames.join(' ')}`;
 		title.textContent = `${movie.title}`;
-
-		const rating = document.createElement('p');
-		rating.classList.add('movie-description');
 		rating.textContent = `${movie.vote_average.toFixed(1)}`;
-
-		const year = document.createElement('p');
-		year.classList.add('movie-description');
 		year.textContent = `${releaseDate}`;
+		details.textContent = 'Details';
 
-		const details = document.createElement('a');
-		details.classList.add('movie-details');
-		details.href = `movie-detail.html?id=${movie.id}`;
-		details.textContent = `Details`;
-
+		// append elements
 		content.append(title, rating, genre, year, details);
 		cardContainer.append(posterIMG, content);
 		document
