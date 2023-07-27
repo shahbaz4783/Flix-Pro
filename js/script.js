@@ -96,134 +96,158 @@ const contentSwiper = () => {
 	});
 };
 
-// Display Trending Movies in slide
-const displayTrendingMovies = async () => {
-	const timeWindow = 'day';
-	const { results } = await fetchAPIdata(`trending/movie/${timeWindow}`);
-	const genreResponse = await fetchAPIdata('genre/movie/list');
-	const genres = genreResponse.genres;
-
-	results.forEach((movie) => {
-		const releaseDate = new Date(movie.release_date).getFullYear();
-
-		const genreNames = movie.genre_ids
-			.map((genreId) => {
-				const genre = genres.find((genre) => genre.id === genreId);
-				return genre ? genre.name : '';
-			})
-			.slice(0, 3);
-
-			// creating elements
-		const cardContainer = document.createElement('div');
-		const posterImg = document.createElement('img');
-		const content = document.createElement('div');
-		const title = document.createElement('h3');
-		const genre = document.createElement('p');
-		const rating = document.createElement('p');
-		const year = document.createElement('p');
-		const details = document.createElement('a');
-
-			// adding class
-		cardContainer.classList.add('swiper-slide');
-		content.classList.add('movie-overview');
-		posterImg.classList.add('backdrop');
-		title.classList.add('title');
-		genre.classList.add('genre');
-		rating.classList.add('rating');
-		year.classList.add('release-year');
-		details.classList.add('movie-details');
-
-		// adding attributes
-		posterImg.src = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
-		details.href = `movie-detail.html?id=${movie.id}`;
-
-		// adding text content
-		title.textContent = `${movie.title}`;
-		genre.textContent = `${genreNames.join(' ')}`;
-		rating.textContent = `${movie.vote_average.toFixed(1)}`;
-		year.textContent = `${releaseDate}`;
-		details.textContent = 'Details';
-
-		// append elements
-		content.append(title, rating, genre, year, details);
-		cardContainer.append(posterImg, content);
-
-		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
-		carouselSwiper();
-	});
-};
-
-// Function to create movie elements
-const createCard = (movie, genres, listClass) => {
-	const releaseDate = new Date(movie.release_date).getFullYear();
-
-	const genreNames = movie.genre_ids
-		.map((genreId) => {
-			const genre = genres.find((genre) => genre.id === genreId);
-			return genre ? genre.name : '';
-		})
-		.slice(0, 2);
-
-	// creating elements
+const createCarousel = (data, genres, listClass, isMovie) => {
+	const genreNames = data.genre_ids
+	  .map((genreId) => {
+		const genre = genres.find((genre) => genre.id === genreId);
+		return genre ? genre.name : '';
+	  })
+	  .slice(0, 3);
+  
 	const cardContainer = document.createElement('div');
-	const posterIMG = document.createElement('img');
+	cardContainer.classList.add('swiper-slide');
+	const posterImg = document.createElement('img');
 	const content = document.createElement('div');
-	const title = document.createElement('span');
+	const title = document.createElement('h3');
 	const genre = document.createElement('p');
 	const rating = document.createElement('p');
 	const year = document.createElement('p');
 	const details = document.createElement('a');
-
+  
+	cardContainer.classList.add('swiper-slide');
+	content.classList.add('movie-overview');
+	posterImg.classList.add('backdrop');
+	title.classList.add('title');
+	genre.classList.add('genre');
+	rating.classList.add('rating');
+	year.classList.add('release-year');
+	details.classList.add('movie-details');
+  
+	posterImg.src = isMovie
+	  ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+	  : `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+	details.href = isMovie
+	  ? `movie-detail.html?id=${data.id}`
+	  : `show-detail.html?id=${data.id}`;
+  
+	title.textContent = isMovie ? data.title : data.name;
+	genre.textContent = `${genreNames.join(' ')}`;
+	rating.textContent = `${data.vote_average.toFixed(1)}`;
+	year.textContent = isMovie
+	  ? `${new Date(data.release_date).getFullYear()}`
+	  : `Rating: ${data.vote_average.toFixed(1)}`;
+	details.textContent = 'Details';
+  
+	content.append(title, rating, genre, year, details);
+	cardContainer.append(posterImg, content);
+  
+	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
+	carouselSwiper();
+  };
+  
+  // Display Trending Movies in slide
+  const displayTrendingMovies = async () => {
+	const timeWindow = 'day';
+	const { results } = await fetchAPIdata(`trending/movie/${timeWindow}`);
+	const genreResponse = await fetchAPIdata('genre/movie/list');
+	const genres = genreResponse.genres;
+  
+	results.forEach((movie) => {
+		createCarousel(movie, genres, 'featured', true);
+	});
+  };
+  
+  // Display Trending Shows
+  const displayTrendingShows = async () => {
+	const timeWindow = 'day';
+	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
+	const genreResponse = await fetchAPIdata('genre/tv/list');
+	const genres = genreResponse.genres;
+  
+	results.forEach((show) => {
+		createCarousel(show, genres, 'featured', false);
+	});
+  };
+  
+const createCard = (data, genres, listClass, isMovie) => {
+	const releaseDate = new Date(data.release_date).getFullYear();
+  
+	const genreNames = data.genre_ids
+	  .map((genreId) => {
+		const genre = genres.find((genre) => genre.id === genreId);
+		return genre ? genre.name : '';
+	  })
+	  .slice(0, 2);
+  
+	// creating elements
+	const cardContainer = document.createElement('div');
+	const poster = document.createElement('img');
+	const content = document.createElement('div');
+	const title = document.createElement('h3');
+	const genre = document.createElement('p');
+	const rating = document.createElement('p');
+	const year = document.createElement('p');
+	const details = document.createElement('a');
+  
 	// adding class
 	cardContainer.classList.add('swiper-slide');
-	posterIMG.classList.add('poster');
+	poster.classList.add('poster');
 	content.classList.add('content-div');
 	title.classList.add('title');
 	genre.classList.add('genre');
 	rating.classList.add('rating');
 	year.classList.add('release-year');
 	details.classList.add('movie-details');
-
+  
 	// adding attributes
-	posterIMG.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-	details.href = `movie-detail.html?id=${movie.id}`;
-
+	poster.src = isMovie
+	  ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+	  : `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+	details.href = isMovie
+	  ? `movie-detail.html?id=${data.id}`
+	  : `show-detail.html?id=${data.id}`;
+  
 	// adding text content
-	title.textContent = `${movie.title}`;
+	title.textContent = isMovie ? data.title : data.name;
 	genre.textContent = `${genreNames.join(' ')}`;
-	rating.textContent = `${movie.vote_average.toFixed(1)}`;
-	year.textContent = `${releaseDate}`;
+	rating.textContent = `${data.vote_average.toFixed(1)}`;
+	year.textContent = isMovie
+	  ? `${releaseDate}`
+	  : `First Air Date: ${data.first_air_date}`;
 	details.textContent = 'Details';
-
+  
 	// append elements
 	content.append(title, rating, genre, year, details);
-	cardContainer.append(posterIMG, content);
+	cardContainer.append(poster, content);
 	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
-
+  
 	contentSwiper();
-};
-
-// Now Playing in Theaters
-const displayNowPlayingMovies = async () => {
+  };
+  
+  // Rest of your code...
+  
+  // Now Playing in Theaters
+  const displayNowPlayingMovies = async () => {
 	const { results } = await fetchAPIdata('movie/now_playing');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-
+  
 	results.forEach((movie) => {
-		createCard(movie, genres, 'now-playing-list');
+	  createCard(movie, genres, 'now-playing-list', true);
 	});
-};
-
-// Display popular movies
-const displayPopularMovies = async () => {
+  };
+  
+  // Display popular movies
+  const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-
+  
 	results.forEach((movie) => {
-		createCard(movie, genres, 'popular-list');
+	  createCard(movie, genres, 'popular-list', true);
 	});
-};
+  };
+  
 
 
 // display top rated movies
@@ -233,7 +257,7 @@ const displayTopRatedMovies = async () => {
 	const genres = genreResponse.genres;
 
 	results.forEach((movie) => {
-		createCard(movie, genres, 'top-rated-list');
+		createCard(movie, genres, 'top-rated-list', true);
 	});
 };
 
@@ -244,7 +268,7 @@ const displayUpcomingMovies = async () => {
 	const genres = genreResponse.genres;
 
 	results.forEach((movie) => {
-		createCard(movie, genres, 'upcoming-list');
+		createCard(movie, genres, 'upcoming-list', true);
 	});
 };
 
@@ -256,108 +280,29 @@ const displayActionMovies = async () => {
   	const { results } = await fetchAPIdata('discover/movie', { with_genres: 28 });
   
 	results.forEach((movie) => {
-	  createCard(movie, genres, 'action-list');
+	  createCard(movie, genres, 'action-list', true);
 	});
   };
-  
-
-// Display Trending Shows
-const displayTrendingShows = async () => {
-	const timeWindow = 'day';
-	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
-	const genreResponse = await fetchAPIdata('genre/tv/list');
-	const genres = genreResponse.genres;
-
-	results.forEach((show) => {
-		const cardContainer = document.createElement('div');
-		cardContainer.classList.add('swiper-slide');
-		const genreNames = show.genre_ids
-			.map((genreId) => {
-				const genre = genres.find((genre) => genre.id === genreId);
-				return genre ? genre.name : '';
-			})
-			.slice(0, 3);
-		cardContainer.innerHTML = `
-        <img class="backdrop" src="https://image.tmdb.org/t/p/original${
-					show.backdrop_path
-				}" alt="${show.name}">
-        <div class="movie-overview">
-          <h3>${show.name}</h3>
-          <p>Rating: ${show.vote_average.toFixed(1)}</p>
-          <p>${genreNames.join(', ')}</p>
-          <a class="feature-details" href="show-detail.html?id=${
-						show.id
-					}">Details</a>
-            </div>
-        </div>
-      `;
-		document.querySelector('.featured .swiper-wrapper').append(cardContainer);
-		carouselSwiper();
-	});
-};
 
 // display popular Shows
 const displayPopularShows = async () => {
 	const { results } = await fetchAPIdata('tv/popular');
-	let showCount = 0;
-
-	results.forEach((show) => {
-		if (showCount < 14) {
-			const airDate = new Date(show.first_air_date);
-			const formattedDate = `${airDate.getDate()} ${airDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${airDate.getFullYear()}`;
-
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('swiper-slide');
-			cardContainer.innerHTML = `
-           <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
-            <div class="movie-content">
-            <p>${show.name}</p>
-            <p>${formattedDate}</p>
-            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
-            </div>
-        `;
-			document
-				.querySelector('.popular-shows-list .swiper-wrapper')
-				.append(cardContainer);
-			showCount++;
-		}
-		contentSwiper();
+	const genreResponse = await fetchAPIdata('genre/movie/list');
+	const genres = genreResponse.genres;
+  
+	results.forEach((movie) => {
+	  createCard(movie, genres, 'popular-shows-list', false);
 	});
 };
 
 // display top rated Shows
 const displayTopRatedShows = async () => {
 	const { results } = await fetchAPIdata('tv/top_rated');
-	let showCount = 0;
-
-	results.forEach((show) => {
-		if (showCount < 14) {
-			const airDate = new Date(show.first_air_date);
-			const formattedDate = `${airDate.getDate()} ${airDate.toLocaleString(
-				'default',
-				{ month: 'short' }
-			)} ${airDate.getFullYear()}`;
-
-			const cardContainer = document.createElement('div');
-			cardContainer.classList.add('swiper-slide');
-			cardContainer.innerHTML = `
-           <img class="poster" src="https://image.tmdb.org/t/p/w500${show.poster_path}" alt="${show.title}">
-            <div class="movie-content">
-            <p>${show.name}</p>
-            <p>${formattedDate}</p>
-            <a class="show-details" href="show-detail.html?id=${show.id}">Details</a>
-
-            </div>
-        `;
-			document
-				.querySelector('.top-rated-shows-list .swiper-wrapper')
-				.append(cardContainer);
-			showCount++;
-		}
-		contentSwiper();
+	const genreResponse = await fetchAPIdata('genre/movie/list');
+	const genres = genreResponse.genres;
+  
+	results.forEach((movie) => {
+	  createCard(movie, genres, 'top-rated-shows-list', false);
 	});
 };
 
