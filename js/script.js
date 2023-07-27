@@ -224,7 +224,6 @@ const createCard = (data, genres, listClass, isMovie) => {
 	contentSwiper();
   };
   
-  // Rest of your code...
   
   // Now Playing in Theaters
   const displayNowPlayingMovies = async () => {
@@ -651,7 +650,7 @@ const searchAPIdata = async () => {
 
 		const data = await response.json();
 
-		// hideLoader();
+		hideLoader();
 		showContent();
 
 		return data;
