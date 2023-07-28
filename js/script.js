@@ -96,14 +96,15 @@ const contentSwiper = () => {
 	});
 };
 
+// Create Carousel Function
 const createCarousel = (data, genres, listClass, isMovie) => {
 	const genreNames = data.genre_ids
-	  .map((genreId) => {
-		const genre = genres.find((genre) => genre.id === genreId);
-		return genre ? genre.name : '';
-	  })
-	  .slice(0, 3);
-  
+		.map((genreId) => {
+			const genre = genres.find((genre) => genre.id === genreId);
+			return genre ? genre.name : '';
+		})
+		.slice(0, 3);
+
 	const cardContainer = document.createElement('div');
 	cardContainer.classList.add('swiper-slide');
 	const posterImg = document.createElement('img');
@@ -113,72 +114,73 @@ const createCarousel = (data, genres, listClass, isMovie) => {
 	const rating = document.createElement('p');
 	const year = document.createElement('p');
 	const details = document.createElement('a');
-  
+
 	cardContainer.classList.add('swiper-slide');
 	content.classList.add('movie-overview');
-	posterImg.classList.add('backdrop');
-	title.classList.add('title');
-	genre.classList.add('genre');
-	rating.classList.add('rating');
-	year.classList.add('release-year');
+	posterImg.classList.add('carousel-backdrop');
+	title.classList.add('carousel-title');
+	genre.classList.add('carousel-genre');
+	rating.classList.add('carousel-rating');
+	year.classList.add('carousel-release-year');
 	details.classList.add('movie-details');
-  
+
 	posterImg.src = isMovie
-	  ? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
-	  : `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+		? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
+		: `https://image.tmdb.org/t/p/w500${data.backdrop_path}`;
 	details.href = isMovie
-	  ? `movie-detail.html?id=${data.id}`
-	  : `show-detail.html?id=${data.id}`;
-  
+		? `movie-detail.html?id=${data.id}`
+		: `show-detail.html?id=${data.id}`;
+
 	title.textContent = isMovie ? data.title : data.name;
 	genre.textContent = `${genreNames.join(' ')}`;
 	rating.textContent = `${data.vote_average.toFixed(1)}`;
 	year.textContent = isMovie
-	  ? `${new Date(data.release_date).getFullYear()}`
-	  : `Rating: ${data.vote_average.toFixed(1)}`;
+		? `${new Date(data.release_date).getFullYear()}`
+		: `Rating: ${data.vote_average.toFixed(1)}`;
 	details.textContent = 'Details';
-  
+
 	content.append(title, rating, genre, year, details);
 	cardContainer.append(posterImg, content);
-  
+
 	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
 	carouselSwiper();
-  };
-  
-  // Display Trending Movies in slide
-  const displayTrendingMovies = async () => {
+};
+
+// Display Trending Movies in slide
+const displayTrendingMovies = async () => {
 	const timeWindow = 'day';
 	const { results } = await fetchAPIdata(`trending/movie/${timeWindow}`);
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  
+
 	results.forEach((movie) => {
 		createCarousel(movie, genres, 'featured', true);
 	});
-  };
-  
-  // Display Trending Shows
-  const displayTrendingShows = async () => {
+};
+
+// Display Trending Shows
+const displayTrendingShows = async () => {
 	const timeWindow = 'day';
 	const { results } = await fetchAPIdata(`trending/tv/${timeWindow}`);
 	const genreResponse = await fetchAPIdata('genre/tv/list');
 	const genres = genreResponse.genres;
-  
+
 	results.forEach((show) => {
 		createCarousel(show, genres, 'featured', false);
 	});
-  };
-  
+};
+
+// Create Card Function
 const createCard = (data, genres, listClass, isMovie) => {
 	const releaseDate = new Date(data.release_date).getFullYear();
-  
+
 	const genreNames = data.genre_ids
-	  .map((genreId) => {
-		const genre = genres.find((genre) => genre.id === genreId);
-		return genre ? genre.name : '';
-	  })
-	  .slice(0, 2);
-  
+		.map((genreId) => {
+			const genre = genres.find((genre) => genre.id === genreId);
+			return genre ? genre.name : '';
+		})
+		.slice(0, 2);
+
 	// creating elements
 	const cardContainer = document.createElement('div');
 	const poster = document.createElement('img');
@@ -188,7 +190,7 @@ const createCard = (data, genres, listClass, isMovie) => {
 	const rating = document.createElement('p');
 	const year = document.createElement('p');
 	const details = document.createElement('a');
-  
+
 	// adding class
 	cardContainer.classList.add('swiper-slide');
 	poster.classList.add('poster');
@@ -197,57 +199,54 @@ const createCard = (data, genres, listClass, isMovie) => {
 	genre.classList.add('genre');
 	rating.classList.add('rating');
 	year.classList.add('release-year');
-	details.classList.add('movie-details');
-  
+	details.classList.add('details');
+
 	// adding attributes
 	poster.src = isMovie
-	  ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
-	  : `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+		? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+		: `https://image.tmdb.org/t/p/original${data.poster_path}`;
 	details.href = isMovie
-	  ? `movie-detail.html?id=${data.id}`
-	  : `show-detail.html?id=${data.id}`;
-  
+		? `movie-detail.html?id=${data.id}`
+		: `show-detail.html?id=${data.id}`;
+
 	// adding text content
 	title.textContent = isMovie ? data.title : data.name;
 	genre.textContent = `${genreNames.join(' ')}`;
 	rating.textContent = `${data.vote_average.toFixed(1)}`;
 	year.textContent = isMovie
-	  ? `${releaseDate}`
-	  : `First Air Date: ${data.first_air_date}`;
+		? `${releaseDate}`
+		: `First Air Date: ${data.first_air_date}`;
 	details.textContent = 'Details';
-  
+
 	// append elements
 	content.append(title, rating, genre, year, details);
 	cardContainer.append(poster, content);
 	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
-  
+
 	contentSwiper();
-  };
-  
-  
-  // Now Playing in Theaters
-  const displayNowPlayingMovies = async () => {
+};
+
+// Now Playing in Theaters
+const displayNowPlayingMovies = async () => {
 	const { results } = await fetchAPIdata('movie/now_playing');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  
+
 	results.forEach((movie) => {
-	  createCard(movie, genres, 'now-playing-list', true);
+		createCard(movie, genres, 'now-playing-list', true);
 	});
-  };
-  
-  // Display popular movies
-  const displayPopularMovies = async () => {
+};
+
+// Display popular movies
+const displayPopularMovies = async () => {
 	const { results } = await fetchAPIdata('movie/popular');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  
-	results.forEach((movie) => {
-	  createCard(movie, genres, 'popular-list', true);
-	});
-  };
-  
 
+	results.forEach((movie) => {
+		createCard(movie, genres, 'popular-list', true);
+	});
+};
 
 // display top rated movies
 const displayTopRatedMovies = async () => {
@@ -276,21 +275,21 @@ const displayUpcomingMovies = async () => {
 const displayActionMovies = async () => {
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  	const { results } = await fetchAPIdata('discover/movie', { with_genres: 28 });
-  
+	const { results } = await fetchAPIdata('discover/movie', { with_genres: 28 });
+
 	results.forEach((movie) => {
-	  createCard(movie, genres, 'action-list', true);
+		createCard(movie, genres, 'action-list', true);
 	});
-  };
+};
 
 // display popular Shows
 const displayPopularShows = async () => {
 	const { results } = await fetchAPIdata('tv/popular');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  
+
 	results.forEach((movie) => {
-	  createCard(movie, genres, 'popular-shows-list', false);
+		createCard(movie, genres, 'popular-shows-list', false);
 	});
 };
 
@@ -299,9 +298,9 @@ const displayTopRatedShows = async () => {
 	const { results } = await fetchAPIdata('tv/top_rated');
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-  
+
 	results.forEach((movie) => {
-	  createCard(movie, genres, 'top-rated-shows-list', false);
+		createCard(movie, genres, 'top-rated-shows-list', false);
 	});
 };
 
