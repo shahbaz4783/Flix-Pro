@@ -1,81 +1,70 @@
 .swiper-slide {
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-  
-    .swiper {
-      &-button-next,
-      &-button-prev {
-        border: 2px solid rgb(52, 127, 207);
-        border-radius: 50%;
-        padding: 30px;
-        background-color: #131313;
-        display: flex;
-  
-        &:hover {
-          background-color: aquamarine;
-          transition: all 0.3s ease;
-        }
-      }
-    }
-  
-    .title {
-      font-weight: bold;
-    }
-  
-    .content-div {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      background: rgb(123, 123, 206);
-      transform: translateY(150px);
-      transition: transform 0.6s;
-    }
-  
-    .title {
-      color: rgb(118, 244, 1);
-      line-height: 15px;
-    }
+	position: relative;
+	overflow: hidden;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
 
-    .description {
-      font-size: 14px;
-      opacity: 0;
-      transition: opacity 0.5s;
-      color: gray;
-    }
-  
-    &:hover {
-      .content-div {
-        transform: translateY(0);
-      }
-  
-      .description {
-        opacity: 1;
-      }
-    }
-  
-    .details {
-      padding: 5px;
-      margin: 10px auto;
-      cursor: pointer;
-    }
-  
+	.swiper {
+		&-button-next,
+		&-button-prev {
+			border: 2px solid rgb(52, 127, 207);
+			border-radius: 50%;
+			padding: 30px;
+			background-color: #272121;
+			display: flex;
 
-  
-    .poster {
-      width: 100%;
-    }
-  }
-  
-  /* Sections */
-  
-  .new-movies,
-  .action,
-  .top-rated,
-  .popular,
-  .upcoming {
-    margin: 20px auto;
-  }
+			&:hover {
+				transition: all 0.3s ease;
+			}
+		}
+	}
+
+	.title {
+		font-weight: bold;
+        font-size: 1.2em;
+	}
+
+	.content-div {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		background: var(--background-color);
+		transform: translateY(150px);
+		transition: transform 0.6s;
+        padding: 2px 5px;
+	}
+
+	.title {
+		color: rgb(91, 158, 128);
+		line-height: 15px;
+	}
+
+	.description {
+		font-size: 14px;
+		opacity: 0;
+		transition: opacity 0.5s;
+		color: gray;
+	}
+
+	&:hover {
+		.content-div {
+			transform: translateY(0);
+		}
+
+		.description {
+			opacity: 1;
+		}
+	}
+
+	.details {
+		padding: 5px;
+		margin: 10px auto;
+		cursor: pointer;
+	}
+
+	.poster {
+		width: 100%;
+	}
+}

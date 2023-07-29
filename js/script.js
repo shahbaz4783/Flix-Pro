@@ -122,11 +122,11 @@ const createCarousel = (data, genres, listClass, isMovie) => {
 	genre.classList.add('carousel-genre');
 	rating.classList.add('carousel-rating');
 	year.classList.add('carousel-release-year');
-	details.classList.add('details');
+	details.classList.add('carousel-details');
 
 	posterImg.src = isMovie
 		? `https://image.tmdb.org/t/p/original${data.backdrop_path}`
-		: `https://image.tmdb.org/t/p/w500${data.backdrop_path}`;
+		: `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
 	details.href = isMovie
 		? `movie-detail.html?id=${data.id}`
 		: `show-detail.html?id=${data.id}`;
