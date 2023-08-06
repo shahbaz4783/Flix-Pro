@@ -1,98 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flix Pro</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Flix Pro</title>
+		<link
+			rel="shortcut icon"
+			href="./assets/film-slate.png"
+			type="image/x-icon"
+		/>
+
+		<link rel="stylesheet" href="/css/style.css" />
+		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
 		/>
+	</head>
+	<body>
+		<header id="navigation">
+			<div id="logo">
+				<p>FlixPro</p>
+			</div>
+			<div>
+				<div class="search container">
+					<form action="/search.html" class="search-form">
+						<input
+							placeholder="Search Movies and Shows"
+							required=""
+							class="input"
+							id="search-term"
+							name="search-term"
+							type="text"
+						/>
+						<div class="icon">
+							<img src="/assets/search.svg" alt="" />
+						</div>
+					</form>
+				</div>
 
-</head>
-<body>
-    <header id="navigation">
-        <div id="logo">
-            <p>FlixPro</p>
-        </div>
-        <div>
-            <div class="search container">
-                <form action="/search.html" class="search-form">
-                <input placeholder="Search Movies and Shows" required="" class="input" id="search-term" name="search-term" type="text">
-                <div class="icon">
-                    <img src="/assets/search.svg" alt="">
-                </div>
-                </form>
-              </div>
+				<nav>
+					<ul>
+						<li><a href="/">Movies</a></li>
+						<li><a href="/shows.html">Shows</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
 
-            <nav>
-                <ul>
-                    <li><a href="/">Movies</a></li>
-                    <li><a href="/shows.html">Shows</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+		<section class="loading-section">
+			<div class="loader"></div>
+		</section>
 
-	<section class="loading-section">
-        <div class="loader"></div>
-    </section>
+		<main>
+			<section>
+				<article class="display-details"></article>
+			</section>
 
-<main>
-    <section>
-        <article class="display-details">
-        </article>
-    </section>
+			<section class="casting">
+				<h1>Cast</h1>
+				<article class="cast-list content">
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+					</div>
+				</article>
+			</section>
 
-    <section class="casting">
-        <h1>Cast</h1>
-        <article class="cast-list content">
-            <div class="swiper">
-                <div class="swiper-wrapper"></div>
-            </div>
-        </article>
-    </section>
+			<section class="crew">
+				<article class="crew-list content">
+					<h1>Crew</h1>
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+					</div>
+				</article>
+			</section>
 
-    <section class="crew">
-        <article class="crew-list content">
-            <h1>Crew</h1>
-            <div class="swiper">
-                <div class="swiper-wrapper"></div>
-            </div>
-        </article>
-    </section>
+			<section class="production">
+				<article class="companies-list">
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+					</div>
+				</article>
+			</section>
 
-    <section class="production">
-        <article class="companies-list">
-            <div class="swiper">
-                <div class="swiper-wrapper"></div>
-            </div>
-        </article>
-    </section>
-    
+			<section class="similar-movies">
+				<h1>Similar Movies</h1>
+				<article class="simiar-movies-list content">
+					<div class="swiper">
+						<div class="swiper-wrapper"></div>
+						<div class="swiper-button-next"></div>
+						<div class="swiper-button-prev"></div>
+					</div>
+				</article>
+			</section>
 
-    <section class="similar-movies">
-        <h1>Similar Movies</h1>
-        <article class="simiar-movies-list content">
-            <div class="swiper">
-                <div class="swiper-wrapper"></div>
-                <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
-            </div>
-        </article>
-    </section>
+			<footer id="footer"></footer>
+		</main>
 
-
-    
-    <footer id="footer"></footer>
-</main>
-
-
-
-    <!-- JS Links -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="/js/script.js"></script>
-    <script src="/js/template.js"></script>
-</body>
+		<!-- JS Links -->
+		<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+		<script src="/js/script.js"></script>
+		<script src="/js/template.js"></script>
+	</body>
 </html>
