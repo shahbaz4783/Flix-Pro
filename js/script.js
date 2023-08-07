@@ -205,7 +205,7 @@ const createCard = (data, genres, listClass, isMovie) => {
 
 	// adding attributes
 	poster.src = isMovie
-		? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+		? `https://image.tmdb.org/t/p/original${data.poster_path}`
 		: `https://image.tmdb.org/t/p/original${data.poster_path}`;
 	details.href = isMovie
 		? `movie-detail.html?id=${data.id}`
