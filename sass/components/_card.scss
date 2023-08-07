@@ -1,4 +1,4 @@
-.swiper-slide {
+.swiper-card {
 	position: relative;
 	overflow: hidden;
 	border-radius: 5px;
@@ -23,6 +23,7 @@
 	.title {
 		font-weight: bold;
         font-size: 1.2em;
+		font-family: var(--heading);
 	}
 
 	.content-div {
@@ -30,15 +31,27 @@
 		left: 0;
 		bottom: 0;
 		width: 100%;
-		background: var(--background-color);
+		background: #143642;
 		transform: translateY(150px);
 		transition: transform 0.6s;
         padding: 2px 5px;
 	}
 
 	.title {
-		color: rgb(91, 158, 128);
-		line-height: 15px;
+		color: #83c5be;
+		margin: 0.4em 0;
+		font-size: 1em;
+	}
+
+	.rating {
+		color: yellow;
+		border: 1px solid;
+		margin-left: 5%;
+		padding: 0 10px;
+	}
+
+	.genre {
+		font-size: 0.9em;
 	}
 
 	.description {
@@ -56,6 +69,8 @@
 		.description {
 			opacity: 1;
 		}
+
+		
 	}
 
 	.details {
@@ -66,5 +81,12 @@
 
 	.poster {
 		width: 100%;
+	}
+
+	@media screen and (max-width: 768px) {
+		.title {
+			margin: 0;
+		}
+		
 	}
 }

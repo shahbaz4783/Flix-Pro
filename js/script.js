@@ -158,6 +158,8 @@ const displayTrendingMovies = async () => {
 	});
 };
 
+
+
 // Display Trending Shows
 const displayTrendingShows = async () => {
 	const timeWindow = 'day';
@@ -186,13 +188,13 @@ const createCard = (data, genres, listClass, isMovie) => {
 	const poster = document.createElement('img');
 	const content = document.createElement('div');
 	const title = document.createElement('h3');
-	const genre = document.createElement('p');
-	const rating = document.createElement('p');
-	const year = document.createElement('p');
+	const genre = document.createElement('li');
+	const rating = document.createElement('span');
+	const year = document.createElement('span');
 	const details = document.createElement('a');
 
 	// adding class
-	cardContainer.classList.add('swiper-slide');
+	cardContainer.classList.add('swiper-slide', 'swiper-card');
 	poster.classList.add('poster');
 	content.classList.add('content-div');
 	title.classList.add('title');
@@ -212,14 +214,16 @@ const createCard = (data, genres, listClass, isMovie) => {
 	// adding text content
 	title.textContent = isMovie ? data.title : data.name;
 	genre.textContent = `${genreNames.join(' ')}`;
+	
+
 	rating.textContent = `${data.vote_average.toFixed(1)}`;
 	year.textContent = isMovie
-		? `${releaseDate}`
+		? `${releaseDate}  `
 		: `First Air Date: ${data.first_air_date}`;
 	details.textContent = 'Details';
 
 	// append elements
-	content.append(title, rating, genre, year, details);
+	content.append(title, year, rating, genre, details);
 	cardContainer.append(poster, content);
 	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
 

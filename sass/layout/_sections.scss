@@ -1,7 +1,9 @@
-  .new-movies,
-  .action,
-  .top-rated,
-  .popular,
-  .upcoming {
+
+  .content {
     margin: 20px auto;
+    width: 90vw;
+    
+    @media screen and (max-width: 768px) {
+        width: 98vw;
+    }
   }
