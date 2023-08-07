@@ -175,6 +175,8 @@ const displayTrendingShows = async () => {
 // Create Card Function
 const createCard = (data, genres, listClass, isMovie) => {
 	const releaseDate = new Date(data.release_date).getFullYear();
+	const airDate = new Date(data.first_air_date).getFullYear();
+
 
 	const genreNames = data.genre_ids
 		.map((genreId) => {
@@ -219,7 +221,7 @@ const createCard = (data, genres, listClass, isMovie) => {
 	rating.textContent = `${data.vote_average.toFixed(1)}`;
 	year.textContent = isMovie
 		? `${releaseDate}  `
-		: `First Air Date: ${data.first_air_date}`;
+		: `${airDate}`;
 	details.textContent = 'Details';
 
 	// append elements
@@ -309,20 +311,20 @@ const displayTopRatedShows = async () => {
 };
 
 // Movie Details Page
-const movieDetails = async () => {
-	const movieID = window.location.search.split('=')[1];
-	const movie = await fetchAPIdata(`movie/${movieID}`);
+  const movieDetails = async () => {
+		const movieID = window.location.search.split('=')[1];
+		const movie = await fetchAPIdata(`movie/${movieID}`);
 
-	const releaseDate = new Date(movie.release_date);
-	const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-		'default',
-		{ month: 'short' }
-	)} ${releaseDate.getFullYear()}`;
+		const releaseDate = new Date(movie.release_date);
+		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+			'default',
+			{ month: 'short' }
+		)} ${releaseDate.getFullYear()}`;
 
-	const credits = await fetchAPIdata(`movie/${movieID}/credits`);
+		const credits = await fetchAPIdata(`movie/${movieID}/credits`);
 
-	const details = document.createElement('div');
-	details.innerHTML = `
+		const details = document.createElement('div');
+		details.innerHTML = `
 	<div>
     <div class="backdrop-img" style="background-image: url('https://image.tmdb.org/t/p/original${
 			movie.backdrop_path
@@ -351,15 +353,15 @@ const movieDetails = async () => {
        
     `;
 
-	document.querySelector('.display-details').append(details);
+		document.querySelector('.display-details').append(details);
 
-	// Display Actors
-	const cast = credits.cast;
-	cast.forEach((castMember) => {
-		const casts = document.createElement('div');
-		casts.classList.add('swiper-slide');
+		// Display Actors
+		const cast = credits.cast;
+		cast.forEach((castMember) => {
+			const casts = document.createElement('div');
+			casts.classList.add('swiper-slide');
 
-		casts.innerHTML = `
+			casts.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
@@ -374,17 +376,17 @@ const movieDetails = async () => {
         </ul>
     </div>
     `;
-		document.querySelector('.cast-list .swiper-wrapper').append(casts);
-		contentSwiper();
-	});
+			document.querySelector('.cast-list .swiper-wrapper').append(casts);
+			contentSwiper();
+		});
 
-	const crew = credits.crew;
+		const crew = credits.crew;
 
-	crew.forEach((crewMember) => {
-		const crew = document.createElement('div');
-		crew.classList.add('swiper-slide');
+		crew.forEach((crewMember) => {
+			const crew = document.createElement('div');
+			crew.classList.add('swiper-slide');
 
-		crew.innerHTML = `
+			crew.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
@@ -399,13 +401,13 @@ const movieDetails = async () => {
         </ul>
     </div>
     `;
-		document.querySelector('.crew-list .swiper-wrapper').append(crew);
-		contentSwiper();
-	});
+			document.querySelector('.crew-list .swiper-wrapper').append(crew);
+			contentSwiper();
+		});
 
-	// Production and Finance
-	const production = document.createElement('div');
-	production.innerHTML = `
+		// Production and Finance
+		const production = document.createElement('div');
+		production.innerHTML = `
 	<div>   
 	 <div class="production-list">
 	 <p class="production">Production</p>
@@ -443,39 +445,21 @@ const movieDetails = async () => {
 		})}</span></p>
 	`;
 
-	document.querySelector('.companies-list').append(production);
+		document.querySelector('.companies-list').append(production);
 
-	// Display Similar Movies
-	const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
+		// Display Similar Movies
+		const displaySimilarMovies = async () => {
+			const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
+			const genreResponse = await fetchAPIdata('genre/movie/list');
+			const genres = genreResponse.genres;
 
-	results.forEach((movie) => {
-		const releaseDate = new Date(movie.release_date).getFullYear();
+			results.forEach((movie) => {
+				createCard(movie, genres, 'simiar-movies-list', true);
+			});
+		};
 
-		const similarMovies = document.createElement('div');
-		similarMovies.classList.add('swiper-slide');
-		similarMovies.innerHTML = `
-
-            <img class="poster" src="https://image.tmdb.org/t/p/w500${
-							movie.poster_path
-						}">
-            <div class="similar-movie-content">
-            <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">${
-							movie.release_date ? releaseDate : ''
-						}</p>
-            <a class="movie-details" href="movie-detail.html?id=${
-							movie.id
-						}">Details</a>
-           </div>
-        
-        `;
-		document
-			.querySelector('.simiar-movies-list .swiper-wrapper')
-			.append(similarMovies);
-
-		contentSwiper();
-	});
-};
+		displaySimilarMovies();
+	};
 
 // Show details
 const showDetails = async () => {
@@ -609,33 +593,17 @@ const showDetails = async () => {
 	document.querySelector('.companies-list').append(production);
 
 	// Display Similar Shows
-	results.forEach((movie) => {
-		const releaseDate = new Date(movie.release_date).getFullYear();
+	const displaySimilarShows = async () => {
+		const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+		const genreResponse = await fetchAPIdata('genre/movie/list');
+		const genres = genreResponse.genres;
 
-		const similarMovies = document.createElement('div');
-		similarMovies.classList.add('swiper-slide');
-		similarMovies.innerHTML = `
+		results.forEach((movie) => {
+			createCard(movie, genres, 'simiar-shows-list', false);
+		});
+	};
 
-            <img class="poster" src="https://image.tmdb.org/t/p/w500${
-							movie.poster_path
-						}">
-            <div class="similar-movie-content">
-            <span class="movie-title">${movie.title}</span>
-            <p class="movie-description">${
-							movie.release_date ? releaseDate : ''
-						}</p>
-            <a class="movie-details" href="movie-detail.html?id=${
-							movie.id
-						}">Details</a>
-           </div>
-        
-        `;
-		document
-			.querySelector('.simiar-shows-list .swiper-wrapper')
-			.append(similarMovies);
-
-		contentSwiper();
-	});
+	displaySimilarShows();
 };
 
 // Search Movie and Shows Function
