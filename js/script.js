@@ -323,60 +323,79 @@ const displayTopRatedShows = async () => {
 
 		const credits = await fetchAPIdata(`movie/${movieID}/credits`);
 
-		const details = document.createElement('div');
-		details.innerHTML = `
-	<div>
-    <div class="backdrop-img" style="background-image: url('https://image.tmdb.org/t/p/original${
-			movie.backdrop_path
-		}')"></div>
-	
-	<div class="overview">
-    <img class="poster-img" src="https://image.tmdb.org/t/p/w500${
-			movie.poster_path
-		}">
-		<div class="info">
-            <h3>${movie.title}</h3>
-			<div>
-			<p class="rating">${movie.vote_average.toFixed(1)}</p>
-			<p class="runtime">${movie.runtime} minutes</p>
-            <p class="release">${formattedDate}</p>
-			</div>
-			<div class="genre">
-            <p>${movie.genres
-							.map((genre) => `<li>${genre.name}</li>`)
-							.join('')}</p>
-			</div>
-            <div><p>${movie.overview}</p></div>
-		</div>
-        </div>
+		// Create elements
+		const cardContainer = document.createElement('div');
+		const backdrop = document.createElement('div');
+		const poster = document.createElement('img');
+		const content = document.createElement('div');
+		const title = document.createElement('h3');
+		const genre = document.createElement('p');
+		const runtime = document.createElement('p');
+		const rating = document.createElement('p');
+		const year = document.createElement('p');
+		const overview = document.createElement('p');
 
-       
-    `;
+		// Add classes
+		backdrop.classList.add('backdrop-img');
+		poster.classList.add('poster-img');
+		content.classList.add('content-div');
+		title.classList.add('title');
+		genre.classList.add('genre');
+		rating.classList.add('rating');
+		runtime.classList.add('runtime');
+		year.classList.add('release');
+		overview.classList.add('overview');
 
-		document.querySelector('.display-details').append(details);
+		// Set content for the elements
+		backdrop.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
+
+		poster.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+		title.textContent = `${movie.title}`;
+		rating.textContent = `${movie.vote_average.toFixed(1)}`;
+		genre.textContent = `${movie.genres
+			.map((genre) => `${genre.name}`)
+			.join(' ')}`;
+		runtime.textContent = `${movie.runtime}`;
+		year.textContent = `${formattedDate}`;
+		overview.textContent = `${movie.overview}`;
+
+		// Append elements
+		content.append(backdrop, title, rating, runtime, genre, year, overview);
+		cardContainer.append(poster, content);
+		document.querySelector('.display-details').append(cardContainer);
 
 		// Display Actors
 		const cast = credits.cast;
 		cast.forEach((castMember) => {
+			// Create Elements
 			const casts = document.createElement('div');
-			casts.classList.add('swiper-slide');
+			const cast = document.createElement('div');
+			const castIMG = document.createElement('img');
+			const castName = document.createElement('li');
+			const castChar = document.createElement('li');
+			const castInfo = document.createElement('div');
 
-			casts.innerHTML = `
-    <div class="cast">
-        <ul>
-            <div class="cast-info">
-                <img src="${
-									castMember.profile_path
-										? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-										: '../assets/no-people.png'
-								}">
-                <li>${castMember.name}</li>
-                <li>${castMember.character}</li>
-            </div>
-        </ul>
-    </div>
-    `;
+			// Add Class
+			casts.classList.add('swiper-slide');
+			cast.classList.add('cast');
+			castInfo.classList.add('cast-info');
+
+			// Add attributes
+			castIMG.src = `${
+				castMember.profile_path
+					? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
+					: '../assets/no-people.png'
+			}`;
+
+			castName.textContent = `${castMember.name}`;
+			castChar.textContent = `${castMember.character}`;
+
+			// Append
+			castInfo.append(castIMG, castName, castChar);
+			cast.append(castInfo);
+			casts.append(cast);
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
+
 			contentSwiper();
 		});
 
@@ -386,21 +405,33 @@ const displayTopRatedShows = async () => {
 			const crew = document.createElement('div');
 			crew.classList.add('swiper-slide');
 
-			crew.innerHTML = `
-    <div class="cast">
-        <ul>
-            <div class="cast-info">
-                <img src="${
-									crewMember.profile_path
-										? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
-										: '../assets/no-people.png'
-								}">
-                <li>${crewMember.name}</li>
-                <li>${crewMember.job}</li>
-            </div>
-        </ul>
-    </div>
-    `;
+			// Create Elements
+			const cast = document.createElement('div');
+			const castIMG = document.createElement('img');
+			const castName = document.createElement('li');
+			const castChar = document.createElement('li');
+			const castInfo = document.createElement('div');
+
+			// Add Class
+			cast.classList.add('cast');
+			castInfo.classList.add('cast-info');
+
+			// Add attributes
+			castIMG.src = `${
+				crewMember.profile_path
+					? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
+					: '../assets/no-people.png'
+			}`;
+
+			castName.textContent = `${crewMember.name}`;
+			castChar.textContent = `${crewMember.job}`;
+
+			// Append
+			castInfo.append(castIMG, castName, castChar);
+			cast.append(castInfo);
+			crew.append(cast);
+
+	
 			document.querySelector('.crew-list .swiper-wrapper').append(crew);
 			contentSwiper();
 		});

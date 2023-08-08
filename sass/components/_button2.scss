@@ -1,26 +1,23 @@
 .carousel-details{
     text-decoration: none;
-	color: black;
 	border-radius: 4px;
-	background-color: var(--btn-color);
+	background-color: white;
     display: flex;
-    height: 3em;
+    height: 2em;
     text-align: center;
-    width: 50%;
-    margin-top: 1.3em;
+    width: 30%;
+    margin-top: 1em;
 }
 
 a.carousel-details{
+    color: black;
     font-size: 1.2em;
     font-weight: 900;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--text-color1);
     
     &:hover {
-        background-color: aqua;
         transition: all 0.4s ease;
-        color: var(--text-color2);
     }
 }
