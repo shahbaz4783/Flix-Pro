@@ -509,9 +509,158 @@ const displayTopRatedShows = async () => {
 
 		document.querySelector('.companies-list').append(production);
 
+		// Fetch trailer data
+		const trailerData = await fetchAPIdata(`movie/${movieID}/videos`);
+
+		// Find the trailer with type "Trailer"
+		const trailer = trailerData.results.find(
+			(video) => video.type === 'Trailer'
+		);
+
+		if (trailer) {
+			const trailerIframe = document.createElement('iframe');
+			trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}`;
+			trailerIframe.allowFullscreen = true;
+			trailerIframe.classList.add('trailer-iframe');
+
+			document.querySelector('.trailer').appendChild(trailerIframe);
+		}
+
+		// Show a review
+
+		// Fetch reviews
+		const review = await fetchAPIdata(`movie/${movieID}/reviews`);
+
+		// Create review elements
+		const reviewContainer = document.createElement('div');
+		reviewContainer.classList.add('reviews-container');
+
+		if (review.results.length > 0) {
+			const reviewData = review.results[0];
+
+			const reviewBox = document.createElement('div');
+			reviewBox.classList.add('review-box');
+
+			const author = document.createElement('h3');
+			author.textContent = reviewData.author;
+
+			const rating = document.createElement('p');
+			rating.textContent = `Rating: ${reviewData.author_details.rating}`;
+
+			const date = document.createElement('p');
+			date.textContent = `Published on ${reviewData.created_at}`;
+
+			const content = document.createElement('p');
+			content.textContent = reviewData.content;
+
+			reviewBox.appendChild(author);
+			reviewBox.appendChild(rating);
+			reviewBox.appendChild(date);
+			reviewBox.appendChild(content);
+
+			reviewContainer.appendChild(reviewBox);
+
+			if (review.results.length > 1) {
+				const showMoreButton = document.createElement('button');
+				showMoreButton.textContent = 'Show More Reviews';
+				showMoreButton.addEventListener('click', () => {
+					// Remove the "Show More" button
+					showMoreButton.remove();
+
+					// Show the rest of the reviews
+					for (let i = 1; i < review.results.length; i++) {
+						const reviewData = review.results[i];
+
+						const reviewBox = document.createElement('div');
+						reviewBox.classList.add('review-box');
+
+						const author = document.createElement('h3');
+						author.textContent = reviewData.author;
+
+						const rating = document.createElement('p');
+						rating.textContent = `Rating: ${reviewData.author_details.rating}`;
+
+						const date = document.createElement('p');
+						date.textContent = `Published on ${reviewData.created_at}`;
+
+						const content = document.createElement('p');
+						content.textContent = reviewData.content;
+
+						reviewBox.appendChild(author);
+						reviewBox.appendChild(rating);
+						reviewBox.appendChild(date);
+						reviewBox.appendChild(content);
+
+						reviewContainer.appendChild(reviewBox);
+					}
+				});
+
+				reviewContainer.appendChild(showMoreButton);
+			}
+		} else {
+			const noReviews = document.createElement('p');
+			noReviews.textContent = 'No reviews available.';
+			reviewContainer.appendChild(noReviews);
+		}
+
+		// Append review container to your details section
+		document.querySelector('.review').appendChild(reviewContainer);
+
+		// Fetch watch providers for India (IN)
+		const watchProviders = await fetchAPIdata(
+			`movie/${movieID}/watch/providers`
+		);
+
+		// Create watch provider elements
+		const watchProviderContainer = document.createElement('div');
+		watchProviderContainer.classList.add('watch-provider-container');
+
+		const country = 'IN'; // Country code for India
+
+		if (watchProviders.results && watchProviders.results[country]) {
+			const providers = [
+				...(watchProviders.results[country].flatrate || []),
+				...(watchProviders.results[country].ads || []),
+			];
+
+			const providerTitle = document.createElement('h3');
+			providerTitle.textContent = 'Watch Providers in India:';
+			watchProviderContainer.appendChild(providerTitle);
+
+			const providerList = document.createElement('ul');
+			providers.forEach((provider) => {
+				const listItem = document.createElement('li');
+
+				const logo = document.createElement('img');
+				logo.src = `https://image.tmdb.org/t/p/w45${provider.logo_path}`;
+				logo.alt = `${provider.provider_name} logo`;
+				listItem.appendChild(logo);
+
+				const providerName = document.createElement('span');
+				providerName.textContent = provider.provider_name;
+				listItem.appendChild(providerName);
+
+				providerList.appendChild(listItem);
+			});
+
+			watchProviderContainer.appendChild(providerList);
+		} else {
+			const noProviders = document.createElement('p');
+			noProviders.textContent =
+				'Watch provider information is not available for India.';
+			watchProviderContainer.appendChild(noProviders);
+		}
+
+		// Append watch provider container to your details section
+		document
+			.querySelector('.watch-provider')
+			.appendChild(watchProviderContainer);
+
 		// Display Similar Movies
 		const displaySimilarMovies = async () => {
-			const { results } = await fetchAPIdata(`movie/${movieID}/similar`);
+			const { results } = await fetchAPIdata(
+				`movie/${movieID}/recommendations`
+			);
 			const genreResponse = await fetchAPIdata('genre/movie/list');
 			const genres = genreResponse.genres;
 
@@ -653,7 +802,7 @@ const displayTopRatedShows = async () => {
 
 		// Display Similar Shows
 		const displaySimilarShows = async () => {
-			const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+			const { results } = await fetchAPIdata(`tv/${showID}/recommendations`);
 			const genreResponse = await fetchAPIdata('genre/movie/list');
 			const genres = genreResponse.genres;
 
