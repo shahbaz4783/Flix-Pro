@@ -183,7 +183,7 @@ const createCard = (data, genres, listClass, isMovie) => {
 			const genre = genres.find((genre) => genre.id === genreId);
 			return genre ? genre.name : '';
 		})
-		.slice(0, 2);
+		.slice(0, 1);
 
 	// creating elements
 	const cardContainer = document.createElement('div');
@@ -329,11 +329,11 @@ const displayTopRatedShows = async () => {
 		const poster = document.createElement('img');
 		const content = document.createElement('div');
 		const title = document.createElement('h3');
+		const rating = document.createElement('span');
+		const year = document.createElement('span');
+		const runtime = document.createElement('span');
 		const tagline = document.createElement('p');
 		const genre = document.createElement('p');
-		const runtime = document.createElement('p');
-		const rating = document.createElement('p');
-		const year = document.createElement('p');
 		const overview = document.createElement('p');
 
 		// Add classes
@@ -346,6 +346,7 @@ const displayTopRatedShows = async () => {
 		runtime.classList.add('runtime');
 		year.classList.add('release');
 		overview.classList.add('overview');
+		tagline.classList.add('tagline')
 
 		// Set content for the elements
 		backdrop.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
@@ -357,18 +358,18 @@ const displayTopRatedShows = async () => {
 		genre.textContent = `${movie.genres
 			.map((genre) => `${genre.name}`)
 			.join(', ')}`;
-		runtime.textContent = `${movie.runtime}`;
+		runtime.textContent = `${movie.runtime} mins`;
 		year.textContent = `${formattedDate}`;
 		overview.textContent = `${movie.overview}`;
 
 		// Append elements
 		content.append(
 			title,
-			tagline,
 			rating,
 			runtime,
-			genre,
 			year,
+			tagline,
+			genre,
 			overview
 		);
 		cardContainer.append(backdrop, poster, content);
@@ -406,46 +407,9 @@ const displayTopRatedShows = async () => {
 			casts.append(cast);
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
 
-			contentSwiper();
+
 		});
 
-		// Crew
-
-		const crew = credits.crew;
-
-		crew.forEach((crewMember) => {
-			const crew = document.createElement('div');
-			crew.classList.add('swiper-slide');
-
-			// Create Elements
-			const cast = document.createElement('div');
-			const castIMG = document.createElement('img');
-			const castName = document.createElement('li');
-			const castChar = document.createElement('li');
-			const castInfo = document.createElement('div');
-
-			// Add Class
-			cast.classList.add('cast');
-			castInfo.classList.add('cast-info');
-
-			// Add attributes
-			castIMG.src = `${
-				crewMember.profile_path
-					? `https://image.tmdb.org/t/p/w200${crewMember.profile_path}`
-					: '../assets/no-people.png'
-			}`;
-
-			castName.textContent = `${crewMember.name}`;
-			castChar.textContent = `${crewMember.job}`;
-
-			// Append
-			castInfo.append(castIMG, castName, castChar);
-			cast.append(castInfo);
-			crew.append(cast);
-
-			document.querySelector('.crew-list .swiper-wrapper').append(crew);
-			contentSwiper();
-		});
 
 		// Other Details
 		const detailsInfo = document.createElement('div');
@@ -513,17 +477,22 @@ const displayTopRatedShows = async () => {
 
 		// Find the trailer with type "Trailer"
 		const trailer = trailerData.results.find(
-			(video) => video.type === 'Trailer'
+			(video) => video.type === 'Trailer' 
 		);
 
 		if (trailer) {
 			const trailerIframe = document.createElement('iframe');
+			trailerIframe.classList.add('trailer');
 			trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}`;
 			trailerIframe.allowFullscreen = true;
 			trailerIframe.classList.add('trailer-iframe');
 
 			document.querySelector('.trailer').appendChild(trailerIframe);
+		} else {
+
+			document.querySelector('.trailer').remove();
 		}
+
 
 		// Show a review
 
@@ -614,7 +583,7 @@ const displayTopRatedShows = async () => {
 		const watchProviderContainer = document.createElement('div');
 		watchProviderContainer.classList.add('watch-provider-container');
 
-		const country = 'IN'; // Country code for India
+		const country = 'IN';
 
 		if (watchProviders.results && watchProviders.results[country]) {
 			const providers = [
