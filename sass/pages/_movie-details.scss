@@ -1,105 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Open+Sans&family=Roboto:wght@300&family=Source+Code+Pro&display=swap');
-
-*{
-    margin: 0;
-    padding: 0;
-    font-family: 'Lato', sans-serif;
-}
-
-body {
-    color: white;
-    background-color: black ;
-}
-
-/* Basic Info And Posters */
-
-.poster-img{
-    width: 30%;
-}
-
-.backdrop-img{
+.backdrop-img {
     width: 100vw;
     height: 100vh;
     margin: auto;
     background-size: cover;
     background-position: center;
-    opacity: 0.2;
+    opacity: 0.18;
+    position: relative;
 }
 
-.overview{
+.poster-img {
     position: absolute;
-    bottom: 8rem;
-    display: flex;
-    width: 80vw;
-    margin: auto;
-    height: 60%;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 20%;
+    top: 30%;
+    left: 10%;
 }
 
+.texts {
+    border: 2px solid red;
+    width: 50%;
+    position: absolute;
+    top: 30%;
+    left: 35%;
 
-.basic-info div:first-child{
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border: 2px solid white;
-    padding: 10px;
-    border-radius: 20px;
-    background-color: gray;
-    opacity: 0.8;
+    .title {
+        font-size: 4em;
+    }
 }
 
-.basic-info{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    margin: 10px auto;
-    list-style: none;
-    width: 50vw;
-    font-size: 1.5rem;
-}
-
-.info{
-    margin: 40px auto;
-    width: 70vw;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.poster-img{
-    border-radius: 10px;
-}
-
-.info h3 {
-    font-size: 3.5rem;
-    padding: 20px;
-}
-
-.info div:nth-child(2){
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    
-}
-
-.info div:nth-child(3){
-  display: flex;
-  list-style: none;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.info div:nth-child(3) li{
-  border: 2px solid red;
-  padding: 5px;
-  border-radius: 20px;
-}
-
-.info div:nth-child(4){
-  padding: 20px;
-  font-size: 1.2rem;
-}
 
 
 
@@ -298,12 +225,4 @@ body {
   overflow-y: scroll;
 }
 
-.backdrop-img{
-    height: 120vh;
-}
-
-.finance{
-    display: flex;
-    flex-direction: column;
-}
 }

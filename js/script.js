@@ -339,7 +339,7 @@ const displayTopRatedShows = async () => {
 		// Add classes
 		backdrop.classList.add('backdrop-img');
 		poster.classList.add('poster-img');
-		content.classList.add('content-div');
+		content.classList.add('texts');
 		title.classList.add('title');
 		genre.classList.add('genre');
 		rating.classList.add('rating');
@@ -350,20 +350,19 @@ const displayTopRatedShows = async () => {
 		// Set content for the elements
 		backdrop.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
 
-		poster.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+		poster.src = `https://image.tmdb.org/t/p/original${movie.poster_path}`;
 		title.textContent = `${movie.title}`;
 		rating.textContent = `${movie.vote_average.toFixed(1)}`;
 		tagline.textContent = `${movie.tagline}`;
 		genre.textContent = `${movie.genres
 			.map((genre) => `${genre.name}`)
-			.join(' ')}`;
+			.join(', ')}`;
 		runtime.textContent = `${movie.runtime}`;
 		year.textContent = `${formattedDate}`;
 		overview.textContent = `${movie.overview}`;
 
 		// Append elements
 		content.append(
-			backdrop,
 			title,
 			tagline,
 			rating,
@@ -372,7 +371,7 @@ const displayTopRatedShows = async () => {
 			year,
 			overview
 		);
-		cardContainer.append(poster, content);
+		cardContainer.append(backdrop, poster, content);
 		document.querySelector('.display-details').append(cardContainer);
 
 		// Display Actors
@@ -624,7 +623,7 @@ const displayTopRatedShows = async () => {
 			];
 
 			const providerTitle = document.createElement('h3');
-			providerTitle.textContent = 'Watch Providers in India:';
+			providerTitle.textContent = 'Watch Providers:';
 			watchProviderContainer.appendChild(providerTitle);
 
 			const providerList = document.createElement('ul');
@@ -647,7 +646,7 @@ const displayTopRatedShows = async () => {
 		} else {
 			const noProviders = document.createElement('p');
 			noProviders.textContent =
-				'Watch provider information is not available for India.';
+				'Watch provider Not Found';
 			watchProviderContainer.appendChild(noProviders);
 		}
 
