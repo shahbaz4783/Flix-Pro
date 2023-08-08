@@ -322,6 +322,9 @@ const displayTopRatedShows = async () => {
 		)} ${releaseDate.getFullYear()}`;
 
 		const credits = await fetchAPIdata(`movie/${movieID}/credits`);
+		const directorName = credits.crew.find(
+			(member) => member.job === 'Director'
+		);
 
 		// Create elements
 		const cardContainer = document.createElement('div');
@@ -336,6 +339,10 @@ const displayTopRatedShows = async () => {
 		const genre = document.createElement('p');
 		const overview = document.createElement('p');
 
+		const crewDiv = document.createElement('div');
+		const director = document.createElement('p');
+		const job = document.createElement('p');
+
 		// Add classes
 		backdrop.classList.add('backdrop-img');
 		poster.classList.add('poster-img');
@@ -346,7 +353,10 @@ const displayTopRatedShows = async () => {
 		runtime.classList.add('runtime');
 		year.classList.add('release');
 		overview.classList.add('overview');
-		tagline.classList.add('tagline')
+		tagline.classList.add('tagline');
+		director.classList.add('director');
+		crewDiv.classList.add('crew-div');
+		job.classList.add('job');
 
 		// Set content for the elements
 		backdrop.style.backgroundImage = `url('https://image.tmdb.org/t/p/original${movie.backdrop_path}')`;
@@ -361,8 +371,12 @@ const displayTopRatedShows = async () => {
 		runtime.textContent = `${movie.runtime} mins`;
 		year.textContent = `${formattedDate}`;
 		overview.textContent = `${movie.overview}`;
+		job.textContent = `${directorName.job}`;
+		director.textContent = `${directorName.name}`;
 
 		// Append elements
+		crewDiv.append(director, job);
+
 		content.append(
 			title,
 			rating,
@@ -370,7 +384,8 @@ const displayTopRatedShows = async () => {
 			year,
 			tagline,
 			genre,
-			overview
+			overview,
+			crewDiv
 		);
 		cardContainer.append(backdrop, poster, content);
 		document.querySelector('.display-details').append(cardContainer);
@@ -406,10 +421,7 @@ const displayTopRatedShows = async () => {
 			cast.append(castInfo);
 			casts.append(cast);
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
-
-
 		});
-
 
 		// Other Details
 		const detailsInfo = document.createElement('div');
@@ -435,11 +447,8 @@ const displayTopRatedShows = async () => {
 		const status = document.createElement('p');
 		status.textContent = `Status: ${movie.status}`;
 
-		const language = document.createElement('p');
-		language.textContent = `Original Language: ${movie.original_language}`;
-
 		// Append elements
-		detailsInfo.append(status, language, budget, collection);
+		detailsInfo.append(status, budget, collection);
 		document.querySelector('.other-info').appendChild(detailsInfo);
 
 		// Production Companies
@@ -477,7 +486,7 @@ const displayTopRatedShows = async () => {
 
 		// Find the trailer with type "Trailer"
 		const trailer = trailerData.results.find(
-			(video) => video.type === 'Trailer' 
+			(video) => video.type === 'Trailer'
 		);
 
 		if (trailer) {
@@ -489,15 +498,15 @@ const displayTopRatedShows = async () => {
 
 			document.querySelector('.trailer').appendChild(trailerIframe);
 		} else {
-
 			document.querySelector('.trailer').remove();
 		}
 
-
-		// Show a review
-
-		// Fetch reviews
+		// Show reviews
 		const review = await fetchAPIdata(`movie/${movieID}/reviews`);
+		const formatDate = (dateString) => {
+			const options = { year: 'numeric', month: 'long', day: 'numeric' };
+			return new Date(dateString).toLocaleDateString(undefined, options);
+		};
 
 		// Create review elements
 		const reviewContainer = document.createElement('div');
@@ -506,75 +515,81 @@ const displayTopRatedShows = async () => {
 		if (review.results.length > 0) {
 			const reviewData = review.results[0];
 
+			// Create elements
 			const reviewBox = document.createElement('div');
-			reviewBox.classList.add('review-box');
-
-			const author = document.createElement('h3');
-			author.textContent = reviewData.author;
-
-			const rating = document.createElement('p');
-			rating.textContent = `Rating: ${reviewData.author_details.rating}`;
-
+			const author = document.createElement('span');
+			const rating = document.createElement('span');
 			const date = document.createElement('p');
-			date.textContent = `Published on ${reviewData.created_at}`;
-
 			const content = document.createElement('p');
+
+			// Add class
+			reviewBox.classList.add('review-box');
+			content.classList.add('review-content');
+			date.classList.add('review-date');
+			rating.classList.add('review-rating');
+			author.classList.add('review-author');
+
+			// Text content
+			author.textContent = reviewData.author;
+			rating.textContent = reviewData.author_details.rating;
+			date.textContent = formatDate(reviewData.created_at);
 			content.textContent = reviewData.content;
 
-			reviewBox.appendChild(author);
-			reviewBox.appendChild(rating);
-			reviewBox.appendChild(date);
-			reviewBox.appendChild(content);
-
-			reviewContainer.appendChild(reviewBox);
+			// Append
+			reviewBox.append(rating, author, date, content);
+			reviewContainer.append(reviewBox);
 
 			if (review.results.length > 1) {
 				const showMoreButton = document.createElement('button');
-				showMoreButton.textContent = 'Show More Reviews';
+				const showLessButton = document.createElement('button');
+
+				showMoreButton.textContent = 'Show More';
+				showLessButton.textContent = 'Show Less';
+
 				showMoreButton.addEventListener('click', () => {
-					// Remove the "Show More" button
 					showMoreButton.remove();
 
 					// Show the rest of the reviews
 					for (let i = 1; i < review.results.length; i++) {
 						const reviewData = review.results[i];
 
+						// Create Element
 						const reviewBox = document.createElement('div');
-						reviewBox.classList.add('review-box');
-
-						const author = document.createElement('h3');
-						author.textContent = reviewData.author;
-
-						const rating = document.createElement('p');
-						rating.textContent = `Rating: ${reviewData.author_details.rating}`;
-
-						const date = document.createElement('p');
-						date.textContent = `Published on ${reviewData.created_at}`;
-
+						const author = document.createElement('span');
+						const rating = document.createElement('span');
 						const content = document.createElement('p');
+						const date = document.createElement('p');
+
+						// Add Class
+						reviewBox.classList.add('review-box');
+						content.classList.add('review-content');
+						date.classList.add('review-date');
+						rating.classList.add('review-rating');
+						author.classList.add('review-author');
+
+						// Add Text Content
+						author.textContent = reviewData.author;
+						rating.textContent = reviewData.author_details.rating;
+						date.textContent = formatDate(reviewData.created_at);
 						content.textContent = reviewData.content;
 
-						reviewBox.appendChild(author);
-						reviewBox.appendChild(rating);
-						reviewBox.appendChild(date);
-						reviewBox.appendChild(content);
-
-						reviewContainer.appendChild(reviewBox);
+						// Append
+						reviewBox.append(rating, author, date, content);
+						reviewContainer.append(reviewBox, showLessButton);
 					}
 				});
 
-				reviewContainer.appendChild(showMoreButton);
+				reviewContainer.append(showMoreButton);
 			}
 		} else {
 			const noReviews = document.createElement('p');
-			noReviews.textContent = 'No reviews available.';
-			reviewContainer.appendChild(noReviews);
+			noReviews.textContent = 'Reviews are not available';
+			reviewContainer.append(noReviews);
 		}
 
-		// Append review container to your details section
-		document.querySelector('.review').appendChild(reviewContainer);
+		document.querySelector('.review').append(reviewContainer);
 
-		// Fetch watch providers for India (IN)
+		// Watch Providers
 		const watchProviders = await fetchAPIdata(
 			`movie/${movieID}/watch/providers`
 		);
@@ -600,7 +615,7 @@ const displayTopRatedShows = async () => {
 				const listItem = document.createElement('li');
 
 				const logo = document.createElement('img');
-				logo.src = `https://image.tmdb.org/t/p/w45${provider.logo_path}`;
+				logo.src = `https://image.tmdb.org/t/p/original${provider.logo_path}`;
 				logo.alt = `${provider.provider_name} logo`;
 				listItem.appendChild(logo);
 
@@ -614,8 +629,7 @@ const displayTopRatedShows = async () => {
 			watchProviderContainer.appendChild(providerList);
 		} else {
 			const noProviders = document.createElement('p');
-			noProviders.textContent =
-				'Watch provider Not Found';
+			noProviders.textContent = 'Watch provider Not Found';
 			watchProviderContainer.appendChild(noProviders);
 		}
 

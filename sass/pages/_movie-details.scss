@@ -64,6 +64,20 @@
 	.overview {
 		color: rgb(222, 232, 203);
 	}
+
+    .crew-div {
+        margin-top: 1.5em;
+        width: fit-content;
+
+        .director {
+            font-size: 1.5em;
+            font-style: oblique;
+        }
+
+        .job {
+            color: gray;
+        }
+    }
 }
 
 .asides {
@@ -91,6 +105,46 @@
 		}
 	}
 }
+
+.review h1 {
+    color: pink;
+    text-align: center;
+    font-size: 3em;
+    margin-top: 1em;
+}
+
+.reviews-container {
+
+    .review-box {
+        margin: 1em;
+        border: 2px solid burlywood;
+        padding: 1.5em;
+        border-radius: 1em;
+    }
+
+    .review-rating {
+        color: wheat;
+
+    }
+
+    .review-author {
+        color: rgb(3, 206, 182);
+        font-size: 1.3em;
+    }
+
+    .review-date {
+        color: gray;
+        font-size: 1em;
+        margin-bottom: 1.3em;
+    }
+
+    .review-content {
+        color: #808080;
+
+    }
+}
+
+
 
 /* Production */
 
