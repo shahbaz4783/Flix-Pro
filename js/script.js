@@ -329,6 +329,7 @@ const displayTopRatedShows = async () => {
 		const poster = document.createElement('img');
 		const content = document.createElement('div');
 		const title = document.createElement('h3');
+		const tagline = document.createElement('p');
 		const genre = document.createElement('p');
 		const runtime = document.createElement('p');
 		const rating = document.createElement('p');
@@ -352,6 +353,7 @@ const displayTopRatedShows = async () => {
 		poster.src = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 		title.textContent = `${movie.title}`;
 		rating.textContent = `${movie.vote_average.toFixed(1)}`;
+		tagline.textContent = `${movie.tagline}`;
 		genre.textContent = `${movie.genres
 			.map((genre) => `${genre.name}`)
 			.join(' ')}`;
@@ -360,7 +362,16 @@ const displayTopRatedShows = async () => {
 		overview.textContent = `${movie.overview}`;
 
 		// Append elements
-		content.append(backdrop, title, rating, runtime, genre, year, overview);
+		content.append(
+			backdrop,
+			title,
+			tagline,
+			rating,
+			runtime,
+			genre,
+			year,
+			overview
+		);
 		cardContainer.append(poster, content);
 		document.querySelector('.display-details').append(cardContainer);
 
@@ -399,6 +410,8 @@ const displayTopRatedShows = async () => {
 			contentSwiper();
 		});
 
+		// Crew
+
 		const crew = credits.crew;
 
 		crew.forEach((crewMember) => {
@@ -431,50 +444,68 @@ const displayTopRatedShows = async () => {
 			cast.append(castInfo);
 			crew.append(cast);
 
-	
 			document.querySelector('.crew-list .swiper-wrapper').append(crew);
 			contentSwiper();
 		});
 
-		// Production and Finance
+		// Other Details
+		const detailsInfo = document.createElement('div');
+		detailsInfo.classList.add('details-info');
+
+		const budget = document.createElement('p');
+		budget.textContent = `Budget: ${movie.budget.toLocaleString('en-US', {
+			style: 'currency',
+			currency: 'USD',
+			maximumFractionDigits: 0,
+		})}`;
+
+		const collection = document.createElement('p');
+		collection.textContent = `Collection: ${movie.revenue.toLocaleString(
+			'en-US',
+			{
+				style: 'currency',
+				currency: 'USD',
+				maximumFractionDigits: 0,
+			}
+		)}`;
+
+		const status = document.createElement('p');
+		status.textContent = `Status: ${movie.status}`;
+
+		const language = document.createElement('p');
+		language.textContent = `Original Language: ${movie.original_language}`;
+
+		// Append elements
+		detailsInfo.append(status, language, budget, collection);
+		document.querySelector('.other-info').appendChild(detailsInfo);
+
+		// Production Companies
 		const production = document.createElement('div');
-		production.innerHTML = `
-	<div>   
-	 <div class="production-list">
-	 <p class="production">Production</p>
-	 <ul>
-		 ${movie.production_companies
-				.map(
-					(company) => `
-				 <li class="lists">
-					 <img class="production-img" src="${
-							company.logo_path
-								? `https://image.tmdb.org/t/p/w200${company.logo_path}`
-								: ''
-						}">
-					 ${company.logo_path ? '' : `<p>${company.name}</p>`}
-				 </li>`
-				)
-				.join('')}
-	 </ul>
- </div>
-	</div>
+		const productionList = document.createElement('div');
+		productionList.classList.add('production-list');
 
+		const ul = document.createElement('ul');
 
-<div class="finance">
-		<p>Budget: <span>${movie.budget.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0,
-			maximumFractionDigits: 0,
-		})}</span></p>
-		<p>Revenue: <span>${movie.revenue.toLocaleString('en-US', {
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0,
-			maximumFractionDigits: 0,
-		})}</span></p>
-	`;
+		movie.production_companies.forEach((company) => {
+			const li = document.createElement('li');
+			li.classList.add('lists');
+
+			const img = document.createElement('img');
+			img.classList.add('production-img');
+			img.src = company.logo_path
+				? `https://image.tmdb.org/t/p/w200${company.logo_path}`
+				: '';
+
+			const p = document.createElement('p');
+			p.textContent = company.logo_path ? '' : company.name;
+
+			li.appendChild(img);
+			li.appendChild(p);
+			ul.appendChild(li);
+		});
+
+		productionList.appendChild(ul);
+		production.append(productionList);
 
 		document.querySelector('.companies-list').append(production);
 
@@ -492,20 +523,20 @@ const displayTopRatedShows = async () => {
 		displaySimilarMovies();
 	};
 
-// Show details
-const showDetails = async () => {
-	const showID = window.location.search.split('=')[1];
-	const movie = await fetchAPIdata(`tv/${showID}`);
+	// Show details
+	const showDetails = async () => {
+		const showID = window.location.search.split('=')[1];
+		const movie = await fetchAPIdata(`tv/${showID}`);
 
-	const releaseDate = new Date(movie.first_air_date);
-	const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
-		'default',
-		{ month: 'short' }
-	)} ${releaseDate.getFullYear()}`;
+		const releaseDate = new Date(movie.first_air_date);
+		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
+			'default',
+			{ month: 'short' }
+		)} ${releaseDate.getFullYear()}`;
 
-	const credits = await fetchAPIdata(`tv/${showID}/credits`);
-	const details = document.createElement('div');
-	details.innerHTML = `
+		const credits = await fetchAPIdata(`tv/${showID}/credits`);
+		const details = document.createElement('div');
+		details.innerHTML = `
 	<div>
     <div class="backdrop-img" style="background-image: url('https://image.tmdb.org/t/p/original${
 			movie.backdrop_path
@@ -537,11 +568,11 @@ const showDetails = async () => {
         </div>
     `;
 
-	document.querySelector('.display-details').append(details);
+		document.querySelector('.display-details').append(details);
 
-	// Display Actors
-	const cast = credits.cast;
-	if (cast.length > 0) {
+		// Display Actors
+		const cast = credits.cast;
+
 		cast.forEach((castMember) => {
 			const casts = document.createElement('div');
 			casts.classList.add('swiper-slide');
@@ -564,17 +595,14 @@ const showDetails = async () => {
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
 			contentSwiper();
 		});
-	} else {
-		document.querySelector('.casting').style.display = 'none';
-	}
 
-	const crew = credits.crew;
-	if (crew.length > 0) {
-		crew.forEach((crewMember) => {
-			const crew = document.createElement('div');
-			crew.classList.add('swiper-slide');
+		const crew = credits.crew;
+		if (crew.length > 0) {
+			crew.forEach((crewMember) => {
+				const crew = document.createElement('div');
+				crew.classList.add('swiper-slide');
 
-			crew.innerHTML = `
+				crew.innerHTML = `
     <div class="cast">
         <ul>
             <div class="cast-info">
@@ -589,16 +617,16 @@ const showDetails = async () => {
         </ul>
     </div>
     `;
-			document.querySelector('.crew-list .swiper-wrapper').append(crew);
-			contentSwiper();
-		});
-	} else {
-		document.querySelector('.crew').style.display = 'none';
-	}
+				document.querySelector('.crew-list .swiper-wrapper').append(crew);
+				contentSwiper();
+			});
+		} else {
+			document.querySelector('.crew').style.display = 'none';
+		}
 
-	// Production and Finance
-	const production = document.createElement('div');
-	production.innerHTML = `
+		// Production and Finance
+		const production = document.createElement('div');
+		production.innerHTML = `
 	<div>   
 	 <div class="production-list">
 	 <p class="production">Production</p>
@@ -621,21 +649,21 @@ const showDetails = async () => {
 	</div>
 	`;
 
-	document.querySelector('.companies-list').append(production);
+		document.querySelector('.companies-list').append(production);
 
-	// Display Similar Shows
-	const displaySimilarShows = async () => {
-		const { results } = await fetchAPIdata(`tv/${showID}/similar`);
-		const genreResponse = await fetchAPIdata('genre/movie/list');
-		const genres = genreResponse.genres;
+		// Display Similar Shows
+		const displaySimilarShows = async () => {
+			const { results } = await fetchAPIdata(`tv/${showID}/similar`);
+			const genreResponse = await fetchAPIdata('genre/movie/list');
+			const genres = genreResponse.genres;
 
-		results.forEach((movie) => {
-			createCard(movie, genres, 'simiar-shows-list', false);
-		});
+			results.forEach((movie) => {
+				createCard(movie, genres, 'simiar-shows-list', false);
+			});
+		};
+
+		displaySimilarShows();
 	};
-
-	displaySimilarShows();
-};
 
 // Search Movie and Shows Function
 
