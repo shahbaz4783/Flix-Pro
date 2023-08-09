@@ -607,26 +607,33 @@ const displayTopRatedShows = async () => {
 			];
 
 			const providerTitle = document.createElement('h3');
-			providerTitle.textContent = 'Watch Providers:';
-			watchProviderContainer.appendChild(providerTitle);
-
 			const providerList = document.createElement('ul');
+
+			providerTitle.classList.add('provider-heading')
+			providerList.classList.add('provider-container')
+			
+			providerTitle.textContent = 'Watch Now';
+			watchProviderContainer.append(providerTitle);
+
+
 			providers.forEach((provider) => {
 				const listItem = document.createElement('li');
-
 				const logo = document.createElement('img');
+
+
+				listItem.classList.add('provider-list');
+				logo.classList.add('provider-logo');
+
+
 				logo.src = `https://image.tmdb.org/t/p/original${provider.logo_path}`;
 				logo.alt = `${provider.provider_name} logo`;
-				listItem.appendChild(logo);
 
-				const providerName = document.createElement('span');
-				providerName.textContent = provider.provider_name;
-				listItem.appendChild(providerName);
-
-				providerList.appendChild(listItem);
+				
+				listItem.append(logo);
+				providerList.append(listItem);
 			});
 
-			watchProviderContainer.appendChild(providerList);
+			watchProviderContainer.append(providerList);
 		} else {
 			const noProviders = document.createElement('p');
 			noProviders.textContent = 'Watch provider Not Found';

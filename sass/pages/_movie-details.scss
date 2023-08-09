@@ -106,6 +106,8 @@
 	}
 }
 
+// Reviews
+
 .review h1 {
     color: pink;
     text-align: center;
@@ -144,6 +146,37 @@
     }
 }
 
+
+.watch-provider-container {
+    display: flex;
+    background-color: #000000;
+    flex-direction: column;
+    border: 1px solid gray;
+
+    .provider-heading {
+        margin-top: 1em;
+        color: pink;
+        text-align: center;
+    }
+    
+    .provider-container {
+        list-style: none;
+        margin: 1em;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items:left;
+    }
+
+    .provider-list {
+        margin: 10px;
+        width: fit-content;
+    }
+    
+    .provider-logo {
+        border-radius: 0.8em;
+        width: 4em;
+    }
+}
 
 
 /* Production */
