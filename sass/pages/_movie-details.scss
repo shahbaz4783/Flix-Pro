@@ -220,13 +220,13 @@
 /* Production */
 
 .production {
-	color: whitesmoke;
+	color: black;
 	text-align: center;
 	list-style: none;
 	font-size: 1.3rem;
 	width: 100%;
 	margin: auto;
-	background-color: aliceblue;
+	background-color: #95aec4;
 
 	ul {
 		display: flex;
@@ -236,12 +236,11 @@
 		li {
 			color: rgb(233, 233, 233);
 			list-style: none;
-			display: flex;
-			justify-content: center;
-			align-items: center;
 			color: black;
 			width: fit-content;
 			padding: 10px;
+			display: flex;
+			align-items: center;
 		}
 	}
 
@@ -252,27 +251,30 @@
 
 /* Casting */
 
-.cast {
-	margin: auto;
-	text-align: center;
-	width: 100%;
-    border: 1px solid gray;
-    border-radius: 0.8em 0.8em 0 0;
-    overflow: hidden;
-    
-    
-	img {
-        width: 100%;
-        border-radius: 0.8em 0.8em 0 0;
-	}
+.cast-list {
+	width: 90%;
 
-	p {
-		display: block;
-	}
+	.cast {
+		margin: auto;
+		text-align: center;
+		width: 100%;
+		border: 1px solid gray;
+		border-radius: 0.8em 0.8em 0 0;
+		overflow: hidden;
 
-    .cast-char {
-        color: pink;
-    }
+		img {
+			width: 100%;
+			border-radius: 0.8em 0.8em 0 0;
+		}
+
+		p {
+			display: block;
+		}
+
+		.cast-char {
+			color: pink;
+		}
+	}
 }
 
 /* Finance */
