@@ -65,19 +65,19 @@
 		color: rgb(222, 232, 203);
 	}
 
-    .crew-div {
-        margin-top: 1.5em;
-        width: fit-content;
+	.crew-div {
+		margin-top: 1.5em;
+		width: fit-content;
 
-        .director {
-            font-size: 1.5em;
-            font-style: oblique;
-        }
+		.director {
+			font-size: 1.5em;
+			font-style: oblique;
+		}
 
-        .job {
-            color: gray;
-        }
-    }
+		.job {
+			color: gray;
+		}
+	}
 }
 
 .asides {
@@ -88,7 +88,7 @@
 
 	.right-content {
 		width: 25%;
-		background-color: #3f3434;
+		background-color: black;
 	}
 
 	.left-content {
@@ -101,7 +101,7 @@
 		.trailer-iframe {
 			width: 100%;
 			height: 100%;
-            border: none;
+			border: none;
 		}
 	}
 }
@@ -109,142 +109,129 @@
 // Reviews
 
 .review h1 {
-    color: pink;
-    text-align: center;
-    font-size: 3em;
-    margin-top: 1em;
+	color: pink;
+	text-align: center;
+	font-size: 3em;
+	margin-top: 1em;
 }
 
 .reviews-container {
+	.review-box {
+		margin: 1em;
+		border: 2px solid burlywood;
+		padding: 1.5em;
+		border-radius: 1em;
+	}
 
-    .review-box {
-        margin: 1em;
-        border: 2px solid burlywood;
-        padding: 1.5em;
-        border-radius: 1em;
-    }
+	.review-rating {
+		color: wheat;
+	}
 
-    .review-rating {
-        color: wheat;
+	.review-author {
+		color: rgb(3, 206, 182);
+		font-size: 1.3em;
+	}
 
-    }
+	.review-date {
+		color: gray;
+		font-size: 1em;
+		margin-bottom: 1.3em;
+	}
 
-    .review-author {
-        color: rgb(3, 206, 182);
-        font-size: 1.3em;
-    }
-
-    .review-date {
-        color: gray;
-        font-size: 1em;
-        margin-bottom: 1.3em;
-    }
-
-    .review-content {
-        color: #808080;
-
-    }
+	.review-content {
+		color: #808080;
+	}
 }
-
 
 .watch-provider-container {
-    display: flex;
-    background-color: #000000;
-    flex-direction: column;
-    border: 1px solid gray;
+	display: flex;
+	background-color: #000000;
+	flex-direction: column;
+	border: 1px solid gray;
 
-    .provider-heading {
-        margin-top: 1em;
-        color: pink;
-        text-align: center;
-    }
-    
-    .provider-container {
-        list-style: none;
-        margin: 1em;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        justify-items:left;
-    }
+	.provider-heading {
+		margin-top: 1em;
+		color: pink;
+		text-align: center;
+	}
 
-    .provider-list {
-        margin: 10px;
-        width: fit-content;
-    }
-    
-    .provider-logo {
-        border-radius: 0.8em;
-        width: 4em;
-    }
+	.provider-container {
+		list-style: none;
+		margin: 1em;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		justify-items: left;
+	}
+
+	.provider-list {
+		margin: 10px;
+		width: fit-content;
+	}
+
+	.provider-logo {
+		border-radius: 0.8em;
+		width: 4em;
+	}
+
+	.no-provider {
+		color: pink;
+		padding: 2em 1em;
+		font-size: 1.3em;
+		text-align: center;
+	}
 }
 
+.other-info {
+	border: 1px solid gray;
+
+	.details-info {
+		line-height: 3em;
+		margin: 1em auto;
+		width: 90%;
+
+		span {
+			font-size: 1.2em;
+			color: white;
+		}
+
+		p {
+			color: rgb(178, 156, 156);
+			font-size: 1.2em;
+		}
+	}
+}
 
 /* Production */
 
-.production-list {
+.production {
 	color: whitesmoke;
 	text-align: center;
 	list-style: none;
 	font-size: 1.3rem;
-	padding: 10px;
-	width: fit-content;
-	border-radius: 20px;
-	margin-top: 10px;
+	width: 100%;
 	margin: auto;
-}
-.production-list ul {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-
-.production-list li {
-	color: rgb(233, 233, 233);
-	list-style: none;
-	display: flex;
-	justify-content: center;
 	background-color: aliceblue;
-	align-items: center;
-	color: black;
-	width: fit-content;
-	border: 2px solid black;
-	margin: 10px;
-	padding: 10px;
-	border-radius: 20px;
-}
 
-/* Crew and cast */
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 
-.crew {
-	margin: 10px;
-	margin: auto;
-	margin: auto;
-	font-size: 1rem;
-	text-align: center;
-	border-radius: 10px;
-	padding: 10px;
-	width: 100%;
-	height: 100%;
-}
+		li {
+			color: rgb(233, 233, 233);
+			list-style: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: black;
+			width: fit-content;
+			padding: 10px;
+		}
+	}
 
-.img-div img {
-	width: 100%;
-	height: 100%;
-}
-
-.crew p:nth-child(1) {
-	font-size: 2rem;
-	margin-bottom: 20px;
-}
-
-.crew p:nth-child(2) {
-	font-size: 2rem;
-	list-style: none;
-	margin-top: 20px;
-}
-
-.crew p li {
-	list-style: none;
+	img {
+		width: 4.5em;
+	}
 }
 
 /* Casting */
@@ -289,56 +276,41 @@
 	justify-content: space-between;
 	padding: 2rem;
 }
-.finance span {
-	text-align: right;
-	font-size: 1.5rem;
-	color: aliceblue;
-}
-
-.finance p {
-	font-size: 1.2rem;
-	color: gray;
-	margin: auto;
-}
-
-/* Similar Movies */
-
-.simiar-movies {
-	display: flex;
-	flex-wrap: wrap;
-	width: 90vw;
-	margin: auto;
-	justify-content: center;
-}
-
-.similar-movie-box {
-	width: 20%;
-	margin: 10px;
-}
-.similar-movie-content {
-	background-color: aliceblue;
-}
 
 /* Media Queries */
-
 @media screen and (max-width: 768px) {
-	.overview {
-		flex-direction: column;
-		width: 90%;
-		margin: auto;
-		height: auto;
-		bottom: 0;
-		top: 80px;
-	}
+
+    header {
+        position: relative;
+    }
+
+    .backdrop-img {
+        width: 100vw;
+        height: 26vh;
+        opacity: 0.4;
+
+    }
+
+    .texts {
+        position: static;
+        width: 95%;
+        margin: auto;
+    }
+
+    .trailer {
+        position: absolute;
+        top: 2em;
+        left: 0;
+        width: 100%;
+    }
+
+
 
 	.poster-img {
-		width: 70%;
-		display: block;
-		margin: auto;
+		display: none;
 	}
 
 	.info {
-		/* width: 95vw; */
 		margin: auto;
 	}
 
@@ -366,4 +338,19 @@
 		font-size: 1rem;
 		overflow-y: scroll;
 	}
+
+	.asides {
+		// flex-direction: column;
+		flex-direction: column-reverse;
+
+		.right-content {
+			width: 100%;
+		}
+
+		.left-content {
+			width: 100%;
+		}
+	}
+
+    
 }

@@ -423,19 +423,79 @@ const displayTopRatedShows = async () => {
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
 		});
 
+		// Watch Providers
+		const watchProviders = await fetchAPIdata(
+			`movie/${movieID}/watch/providers`
+		);
+
+		// Create watch provider elements
+		const watchProviderContainer = document.createElement('div');
+		watchProviderContainer.classList.add('watch-provider-container');
+
+		const country = 'IN';
+
+		if (watchProviders.results && watchProviders.results[country]) {
+			const providers = [
+				...(watchProviders.results[country].flatrate || []),
+				...(watchProviders.results[country].ads || []),
+			];
+
+			const providerTitle = document.createElement('h3');
+			const providerList = document.createElement('ul');
+
+			providerTitle.classList.add('provider-heading');
+			providerList.classList.add('provider-container');
+
+			providerTitle.textContent = 'Watch Now';
+			watchProviderContainer.append(providerTitle);
+
+			providers.forEach((provider) => {
+				const listItem = document.createElement('li');
+				const logo = document.createElement('img');
+
+				listItem.classList.add('provider-list');
+				logo.classList.add('provider-logo');
+
+				logo.src = `https://image.tmdb.org/t/p/original${provider.logo_path}`;
+				logo.alt = `${provider.provider_name} logo`;
+
+				listItem.append(logo);
+				providerList.append(listItem);
+			});
+
+			watchProviderContainer.append(providerList);
+		} else {
+			const noProviders = document.createElement('p');
+			noProviders.classList.add('no-provider');
+			noProviders.textContent = 'Watch provider not found';
+			watchProviderContainer.append(noProviders);
+		}
+
+		// Append watch provider container to your details section
+		document
+			.querySelector('.watch-provider')
+			.appendChild(watchProviderContainer);
+
 		// Other Details
 		const detailsInfo = document.createElement('div');
-		detailsInfo.classList.add('details-info');
-
 		const budget = document.createElement('p');
-		budget.textContent = `Budget: ${movie.budget.toLocaleString('en-US', {
+		const collection = document.createElement('p');
+		const status = document.createElement('p');
+
+		// Add Class
+		detailsInfo.classList.add('details-info');
+		budget.classList.add('budget');
+		collection.classList.add('collection');
+		status.classList.add('status');
+
+		// Text Content
+		budget.innerHTML = `<span>Budget</span> ${movie.budget.toLocaleString('en-US', {
 			style: 'currency',
 			currency: 'USD',
 			maximumFractionDigits: 0,
 		})}`;
 
-		const collection = document.createElement('p');
-		collection.textContent = `Collection: ${movie.revenue.toLocaleString(
+		collection.innerHTML = `<span>Revenue</span> ${movie.revenue.toLocaleString(
 			'en-US',
 			{
 				style: 'currency',
@@ -444,42 +504,40 @@ const displayTopRatedShows = async () => {
 			}
 		)}`;
 
-		const status = document.createElement('p');
-		status.textContent = `Status: ${movie.status}`;
+		status.innerHTML = `<span>Status</span> ${movie.status}`;
 
 		// Append elements
 		detailsInfo.append(status, budget, collection);
 		document.querySelector('.other-info').appendChild(detailsInfo);
 
 		// Production Companies
-		const production = document.createElement('div');
 		const productionList = document.createElement('div');
+		const ul = document.createElement('ul');
+
 		productionList.classList.add('production-list');
 
-		const ul = document.createElement('ul');
 
 		movie.production_companies.forEach((company) => {
 			const li = document.createElement('li');
-			li.classList.add('lists');
-
 			const img = document.createElement('img');
+			const p = document.createElement('p');
+
+			li.classList.add('lists');
 			img.classList.add('production-img');
+
 			img.src = company.logo_path
 				? `https://image.tmdb.org/t/p/w200${company.logo_path}`
 				: '';
 
-			const p = document.createElement('p');
 			p.textContent = company.logo_path ? '' : company.name;
 
-			li.appendChild(img);
-			li.appendChild(p);
-			ul.appendChild(li);
+			li.append(img, p);
+			ul.append(li);
 		});
 
-		productionList.appendChild(ul);
-		production.append(productionList);
+		productionList.append(ul);
 
-		document.querySelector('.companies-list').append(production);
+		document.querySelector('.companies-list').append(productionList);
 
 		// Fetch trailer data
 		const trailerData = await fetchAPIdata(`movie/${movieID}/videos`);
@@ -588,62 +646,6 @@ const displayTopRatedShows = async () => {
 		}
 
 		document.querySelector('.review').append(reviewContainer);
-
-		// Watch Providers
-		const watchProviders = await fetchAPIdata(
-			`movie/${movieID}/watch/providers`
-		);
-
-		// Create watch provider elements
-		const watchProviderContainer = document.createElement('div');
-		watchProviderContainer.classList.add('watch-provider-container');
-
-		const country = 'IN';
-
-		if (watchProviders.results && watchProviders.results[country]) {
-			const providers = [
-				...(watchProviders.results[country].flatrate || []),
-				...(watchProviders.results[country].ads || []),
-			];
-
-			const providerTitle = document.createElement('h3');
-			const providerList = document.createElement('ul');
-
-			providerTitle.classList.add('provider-heading')
-			providerList.classList.add('provider-container')
-			
-			providerTitle.textContent = 'Watch Now';
-			watchProviderContainer.append(providerTitle);
-
-
-			providers.forEach((provider) => {
-				const listItem = document.createElement('li');
-				const logo = document.createElement('img');
-
-
-				listItem.classList.add('provider-list');
-				logo.classList.add('provider-logo');
-
-
-				logo.src = `https://image.tmdb.org/t/p/original${provider.logo_path}`;
-				logo.alt = `${provider.provider_name} logo`;
-
-				
-				listItem.append(logo);
-				providerList.append(listItem);
-			});
-
-			watchProviderContainer.append(providerList);
-		} else {
-			const noProviders = document.createElement('p');
-			noProviders.textContent = 'Watch provider Not Found';
-			watchProviderContainer.appendChild(noProviders);
-		}
-
-		// Append watch provider container to your details section
-		document
-			.querySelector('.watch-provider')
-			.appendChild(watchProviderContainer);
 
 		// Display Similar Movies
 		const displaySimilarMovies = async () => {
