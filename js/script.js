@@ -285,6 +285,7 @@ const displayActionMovies = async () => {
 
 	results.forEach((movie) => {
 		createCard(movie, genres, 'action-list', true);
+
 	});
 };
 
@@ -296,6 +297,7 @@ const displayPopularShows = async () => {
 
 	results.forEach((movie) => {
 		createCard(movie, genres, 'popular-shows-list', false);
+
 	});
 };
 
@@ -307,13 +309,14 @@ const displayTopRatedShows = async () => {
 
 	results.forEach((movie) => {
 		createCard(movie, genres, 'top-rated-shows-list', false);
+
 	});
 };
 
 // Movie Details Page
-  const movieDetails = async () => {
-		const movieID = window.location.search.split('=')[1];
-		const movie = await fetchAPIdata(`movie/${movieID}`);
+const movieDetails = async () => {
+	  const movieID = window.location.search.split('=')[1];
+	  const movie = await fetchAPIdata(`movie/${movieID}`);
 
 		const releaseDate = new Date(movie.release_date);
 		const formattedDate = `${releaseDate.getDate()} ${releaseDate.toLocaleString(
@@ -394,33 +397,71 @@ const displayTopRatedShows = async () => {
 		const cast = credits.cast;
 		cast.forEach((castMember) => {
 			// Create Elements
-			const casts = document.createElement('div');
+			const container = document.createElement('div');
 			const cast = document.createElement('div');
 			const castIMG = document.createElement('img');
-			const castName = document.createElement('li');
-			const castChar = document.createElement('li');
+			const castName = document.createElement('p');
+			const castChar = document.createElement('p');
 			const castInfo = document.createElement('div');
 
 			// Add Class
-			casts.classList.add('swiper-slide');
+			container.classList.add('swiper-slide');
 			cast.classList.add('cast');
+			castIMG.classList.add('cast-img')
+			castName.classList.add('cast-name');
+			castChar.classList.add('cast-char');
 			castInfo.classList.add('cast-info');
 
 			// Add attributes
 			castIMG.src = `${
 				castMember.profile_path
 					? `https://image.tmdb.org/t/p/w200${castMember.profile_path}`
-					: '../assets/no-people.png'
+					: ''
 			}`;
 
-			castName.textContent = `${castMember.name}`;
-			castChar.textContent = `${castMember.character}`;
+			castName.textContent = `${(castMember.name).substring(0, 12)}`;
+			castChar.textContent = `${castMember.character.substring(0, 12)}`;
 
 			// Append
 			castInfo.append(castIMG, castName, castChar);
 			cast.append(castInfo);
-			casts.append(cast);
-			document.querySelector('.cast-list .swiper-wrapper').append(casts);
+			container.append(cast);
+			document.querySelector('.cast-list .swiper-wrapper').append(container);
+			
+
+				new Swiper('.cast-list .swiper', {
+					slidesPerView: 8,
+					spaceBetween: 10,
+					navigation: {
+						nextEl: '.swiper-button-next',
+						prevEl: '.swiper-button-prev',
+					},
+					breakpoints: {
+						0: {
+							slidesPerView: 1,
+						},
+						200: {
+							slidesPerView: 2,
+						},
+						300: {
+							slidesPerView: 3,
+						},
+						600: {
+							slidesPerView: 5,
+						},
+						768: {
+							slidesPerView: 6,
+						},
+
+						1000: {
+							slidesPerView: 8,
+						},
+
+						1500: {
+							slidesPerView: 8,
+						},
+					},
+				});
 		});
 
 		// Watch Providers
@@ -467,7 +508,7 @@ const displayTopRatedShows = async () => {
 		} else {
 			const noProviders = document.createElement('p');
 			noProviders.classList.add('no-provider');
-			noProviders.textContent = 'Watch provider not found';
+			noProviders.textContent = 'Watch provider not available';
 			watchProviderContainer.append(noProviders);
 		}
 
@@ -604,6 +645,13 @@ const displayTopRatedShows = async () => {
 				showMoreButton.textContent = 'Show More';
 				showLessButton.textContent = 'Show Less';
 
+				showLessButton.addEventListener('click', () => {
+					  while (reviewContainer.children.length > 1) {
+							reviewContainer.removeChild(reviewContainer.lastChild);
+						}
+						reviewContainer.append(showMoreButton);
+				});
+
 				showMoreButton.addEventListener('click', () => {
 					showMoreButton.remove();
 
@@ -641,6 +689,7 @@ const displayTopRatedShows = async () => {
 			}
 		} else {
 			const noReviews = document.createElement('p');
+			noReviews.classList.add('no-reviews');
 			noReviews.textContent = 'Reviews are not available';
 			reviewContainer.append(noReviews);
 		}
@@ -733,7 +782,7 @@ const displayTopRatedShows = async () => {
     </div>
     `;
 			document.querySelector('.cast-list .swiper-wrapper').append(casts);
-			contentSwiper();
+
 		});
 
 		const crew = credits.crew;
@@ -758,7 +807,6 @@ const displayTopRatedShows = async () => {
     </div>
     `;
 				document.querySelector('.crew-list .swiper-wrapper').append(crew);
-				contentSwiper();
 			});
 		} else {
 			document.querySelector('.crew').style.display = 'none';
