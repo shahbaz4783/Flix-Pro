@@ -103,25 +103,23 @@ const createCarousel = (data, genres, listClass, isMovie) => {
 			const genre = genres.find((genre) => genre.id === genreId);
 			return genre ? genre.name : '';
 		})
-		.slice(0, 3);
+		.slice(0, 2);
 
 	const cardContainer = document.createElement('div');
-	cardContainer.classList.add('swiper-slide');
 	const posterImg = document.createElement('img');
 	const content = document.createElement('div');
 	const title = document.createElement('h3');
-	const genre = document.createElement('p');
-	const rating = document.createElement('p');
-	const year = document.createElement('p');
+	const genre = document.createElement('span');
+	const rating = document.createElement('span');
 	const details = document.createElement('a');
-
+	
+	cardContainer.classList.add('swiper-slide');
 	cardContainer.classList.add('swiper-slide');
 	content.classList.add('movie-overview');
 	posterImg.classList.add('carousel-backdrop');
 	title.classList.add('carousel-title');
 	genre.classList.add('carousel-genre');
 	rating.classList.add('carousel-rating');
-	year.classList.add('carousel-release-year');
 	details.classList.add('carousel-details');
 
 	posterImg.src = isMovie
@@ -132,14 +130,11 @@ const createCarousel = (data, genres, listClass, isMovie) => {
 		: `show-detail.html?id=${data.id}`;
 
 	title.textContent = isMovie ? data.title : data.name;
-	genre.textContent = `${genreNames.join(' ')}`;
+	genre.textContent = `${genreNames.join(', ')}`;
 	rating.textContent = `${data.vote_average.toFixed(1)}`;
-	year.textContent = isMovie
-		? `${new Date(data.release_date).getFullYear()}`
-		: `Rating: ${data.vote_average.toFixed(1)}`;
 	details.textContent = 'Details';
 
-	content.append(title, rating, genre, year, details);
+	content.append(title, rating, genre, details);
 	cardContainer.append(posterImg, content);
 
 	document.querySelector(`.${listClass} .swiper-wrapper`).append(cardContainer);
@@ -887,16 +882,3 @@ const init = () => {
 };
 
 document.addEventListener('DOMContentLoaded', init);
-
-// header Background Color Change
-const header = document.querySelector('header');
-const swipeThreshold = window.innerHeight * 0.15;
-
-const changeBg = () => {
-	if (window.scrollY > swipeThreshold) {
-		header.classList.add('background');
-	} else {
-		header.classList.remove('background');
-	}
-};
-window.addEventListener('scroll', changeBg);
