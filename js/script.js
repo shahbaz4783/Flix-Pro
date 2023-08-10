@@ -769,9 +769,7 @@ const searchAPIdata = async () => {
 	}
 };
 
-// Create Search result Message
-const resultMsg = document.createElement('p');
-resultMsg.classList.add('result-msg');
+
 
 // Search Function
 const search = async () => {
@@ -783,10 +781,14 @@ const search = async () => {
 	if (global.search.term !== '' && global.search.term !== null) {
 		const { results } = await searchAPIdata();
 
-		if (results.length === 0) {
-			resultMsg.textContent = `No Result Found for ${global.search.term}`;
-			document.querySelector('.search-result').append(resultMsg);
-		}
+		// Create Search result Message
+		const resultMsg = document.createElement('p');
+		resultMsg.classList.add('result-msg');
+		resultMsg.textContent =
+			results.length === 0
+				? `No result found for "${global.search.term}"`
+				: `Showing results for "${global.search.term}"`;
+		document.querySelector('.search-result').prepend(resultMsg);
 
 		document.querySelector('#search-term').value = '';
 
@@ -795,9 +797,6 @@ const search = async () => {
 };
 
 const displaySearchResult = (results) => {
-	resultMsg.textContent = `Showing results for "${global.search.term}"`;
-	document.querySelector('.search-result').prepend(resultMsg);
-
 	const movieHeading = document.createElement('h2');
 	const showHeading = document.createElement('h2');
 	movieHeading.textContent = 'Movies';
@@ -811,36 +810,24 @@ const displaySearchResult = (results) => {
 			// Create elements
 			const cardContainer = document.createElement('div');
 			const poster = document.createElement('img');
-			const content = document.createElement('div');
-			const title = document.createElement('h3');
-			const year = document.createElement('p');
+
 			const details = document.createElement('a');
 
 			// Add classes
 			cardContainer.classList.add('result-container');
 			poster.classList.add('poster');
-			content.classList.add('content-div');
-			title.classList.add('title');
-			year.classList.add('release-year');
 			details.classList.add('details');
 
 			// Set content for the elements
-
 			poster.src = `https://image.tmdb.org/t/p/original${posterPath}`;
-			title.textContent =
-				result.media_type === 'movie' ? result.title : result.name;
-			year.textContent = result.release_date
-				? new Date(result.release_date).getFullYear()
-				: new Date(result.first_air_date).getFullYear();
 			details.href =
 				result.media_type === 'movie'
 					? `movie-detail.html?id=${result.id}`
 					: `show-detail.html?id=${result.id}`;
-			details.textContent = 'Details';
 
-			// Append elements to the appropriate container
-			content.append(title, year, details);
-			cardContainer.append(poster, content);
+			// Append elements
+			details.append(poster);
+			cardContainer.append(details);
 
 			if (result.media_type === 'movie') {
 				document.querySelector('.movie-results').prepend(movieHeading);

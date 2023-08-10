@@ -14,8 +14,15 @@ header {
 
         h2 {
             color: pink;
-            width: 95vw;
+            width: 96%;
             margin: auto;
+        }
+
+        @media screen and (max-width:768px) {
+            h2 {
+            width: 85%;
+            margin: auto;
+        }
         }
 
 
@@ -23,7 +30,7 @@ header {
 		.display-shows {
             margin: 2em;
 			display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(8, 1fr);
             gap: 1em;
 
             @media screen and (max-width:768px) {
@@ -43,11 +50,6 @@ header {
 					padding: 50px;
 				}
 
-                .content-div {
-                    .details {
-                        padding: 0.5em;
-                    }
-                }
 			}
 		}
 	}
