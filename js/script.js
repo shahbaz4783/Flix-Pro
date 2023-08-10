@@ -359,7 +359,7 @@ const fetchMediaDetails = async (mediaType) => {
 	genre.textContent = `${media.genres
 		.map((genre) => `${genre.name}`)
 		.join(', ')}`;
-	runtime.textContent = `${media.runtime || media.episode_run_time[0]} mins`;
+	media.runtime && (runtime.textContent = `${media.runtime} mins`);
 	year.textContent = `${formattedDate}`;
 	overview.textContent = `${media.overview}`;
 
@@ -535,24 +535,25 @@ const financeInfo = async () => {
 	status.classList.add('status');
 
 	// Text Content
-	budget.innerHTML = `<span>Budget</span> ${media.budget.toLocaleString(
-		'en-US',
-		{
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0,
-		}
-	)}`;
+	media.budget
+		? (budget.innerHTML = `<span>Budget</span> ${media.budget('en-US', {
+				style: 'currency',
+				currency: 'USD',
+				maximumFractionDigits: 0,
+		  })}`)
+		: (budget.innerHTML = `<span>Seasons</span> ${media.number_of_seasons}`);
 
-	collection.innerHTML = `<span>Revenue</span> ${media.revenue.toLocaleString(
-		'en-US',
-		{
-			style: 'currency',
-			currency: 'USD',
-			maximumFractionDigits: 0,
-		}
-	)}`;
-
+	media.collection
+		? (collection.innerHTML = `<span>Revenue</span> ${media.revenue.toLocaleString(
+				'en-US',
+				{
+					style: 'currency',
+					currency: 'USD',
+					maximumFractionDigits: 0,
+				}
+		  )}`)
+		: (collection.innerHTML = `<span>Episodes</span> ${media.number_of_episodes}`);
+		
 	status.innerHTML = `<span>Status</span> ${media.status}`;
 
 	// Append elements
