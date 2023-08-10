@@ -1,0 +1,54 @@
+header {
+	position: relative;
+}
+.search-result {
+
+    .result-msg {
+        font-size: 1.6em;
+        width: 95%;
+        margin: 2em auto;
+    }
+
+	.movie-results,
+	.show-results {
+
+        h2 {
+            color: pink;
+            width: 95vw;
+            margin: auto;
+        }
+
+
+		.display-movies,
+		.display-shows {
+            margin: 2em;
+			display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1em;
+
+            @media screen and (max-width:768px) {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+			.result-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+				.poster {
+					width: 100%;
+				}
+
+				.search-result {
+					padding: 50px;
+				}
+
+                .content-div {
+                    .details {
+                        padding: 0.5em;
+                    }
+                }
+			}
+		}
+	}
+}

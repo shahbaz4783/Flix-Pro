@@ -374,20 +374,26 @@ const fetchMediaDetails = async (mediaType) => {
 		crewDiv.append(director, job);
 	}
 
-// Append elements
-crewDiv.append(director, job);
+	// Append elements
+	crewDiv.append(director, job);
 
-content.append(title, rating, runtime, year, tagline, genre, overview, crewDiv);
-cardContainer.append(backdrop, poster, content);
-document.querySelector('.display-details').append(cardContainer);
+	content.append(
+		title,
+		rating,
+		runtime,
+		year,
+		tagline,
+		genre,
+		overview,
+		crewDiv
+	);
+	cardContainer.append(backdrop, poster, content);
+	document.querySelector('.display-details').append(cardContainer);
 };
-
-
-
 
 // Display Cast
 const displayCast = async () => {
-    const mediaID = window.location.search.split('=')[1];
+	const mediaID = window.location.search.split('=')[1];
 	const credits = await fetchAPIdata(`${mediaType}/${mediaID}/credits`);
 
 	const cast = credits.cast;
@@ -467,7 +473,9 @@ const displayCast = async () => {
 // Watch Provider
 const watchProvider = async () => {
 	const mediaID = window.location.search.split('=')[1];
-	const watchProviders = await fetchAPIdata(`${mediaType}/${mediaID}/watch/providers`);
+	const watchProviders = await fetchAPIdata(
+		`${mediaType}/${mediaID}/watch/providers`
+	);
 
 	// Create watch provider elements
 	const watchProviderContainer = document.createElement('div');
@@ -518,8 +526,8 @@ const watchProvider = async () => {
 
 // Other Details
 const financeInfo = async () => {
-	    const mediaID = window.location.search.split('=')[1];
-			const media = await fetchAPIdata(`${mediaType}/${mediaID}`);
+	const mediaID = window.location.search.split('=')[1];
+	const media = await fetchAPIdata(`${mediaType}/${mediaID}`);
 	const detailsInfo = document.createElement('div');
 	const budget = document.createElement('p');
 	const collection = document.createElement('p');
@@ -559,8 +567,8 @@ const financeInfo = async () => {
 
 // Production Companies
 const production = async () => {
-	 const mediaID = window.location.search.split('=')[1];
-		const media = await fetchAPIdata(`${mediaType}/${mediaID}`);
+	const mediaID = window.location.search.split('=')[1];
+	const media = await fetchAPIdata(`${mediaType}/${mediaID}`);
 	const productionList = document.createElement('div');
 	const ul = document.createElement('ul');
 
@@ -587,13 +595,14 @@ const production = async () => {
 
 	document.querySelector('.companies-list').append(productionList);
 };
-
 const fetchtrailer = async () => {
 	const mediaID = window.location.search.split('=')[1];
 	const trailerData = await fetchAPIdata(`${mediaType}/${mediaID}/videos`);
 
 	// Find the trailer with type "Trailer"
-	const trailer = trailerData.results.find((video) => video.type === 'Trailer');
+	const trailer = trailerData.results.find(
+		(video) => video.type === 'Trailer' || video.type === 'Teaser'
+	);
 
 	if (trailer) {
 		const trailerIframe = document.createElement('iframe');
@@ -722,21 +731,19 @@ const displaySimilarMovies = async () => {
 	});
 };
 
-
 // Display Similar Shows
 const displaySimilarShows = async () => {
 	const showID = window.location.search.split('=')[1];
 	const { results } = await fetchAPIdata(`tv/${showID}/recommendations`);
 	const genreResponse = await fetchAPIdata('genre/movie/list');
 	const genres = genreResponse.genres;
-	
-	results.forEach((movie) => {
-			createCard(movie, genres, 'simiar-shows-list', false);
-		});
-	};
-	
-	/* ---------------------------------------------------- */
 
+	results.forEach((movie) => {
+		createCard(movie, genres, 'simiar-shows-list', false);
+	});
+};
+
+/* ---------------------------------------------------- */
 
 // Search Movie and Shows Function
 
@@ -762,6 +769,11 @@ const searchAPIdata = async () => {
 	}
 };
 
+// Create Search result Message
+const resultMsg = document.createElement('p');
+resultMsg.classList.add('result-msg');
+
+// Search Function
 const search = async () => {
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
@@ -772,18 +784,24 @@ const search = async () => {
 		const { results } = await searchAPIdata();
 
 		if (results.length === 0) {
-			alert('No Result Found');
+			resultMsg.textContent = `No Result Found for ${global.search.term}`;
+			document.querySelector('.search-result').append(resultMsg);
 		}
 
 		document.querySelector('#search-term').value = '';
 
 		displaySearchResult(results);
-	} else {
-		alert('Please Write Something in Box');
 	}
 };
 
 const displaySearchResult = (results) => {
+	resultMsg.textContent = `Showing results for "${global.search.term}"`;
+	document.querySelector('.search-result').prepend(resultMsg);
+
+	const movieHeading = document.createElement('h2');
+	const showHeading = document.createElement('h2');
+	movieHeading.textContent = 'Movies';
+	showHeading.textContent = 'Shows';
 	results.forEach((result) => {
 		if (result.poster_path) {
 			const posterPath = result.poster_path
@@ -795,8 +813,6 @@ const displaySearchResult = (results) => {
 			const poster = document.createElement('img');
 			const content = document.createElement('div');
 			const title = document.createElement('h3');
-			const genre = document.createElement('p');
-			const rating = document.createElement('p');
 			const year = document.createElement('p');
 			const details = document.createElement('a');
 
@@ -805,13 +821,12 @@ const displaySearchResult = (results) => {
 			poster.classList.add('poster');
 			content.classList.add('content-div');
 			title.classList.add('title');
-			genre.classList.add('genre');
-			rating.classList.add('rating');
 			year.classList.add('release-year');
 			details.classList.add('details');
 
 			// Set content for the elements
-			poster.src = `https://image.tmdb.org/t/p/w500${posterPath}`;
+
+			poster.src = `https://image.tmdb.org/t/p/original${posterPath}`;
 			title.textContent =
 				result.media_type === 'movie' ? result.title : result.name;
 			year.textContent = result.release_date
@@ -823,10 +838,17 @@ const displaySearchResult = (results) => {
 					: `show-detail.html?id=${result.id}`;
 			details.textContent = 'Details';
 
-			// Append elements
-			content.append(title, rating, genre, year, details);
+			// Append elements to the appropriate container
+			content.append(title, year, details);
 			cardContainer.append(poster, content);
-			document.querySelector('.search-list').append(cardContainer);
+
+			if (result.media_type === 'movie') {
+				document.querySelector('.movie-results').prepend(movieHeading);
+				document.querySelector('.display-movies').append(cardContainer);
+			} else if (result.media_type === 'tv') {
+				document.querySelector('.show-results').prepend(showHeading);
+				document.querySelector('.display-shows').append(cardContainer);
+			}
 		}
 	});
 };
@@ -858,15 +880,15 @@ const init = () => {
 			financeInfo(mediaType);
 			displaySimilarMovies();
 			break;
-			case '/show-detail.html':
-				fetchMediaDetails(mediaType);
-				displayCast(mediaType);
-				watchProvider(mediaType);
-				fetchtrailer(mediaType);
-				reviews(mediaType);
-				production(mediaType);
-				financeInfo(mediaType);
-				displaySimilarShows();
+		case '/show-detail.html':
+			fetchMediaDetails(mediaType);
+			displayCast(mediaType);
+			watchProvider(mediaType);
+			fetchtrailer(mediaType);
+			reviews(mediaType);
+			production(mediaType);
+			financeInfo(mediaType);
+			displaySimilarShows();
 
 			break;
 		case '/search.html':
