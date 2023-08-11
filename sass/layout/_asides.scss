@@ -1,85 +1,3 @@
-.backdrop-img {
-	width: 100vw;
-	height: 100vh;
-	margin: auto;
-	background-size: cover;
-	background-position: center;
-	opacity: 0.18;
-	position: relative;
-}
-
-.poster-img {
-	position: absolute;
-	width: 20%;
-	top: 30%;
-	left: 10%;
-	border-radius: 0.4em;
-}
-
-.texts {
-	width: 50%;
-	position: absolute;
-	top: 30%;
-	left: 35%;
-
-	.title {
-		font-size: 3em;
-	}
-
-	span {
-		color: pink;
-		line-height: 3em;
-	}
-
-	.rating {
-		border: 3px solid white;
-		border-radius: 50%;
-		padding: 0.5em;
-		font-weight: bolder;
-		margin-right: 2em;
-	}
-
-	.runtime {
-		padding: 0.5em;
-		margin-right: 2em;
-	}
-
-	.release {
-		padding: 0.5em;
-	}
-
-	.tagline {
-		line-height: 2em;
-		font-style: italic;
-		font-size: 1.2em;
-		color: #b2a0a0;
-	}
-
-	.genre {
-		color: rgb(155, 155, 226);
-		font-size: 1.3em;
-		line-height: 2em;
-	}
-
-	.overview {
-		color: rgb(222, 232, 203);
-	}
-
-	.crew-div {
-		margin-top: 1.5em;
-		width: fit-content;
-
-		.director {
-			font-size: 1.5em;
-			font-style: oblique;
-		}
-
-		.job {
-			color: gray;
-		}
-	}
-}
-
 .asides {
 	display: flex;
 	justify-content: space-between;
@@ -141,6 +59,10 @@
 
 	.review-rating {
 		color: wheat;
+        border: 1px solid;
+        border-radius: 50%;
+        padding: 0.2em;
+        margin-right: 0.2em;
 	}
 
 	.review-author {
@@ -151,7 +73,8 @@
 	.review-date {
 		color: gray;
 		font-size: 1em;
-		margin-bottom: 1.3em;
+		margin-bottom: 1em;
+        margin-top: 0.25em;
 	}
 
 	.review-content {
@@ -286,29 +209,11 @@
 	padding: 2rem;
 }
 
-/* Media Queries */
+
 @media screen and (max-width: 768px) {
-	header {
-		position: relative;
-	}
+	
 
-	.backdrop-img {
-		width: 100vw;
-		height: 25vh;
-		opacity: 0.4;
-	}
-
-	.texts {
-		position: static;
-		width: 95%;
-		margin: auto;
-
-		.title {
-			font-size: 2em;
-			line-height: 2em;
-		}
-	}
-
+	
 	.trailer {
 		position: absolute;
 		top: 2em;
@@ -316,12 +221,7 @@
 		width: 100%;
 	}
 
-	.poster-img {
-		display: none;
-	}
-
 	.asides {
-		// flex-direction: column;
 		flex-direction: column-reverse;
 
 		.right-content {

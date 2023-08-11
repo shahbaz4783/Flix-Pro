@@ -648,7 +648,12 @@ const reviews = async () => {
 		firstContent.textContent = reviewData.content;
 
 		// Append elements
-		firstReviewBox.append(firstRating, firstAuthor, firstDate, firstContent);
+		firstReviewBox.append(
+			firstRating.textContent ? firstRating : '',
+			firstAuthor,
+			firstDate,
+			firstContent
+		);
 		reviewContainer.append(firstReviewBox);
 
 		if (results.length > 1) {
@@ -694,7 +699,7 @@ const reviews = async () => {
 
 					// Append elements
 					additionalReviewBox.append(
-						additionalRating,
+						additionalRating.textContent ? additionalRating : '',
 						additionalAuthor,
 						additionalDate,
 						additionalContent
