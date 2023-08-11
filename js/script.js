@@ -535,25 +535,28 @@ const financeInfo = async () => {
 	status.classList.add('status');
 
 	// Text Content
-	media.budget
-		? (budget.innerHTML = `<span>Budget</span> ${media.budget('en-US', {
-				style: 'currency',
-				currency: 'USD',
-				maximumFractionDigits: 0,
-		  })}`)
-		: (budget.innerHTML = `<span>Seasons</span> ${media.number_of_seasons}`);
-
-	media.collection
-		? (collection.innerHTML = `<span>Revenue</span> ${media.revenue.toLocaleString(
-				'en-US',
-				{
+	if (mediaType === 'movie') {
+		budget.innerHTML = media.budget
+			? `<span>Budget</span> ${media.budget.toLocaleString('en-US', {
 					style: 'currency',
 					currency: 'USD',
 					maximumFractionDigits: 0,
-				}
-		  )}`)
-		: (collection.innerHTML = `<span>Episodes</span> ${media.number_of_episodes}`);
-		
+			  })}`
+			: '';
+
+		collection.innerHTML = media.revenue
+			? `<span>Revenue</span> ${media.revenue.toLocaleString('en-US', {
+					style: 'currency',
+					currency: 'USD',
+					maximumFractionDigits: 0,
+			  })}`
+			: '';
+	} else {
+		budget.innerHTML = `<span>Seasons</span> ${media.number_of_seasons}`;
+		collection.innerHTML = `<span>Episodes</span> ${media.number_of_episodes}`;
+	}
+
+
 	status.innerHTML = `<span>Status</span> ${media.status}`;
 
 	// Append elements
