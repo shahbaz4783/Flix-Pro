@@ -35,10 +35,22 @@ header {
 			background-color: #181e27;
 			margin: 0;
 			border-bottom: 2px solid;
+			height: 6%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 
 			ul {
 				display: flex;
-				justify-content: space-evenly;
+				justify-content: space-between;
+				padding: 0;
+				width: 90%;
+
+				li {
+					&:first-child {
+						display: flex;
+					}
+				}
 			}
 		}
 
@@ -56,6 +68,10 @@ nav ul {
 		list-style: none;
 		display: flex;
 		justify-content: space-evenly;
+
+		&:first-child {
+			display: none;
+		}
 
 		a {
 			text-decoration: none;
